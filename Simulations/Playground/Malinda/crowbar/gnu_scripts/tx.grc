@@ -1,0 +1,104 @@
+options:
+  parameters:
+    author: malindatemp
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: tx
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: test transmitter
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 16.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '32000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 24.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nstates:\n0 - idle (waiting for\
+      \ command)\n1 - sync state (sends sync.txt)\n2 - message send (sends message.txt)\n\
+      3 - send post filler (to flush the buffers i think)\n\n\"\"\"\n\nimport numpy\
+      \ as np\nfrom gnuradio import gr\nimport os\n\n\nclass blk(gr.sync_block): \
+      \ # other base classes are basic_block, decim_block, interp_block\n\n    def\
+      \ __init__(self, pkt_len=52, file_name = 'misc/message.txt', sync_file_name='misc/sync.txt',\
+      \ dbg = 'False'):  # only default arguments here\n        \n        gr.sync_block.__init__(\n\
+      \            self,\n            name='EPB: custom file source and tagged stream',\
+      \   # will show up in GRC\n            in_sig=None,\n            out_sig=[np.uint8]\n\
+      \        )\n        self.file_name = file_name\n        self.state = 0 # idle\n\
+      \        self.pkt_len = pkt_len\n        self.sync_file_name = sync_file_name\n\
+      \        self.sync_file_in = None\n        self.file_in = None\n        # self.sync_eof\
+      \ = True\n        self.file_eof = True\n        self.dbg = dbg\n        self.sync_len\
+      \ = 0 # length of the sync text\n        self.indx = 0\n\n        # opening\
+      \ the sync text file\n        if (os.path.exists(self.sync_file_name)):\n  \
+      \          self.sync_file_in = open(self.sync_file_name, 'rb')\n           \
+      \ self.sync_eof = False\n            if (self.dbg == 'True'):\n            \
+      \    print('opened sync file: ', self.sync_file_name)\n        else:\n     \
+      \       print('couldnt find sync file:', self.sync_file_name)\n            self.sync_eof\
+      \ = True\n            self.state = 0\n        \n        #opening the message\
+      \ file\n        # if (os.path.exists(self.file_name)):\n        #     self.file_in\
+      \ = open(self.file_name, 'rb')\n        #     self.file_eof = False\n      \
+      \  #     if (self.dbg == 'True'):\n        #         print(\"opened message\
+      \ file: \", self.file_name)\n        # else:\n        #     print('coulnt find\
+      \ message file: ', self.file_name)\n        #     self.file_eof = True\n   \
+      \     #     self.state = 0\n        \n\n\n\n\n\n\n        \n        \n\n   \
+      \ def work(self, input_items, output_items):\n        \"\"\"example: multiply\
+      \ with constant\"\"\"\n        output_items[0][:] = input_items[0] * self.example_param\n\
+      \        return len(output_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    dbg: '''False'''
+    file_name: '''misc/message.txt'''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pkt_len: '52'
+    sync_file_name: '''misc/sync.txt'''
+  states:
+    _io_cache: '(''EPB: custom file source and tagged stream'', ''blk'', [(''pkt_len'',
+      ''52''), (''file_name'', "''misc/message.txt''"), (''sync_file_name'', "''misc/sync.txt''"),
+      (''dbg'', "''False''")], [], [(''0'', ''byte'', 1)], '''', [''dbg'', ''file_name'',
+      ''pkt_len'', ''sync_file_name''])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 284.0]
+    rotation: 0
+    state: enabled
+connections: []
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
