@@ -1,5 +1,16 @@
-this better fucking work
+CDP Testing Text File
 
-111000000000000001111111111111111000000000000000011111111111111111
+This is a test file for the transmitter/receiver pipeline.
+It contains multiple lines of text, numbers, and symbols.
 
-abiegweoufbewf123322
+Line 1: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Line 2: abcdefghijklmnopqrstuvwxyz
+Line 3: 0123456789
+Line 4: !@#$%^&*()_+-=[]{}|;:'",.<>?/`
+
+Repeating patterns for sync testing:
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+End of test file.

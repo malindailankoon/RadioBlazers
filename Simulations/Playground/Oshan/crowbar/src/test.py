@@ -17,21 +17,21 @@ path_to_gnu_script = os.path.join(base_dir, "..", "gnu_scripts", "testing.py")
 gp = subprocess.Popen(["C:/Users/Oshan/radioconda/python.exe", path_to_gnu_script, "--InFile=misc/message.txt"])
 
 
-print("=>waiting for 10 seconds")
-time.sleep(10)
+print("=>waiting for 3 seconds")
+time.sleep(3)
 print("=>done waiting")
 
 
 print("=>starting the remove the preamble")
-path_to_process_file = os.path.join(base_dir, "..", "src", "strip_preamble.py")
+path_to_process_file = os.path.join(base_dir, "..", "src", "strip_preamble_1.py")
 sp = subprocess.Popen(["python", path_to_process_file, "output.tmp", "rec.txt"])
 
 
-print("=>waiting for 10 seconds")
-time.sleep(10)
+print("=>waiting for 3 seconds")
+time.sleep(3)
 print("=>done waiting")
 
 print("=>closing apps")
-gp.terminate()
-sp.terminate()
+#gp.terminate()
+#sp.terminate()
 
