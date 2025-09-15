@@ -214,7 +214,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2360, 28.0]
+    coordinate: [1848, 292.0]
     rotation: 0
     state: enabled
 - name: rrc_taps
@@ -760,7 +760,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1552, 480.0]
+    coordinate: [1592, 460.0]
     rotation: 0
     state: enabled
 - name: virtual_source_0_0_0
