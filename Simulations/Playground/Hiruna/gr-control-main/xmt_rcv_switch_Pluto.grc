@@ -1,0 +1,573 @@
+options:
+  parameters:
+    author: Barry Duggan
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: Pluto Station control module
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: xmt_rcv_switch_Pluto
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: xmt_rcv_switch_Pluto
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 16.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: freq
+  id: variable_qtgui_entry
+  parameters:
+    comment: 9,0,1,1
+    entry_signal: editingFinished
+    gui_hint: 9,0,1,1
+    label: Receive Freq
+    type: real
+    value: 144.92e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 16.0]
+    rotation: 0
+    state: true
+- name: gain
+  id: variable_qtgui_range
+  parameters:
+    comment: 1,0
+    gui_hint: 1,0,1,3
+    label: Rcv Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '73'
+    value: '50'
+    widget: slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [272, 16.0]
+    rotation: 0
+    state: true
+- name: offset
+  id: variable_qtgui_chooser
+  parameters:
+    comment: 9,1
+    gui_hint: 9,1,1,1
+    label: Offset
+    label0: '"-600kHz"'
+    label1: '"0"'
+    label2: '"+600kHz"'
+    label3: ''
+    label4: ''
+    labels: '["-5MHz", "-600kHz", "0", "+600kHz", "+5MHz"]'
+    num_opts: '0'
+    option0: '-600000'
+    option1: '0'
+    option2: '600000'
+    option3: '3'
+    option4: '4'
+    options: '[-5000000, -600000, 0, 600000, 5000000]'
+    orient: Qt.QVBoxLayout
+    type: int
+    value: '0'
+    widget: combo_box
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [640, 16.0]
+    rotation: 0
+    state: true
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '768000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 16.0]
+    rotation: 0
+    state: enabled
+- name: tx_atten
+  id: variable_qtgui_range
+  parameters:
+    comment: 2,0
+    gui_hint: 2,0,1,3
+    label: Tx Attenuation
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '89'
+    value: '20'
+    widget: slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [376, 16.0]
+    rotation: 0
+    state: true
+- name: tx_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: freq+offset
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 88.0]
+    rotation: 0
+    state: true
+- name: variable_qtgui_label_0
+  id: variable_qtgui_label
+  parameters:
+    comment: 9,2
+    formatter: None
+    gui_hint: 9,2,1,1
+    label: Transmit Freq
+    type: real
+    value: tx_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [808, 16.0]
+    rotation: 0
+    state: enabled
+- name: variable_qtgui_toggle_button_msg_0
+  id: variable_qtgui_toggle_button_msg
+  parameters:
+    comment: ''
+    gui_hint: 3,2,1,1
+    initPressed: 'False'
+    label: Transmit
+    outputmsgname: value
+    pressBackgroundColor: red
+    pressFontColor: default
+    pressed: '1'
+    relBackgroundColor: white
+    relFontColor: default
+    released: '0'
+    type: int
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [24, 648.0]
+    rotation: 0
+    state: true
+- name: blocks_mute_xx_0
+  id: blocks_mute_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mute: 'False'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [560, 240.0]
+    rotation: 0
+    state: true
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nTransmit / Receive Controller\n\"\"\"\n\nimport numpy as\
+      \ np\nfrom gnuradio import gr\nimport time\nimport pmt\nimport math\n\n\"\"\"\
+      \nState definitions\n    0   idle/rcv\n    1   start xmt\n    2   xmt active\n\
+      \    3   send tx_eob\n\"\"\"\n\nclass blk(gr.basic_block):\n    \"\"\"\n   \
+      \ reads input from a message port\n    generates control messages\n    \"\"\"\
+      \n    def __init__(self):\n        gr.basic_block.__init__(self,\n         \
+      \   name='XMT/RCV Control',   # will show up in GRC\n            in_sig=[np.complex64],\n\
+      \            out_sig=[np.complex64])\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
+      \        self.message_port_register_out(pmt.intern('rx_led'))\n        self.message_port_register_out(pmt.intern('ant_sw'))\n\
+      \        self.message_port_register_out(pmt.intern('sw_cmd'))\n        self.message_port_register_out(pmt.intern('pa_sw'))\n\
+      \        self.message_port_register_out(pmt.intern('rx_mute'))\n        self.set_msg_handler(pmt.intern('msg_in'),\
+      \ self.handle_msg)\n        self.state = 0      # idle state\n        self.indx\
+      \ = 0       # index for tags\n        self._debug = 0     # set to 1 to turn\
+      \ on diagnostics\n        if (self._debug):\n            print (\"_debug =\"\
+      , self._debug)\n        self.tag_flags = 0  # bit flags:\n                #\
+      \ 1 - use tx_sob/tx_eob; \n                # 2 - use start tx_time; \n     \
+      \           # 4 - use end tx_time\n        if (self.tag_flags > 0):\n      \
+      \      print (\"tag_flags =\", self.tag_flags)\n\n    def handle_msg(self, msg):\n\
+      \        try:\n            new_val = pmt.to_python(pmt.cdr(msg))\n        except\
+      \ Exception as e:\n            gr.log.error(\"Error with message conversion:\
+      \ %s\" % str(e))\n        if (self._debug):\n            print (\"new_val =\"\
+      , new_val)\n        if (new_val == 1):\n\n            # (1) mute receive\n \
+      \           if (self._debug):\n                print (\"t1\")\n            self.message_port_pub(pmt.intern('rx_mute'),\
+      \ pmt.to_pmt(True))\n\n            # (2) turn off rcv LED\n            if (self._debug):\n\
+      \                print (\"t2\")\n            self.message_port_pub(pmt.intern('rx_led'),\n\
+      \                pmt.cons(pmt.intern('pressed'),\n                pmt.from_bool(False)))\n\
+      \n            # (3) send message to relay_sequencer\n            if (self._debug):\n\
+      \                print (\"t3\")\n            self.message_port_pub(pmt.intern('sw_cmd'),\n\
+      \                pmt.cons(pmt.intern('pressed'),\n                pmt.from_long(1)))\n\
+      \n            # (4) turn on Antenna LED\n            if (self._debug):\n   \
+      \             print (\"t4\")\n            self.message_port_pub(pmt.intern('ant_sw'),\n\
+      \                pmt.cons(pmt.intern('pressed'),\n                pmt.from_bool(True)))\n\
+      \n        elif (new_val == 3):\n\n            # (10) turn on Amp LED\n     \
+      \       if (self._debug):\n                print (\"t10\")\n            self.message_port_pub(pmt.intern('pa_sw'),\n\
+      \                pmt.cons(pmt.intern('pressed'),\n                pmt.from_bool(True)))\n\
+      \n            # (11) send tx_sob (state 1)\n            self.state = 1     \
+      \ # start xmt\n\n        elif (new_val == 0):\n\n            # (11) send tx_eob\
+      \ (state 3)\n            self.state = 3      # stop xmt\n\n            # (10)\
+      \ send message to relay_sequencer\n            if (self._debug):\n         \
+      \       print (\"r10\")\n            self.message_port_pub(pmt.intern('sw_cmd'),\n\
+      \                pmt.cons(pmt.intern('pressed'),\n                pmt.from_long(0)))\n\
+      \n            # (9) turn off Amp LED\n            if (self._debug):\n      \
+      \          print (\"r9\")\n            self.message_port_pub(pmt.intern('pa_sw'),\n\
+      \                pmt.cons(pmt.intern('pressed'),\n                pmt.from_bool(False)))\n\
+      \n        elif (new_val == 2):\n\n            # (4) turn off Antenna LED\n \
+      \           if (self._debug):\n                print (\"r4\")\n            self.message_port_pub(pmt.intern('ant_sw'),\n\
+      \                pmt.cons(pmt.intern('pressed'),\n                pmt.from_bool(False)))\n\
+      \n            #     set state 0\n            self.state = 0\n\n            #\
+      \ (2) turn on rcv LED\n            if (self._debug):\n                print\
+      \ (\"r2\")\n            self.message_port_pub(pmt.intern('rx_led'),\n      \
+      \          pmt.cons(pmt.intern('pressed'),\n                pmt.from_bool(True)))\n\
+      \n            # (1) unmute receive\n            if (self._debug):\n        \
+      \        print (\"r1\")\n            self.message_port_pub(pmt.intern('rx_mute'),\
+      \ pmt.to_pmt(False))\n\n    def general_work(self, input_items, output_items):\n\
+      \        #buffer references\n        in0 = input_items[0][:len(output_items[0])]\n\
+      \        out = output_items[0]\n\n        if (self.state == 0):\n          \
+      \  o_len = 0\n\n        elif (self.state == 1):\n            if (self._debug):\n\
+      \                print (\"state = 1\", self.indx)\n\n            if (self.tag_flags\
+      \ & 1):\n                key1 = pmt.intern(\"tx_sob\")\n                val1\
+      \ = pmt.PMT_T\n                self.add_item_tag(0, # Write to output port 0\n\
+      \                    self.indx,   # Index of the tag\n                    key1,\
+      \   # Key of the tag\n                    val1    # Value of the tag\n     \
+      \               )\n\n            if (self.tag_flags & 2):\n                now\
+      \ = time.time()\n                t_tag = now         # + 0.010\n           \
+      \     t_sec = (int)(math.floor(t_tag))\n                t_frac = t_tag - t_sec\n\
+      \                key2 = pmt.intern(\"tx_time\")\n                val2 = pmt.to_pmt((t_sec,\
+      \ t_frac))\n                self.add_item_tag(0, # Write to output port 0\n\
+      \                    self.indx,   # Index of the tag\n                    key2,\
+      \   # Key of the tag\n                    val2    # Value of the tag\n     \
+      \               )\n\n            out[:] = in0    # pass thru\n            o_len\
+      \ = len(output_items[0])\n            self.indx += o_len\n            self.state\
+      \ = 2      # xmt active\n\n        elif (self.state == 2):\n            out[:]\
+      \ = in0    # pass thru\n            o_len = len(output_items[0])\n         \
+      \   self.indx += o_len\n\n        elif (self.state == 3):\n            if (self._debug):\n\
+      \                print (\"state = 3\", self.indx)\n\n            out[:] = in0\
+      \    # pass thru\n            o_len = len(output_items[0])\n            self.indx\
+      \ += o_len\n\n            if (self.tag_flags & 1):\n                key1 = pmt.intern(\"\
+      tx_eob\")\n                val1 = pmt.PMT_T\n                self.add_item_tag(0,\
+      \ # Write to output port 0\n                    (self.indx-1),   # Index of\
+      \ the tag\n                    key1,   # Key of the tag\n                  \
+      \  val1    # Value of the tag\n                    )\n\n            if (self.tag_flags\
+      \ & 4):\n                now = time.time()\n                t_tag = now    \
+      \     # + 0.010\n                t_sec = (int)(math.floor(t_tag))\n        \
+      \        t_frac = t_tag - t_sec\n                key2 = pmt.intern(\"tx_time\"\
+      )\n                val2 = pmt.to_pmt((t_sec, t_frac))\n                self.add_item_tag(0,\
+      \ # Write to output port 0\n                    (self.indx-1),   # Index of\
+      \ the tag\n                    key2,   # Key of the tag\n                  \
+      \  val2    # Value of the tag\n                    )\n\n            self.state\
+      \ = 0      # stop sending data\n\n        #consume the inputs\n        self.consume(0,\
+      \ len(in0))   # consume port 0 input\n\n        #return produced\n        return\
+      \ (o_len)\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('XMT/RCV Control', 'blk', [], [('0', 'complex', 1), ('msg_in', 'message',
+      1)], [('0', 'complex', 1), ('rx_mute', 'message', 1), ('pa_sw', 'message', 1),
+      ('sw_cmd', 'message', 1), ('ant_sw', 'message', 1), ('rx_led', 'message', 1)],
+      '\n    reads input from a message port\n    generates control messages\n    ',
+      [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 416.0]
+    rotation: 0
+    state: true
+- name: iio_pluto_sink_0
+  id: iio_pluto_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    attenuation1: tx_atten
+    bandwidth: '200000'
+    buffer_size: '32768'
+    comment: ''
+    cyclic: 'False'
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: samp_rate/4
+    frequency: int(tx_freq)
+    fstop: samp_rate/3
+    len_tag_key: ''
+    samplerate: samp_rate
+    type: fc32
+    uri: ip:192.168.3.1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 348.0]
+    rotation: 0
+    state: true
+- name: iio_pluto_source_0
+  id: iio_pluto_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '200000'
+    bbdc: 'True'
+    buffer_size: '32768'
+    comment: ''
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: samp_rate/4
+    frequency: int(freq)
+    fstop: samp_rate/3
+    gain1: '''manual'''
+    len_tag_key: packet_len
+    manual_gain1: gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quadrature: 'True'
+    rfdc: 'True'
+    samplerate: samp_rate
+    type: fc32
+    uri: ip:192.168.3.1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [272, 180.0]
+    rotation: 0
+    state: true
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: '5000'
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_ccf
+    width: '1000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [704, 356.0]
+    rotation: 0
+    state: true
+- name: note_0
+  id: note
+  parameters:
+    alias: ''
+    comment: 'All I/O sample rates have been
+
+      set to 768kHz for USRP and Pluto'
+    note: I/O sample rates = 768kHz
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 176.0]
+    rotation: 0
+    state: true
+- name: qtgui_ledindicator_0
+  id: qtgui_ledindicator
+  parameters:
+    affinity: ''
+    alias: ''
+    cellalignment: '1'
+    comment: ''
+    gui_hint: 0,2,1,1
+    label: '"Power Amp"'
+    maxSize: '40'
+    offColor: gray
+    onColor: red
+    position: '1'
+    state: 'False'
+    verticalalignment: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 464.0]
+    rotation: 0
+    state: true
+- name: qtgui_ledindicator_1
+  id: qtgui_ledindicator
+  parameters:
+    affinity: ''
+    alias: ''
+    cellalignment: '1'
+    comment: ''
+    gui_hint: 0,1,1,1
+    label: '"Antenna"'
+    maxSize: '40'
+    offColor: lime
+    onColor: yellow
+    position: '1'
+    state: 'False'
+    verticalalignment: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 608.0]
+    rotation: 0
+    state: true
+- name: qtgui_ledindicator_2
+  id: qtgui_ledindicator
+  parameters:
+    affinity: ''
+    alias: ''
+    cellalignment: '1'
+    comment: ''
+    gui_hint: 0,0,1,1
+    label: '"Receive"'
+    maxSize: '40'
+    offColor: gray
+    onColor: lime
+    position: '1'
+    state: 'True'
+    verticalalignment: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 680.0]
+    rotation: 0
+    state: true
+- name: zeromq_pub_msg_sink_0
+  id: zeromq_pub_msg_sink
+  parameters:
+    address: tcp://127.0.0.1:49202
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    timeout: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 536.0]
+    rotation: 0
+    state: true
+- name: zeromq_pub_sink_0
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://127.0.0.1:49201
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [696, 216.0]
+    rotation: 0
+    state: true
+- name: zeromq_sub_msg_source_0
+  id: zeromq_sub_msg_source
+  parameters:
+    address: tcp://127.0.0.1:49204
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    timeout: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [24, 576.0]
+    rotation: 0
+    state: true
+- name: zeromq_sub_source_0
+  id: zeromq_sub_source
+  parameters:
+    address: tcp://127.0.0.1:49203
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: ''
+    hwm: '-1'
+    key: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [24, 440.0]
+    rotation: 0
+    state: true
+
+connections:
+- [blocks_mute_xx_0, '0', zeromq_pub_sink_0, '0']
+- [epy_block_0, '0', low_pass_filter_0, '0']
+- [epy_block_0, ant_sw, qtgui_ledindicator_1, state]
+- [epy_block_0, pa_sw, qtgui_ledindicator_0, state]
+- [epy_block_0, rx_led, qtgui_ledindicator_2, state]
+- [epy_block_0, rx_mute, blocks_mute_xx_0, set_mute]
+- [epy_block_0, sw_cmd, zeromq_pub_msg_sink_0, in]
+- [iio_pluto_source_0, '0', blocks_mute_xx_0, '0']
+- [low_pass_filter_0, '0', iio_pluto_sink_0, '0']
+- [variable_qtgui_toggle_button_msg_0, state, epy_block_0, msg_in]
+- [zeromq_sub_msg_source_0, out, epy_block_0, msg_in]
+- [zeromq_sub_source_0, '0', epy_block_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.11.0-rc1
