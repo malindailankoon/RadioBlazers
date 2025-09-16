@@ -286,7 +286,7 @@ blocks:
     bus_structure: null
     coordinate: [336, 472.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: RnFile
   id: parameter
   parameters:
@@ -311,7 +311,7 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: C:\Users\immkb\Desktop\semester_3\communication_design_project\pickaxe\rec_side_stuff\misc\output.tmp
+    file: C:\Users\immkb\Desktop\semester_3\communication_design_project\sickle\userTObase\rec_side_stuff\misc\output.tmp
     type: byte
     unbuffered: 'True'
     vlen: '1'
@@ -596,28 +596,63 @@ blocks:
       \ GRC will instantiate the first class it finds\nto get ports and parameters\
       \ of your block. The arguments to __init__  will\nbe the parameters. All of\
       \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\n\n\nclass blk(gr.sync_block):  # other base classes\
-      \ are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python Block\
-      \ example - a simple multiply const\"\"\"\n\n    def __init__(self, example_param=1.0):\
-      \  # only default arguments here\n        \"\"\"arguments to this function show\
-      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
-      \   self,\n            name='Embedded Python Block',   # will show up in GRC\n\
-      \            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n  \
-      \      )\n        # if an attribute with the same name as a parameter is found,\n\
-      \        # a callback is registered (properties work, too).\n        self.example_param\
-      \ = example_param\n\n    def work(self, input_items, output_items):\n      \
-      \  \"\"\"example: multiply with constant\"\"\"\n        output_items[0][:] =\
-      \ input_items[0] * self.example_param\n        return len(output_items[0])\n"
+      from gnuradio import gr\nimport os.path\nimport pmt\n\n\n\n\n\n\n\nclass blk(gr.sync_block):\
+      \  # other base classes are basic_block, decim_block, interp_block\n    \"\"\
+      \"Embedded Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self,\
+      \ confirm_file = 'None', request_number_file = 'None'):  # only default arguments\
+      \ here\n        \"\"\"arguments to this function show up as parameters in GRC\"\
+      \"\"\n        gr.sync_block.__init__(\n            self,\n            name='Embedded\
+      \ Python Block',   # will show up in GRC\n            in_sig=None,\n       \
+      \     out_sig=[np.uint8]\n        )\n        # if an attribute with the same\
+      \ name as a parameter is found,\n        # a callback is registered (properties\
+      \ work, too).\n        self.confirm_file = confirm_file\n        self.request_number_file\
+      \ = request_number_file\n        self.state = 0\n        self.user_address =\
+      \ \"11\"\n        self.request_num = None\n        self.indx = 0\n\n    def\
+      \ headify(self, bits):\n        return self.user_address + bits\n    \n    def\
+      \ CRC_adder(self, bits):\n        poly = 0x104C11DB7\n        data = int(bits,\
+      \ 2)\n        data <<= 32\n        poly_length = poly.bit_length()\n       \
+      \ while data.bit_length() >= poly_length:\n            data ^= poly << (data.bit_length()\
+      \ - poly_length)\n        crc_bits = format(data, \"032b\")\n        return\
+      \ bits + crc_bits\n\n\n\n\n    def work(self, input_items, output_items):\n\
+      \        \"\"\"example: multiply with constant\"\"\"\n        \n        if (self.state\
+      \ == 0):\n            if (os.path.exists(self.confirm_file)):\n            \
+      \    with open(self.confirm_file, \"r\") as confirm_file:\n                \
+      \    c = confirm_file.read().strip()\n                    if (c == \"True\"\
+      ):\n                        if (os.path.exists(self.request_number_file)):\n\
+      \                            with open(self.request_number_file , \"r\") as\
+      \ req_num_file:\n                                self.request_num = int(req_num_file.read().strip())\n\
+      \                                self.state = 1\n                        else:\n\
+      \                            self.state = 7\n                            print(\"\
+      the request number file did not exist\")\n                    else:\n      \
+      \                  self.state = 0\n            else:\n                self.state\
+      \ = 7\n                print(\"the confirm file did not exist\")\n         \
+      \   return (0)\n        \n        if (self.state == 1): \n            req_num_bits\
+      \ = format(self.request_num, \"06b\")\n            headed_msg = self.headify(req_num_bits)\n\
+      \            final_msg = self.CRC_adder(headed_msg)\n\n            msg_bytes\
+      \ = np.packbits(np.frombuffer(final_msg.encode(\"ascii\"), dtype=np.uint8) -\
+      \ 48) # [43 65 34 34 23 23 54 23]\n            msg_len = len(msg_bytes)\n\n\
+      \            key0 = pmt.intern(\"packet_len\")\n            val0 = pmt.from_long(msg_len)\n\
+      \            self.add_item_tag(0,\n                              self.indx,\n\
+      \                              key0,\n                              val0,\n\
+      \                              )\n            self.indx += msg_len\n\n\n   \
+      \         i=0\n            while (i < msg_len):\n                output_items[0][i]\
+      \ = msg_bytes[i]\n                i += 1\n            \n            self.state\
+      \ = 0\n\n            if (os.path.exists(self.confirm_file)):\n             \
+      \   with open(self.confirm_file, \"w\") as con_file:\n                    con_file.write(\"\
+      False\")\n\n\n            return (msg_len)\n\n\n\n\n        \n        \n   \
+      \     # output_items[0][:] = input_items[0] * self.example_param\n        #\
+      \ return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
-    example_param: ''
+    confirm_file: ConFile
     maxoutbuf: '0'
     minoutbuf: '0'
+    request_number_file: RnFile
   states:
-    _io_cache: ('Embedded Python Block', 'blk', [('example_param', '1.0')], [('0',
-      'complex', 1)], [('0', 'complex', 1)], 'Embedded Python Block example - a simple
-      multiply const', ['example_param'])
+    _io_cache: ('Embedded Python Block', 'blk', [('confirm_file', "'None'"), ('request_number_file',
+      "'None'")], [], [('0', 'byte', 1)], 'Embedded Python Block example - a simple
+      multiply const', ['confirm_file', 'request_number_file'])
     bus_sink: false
     bus_source: false
     bus_structure: null

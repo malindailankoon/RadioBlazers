@@ -88,14 +88,16 @@ def headify(pkt_list):
         seq_no_bits = format(seq_no, '06b') # convert the sequence number into 6bit bitstring
         headed_pkt += seq_no_bits
         headed_pkt += pkt
-        crc_bits = crc_generator(pkt)
+        crc_bits = crc_generator(headed_pkt)
         headed_pkt += crc_bits
         headed_pkt_list.append(headed_pkt)
     
     return headed_pkt_list
 
 
-
+timer = Stopwatch()
+timer.start()
+timout_period = 5
 
 
 
@@ -142,15 +144,22 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
 
                 final_bitstring = data_bitstring + padding_bitstring + size_bit_string
 
-                pkt_list = packify(final_bitstring)
+                pkt_list = packify(final_bitstring, self.pkt_size)
 
                 self.payload_list = headify(pkt_list)
+                # print(self.payload_list)
         else:
             print("the message file does not exist")
             self.state = 4
 
-        self.timer = Stopwatch()
-        self.timer.start()
+        # self.timer = Stopwatch()
+        # self.timer.start()
+        print("timer started")
+
+        if (len(self.payload_list) > 0):
+            self.current_pkt = self.payload_list.pop(0)
+        else:
+            print("dkflsudgflaskujfdhlasdkjfhalsdujfhalksdjfhlasdufhlakuf")
 
 
 
@@ -159,13 +168,15 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
                 
 
     def work(self, input_items, output_items):
-
+        print(timer.get_time())
+        
         if (self.state == 0):
-            if (self.timer > self.timeout_period):
-                self.timer.reset()
+            if (timer.get_time() > timout_period):
+                timer.reset()
                 self.state = 1
+                # print("current packet =>", self.current_pkt)
                 return (0)
-            
+        
             if (os.path.exists(self.confirmation_file)):
                 with open(self.confirmation_file, "r") as confirm_file:
                     c = str(confirm_file.read().strip())
@@ -174,7 +185,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
                             with open(self.request_number_file, "r") as req_file:
                                 rn = int(req_file.read().strip())
                                 if (rn > self.seq):
-                                    self.timer.reset()
+                                    timer.reset()
                                     self.seq += 1
                                     if (len(self.payload_list) > 0):
                                         self.state = 2
@@ -220,14 +231,14 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             while (i < p_len):
                 output_items[0][i] = pkt_bytes[i]
                 i += 1
-            
+            print("current packet =>", self.current_pkt)
             # if (os.path.exists(self.confirmation_file)):
             #     with open(self.confirmation_file, "w") as confirm_file:
             #         confirm_file.write("False")
 
             self.state = 0
 
-            self.timer.start()
+            timer.start()
             return (p_len)
         
 
@@ -259,7 +270,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             
             self.state = 0
 
-            self.timer.start()
+            timer.start()
             return(p_len)
         
 
@@ -275,7 +286,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             pkt = seq_bits + pkt
 
             addr = "11"
-            pkt = addr + seq_bits
+            pkt = addr + pkt
 
             crc_bits = crc_generator(pkt)
             pkt = pkt + crc_bits
@@ -304,14 +315,14 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             self.state = 0
             self.end_file_sent = True
             self.current_pkt = pkt
-            self.timer.start()
+            timer.start()
             return (p_len)
         
 
 
 
-        elif (self.state == 4):
-            return (0)
+        # elif (self.state == 4):
+        #     return (0)
         
             
 
