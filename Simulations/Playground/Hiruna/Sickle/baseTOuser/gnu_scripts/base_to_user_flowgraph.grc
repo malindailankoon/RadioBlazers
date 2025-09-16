@@ -1,0 +1,896 @@
+options:
+  parameters:
+    author: malindatemp
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: base_to_user_flowgraph
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: the base transmitter and the user receiver flowgraph
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 40.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: access_key
+  id: variable
+  parameters:
+    comment: ''
+    value: '''11100001010110101110100010010011'''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1000, 280.0]
+    rotation: 0
+    state: enabled
+- name: excess_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.35'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 968.0]
+    rotation: 0
+    state: enabled
+- name: freq_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Frequency Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-0.1'
+    step: '0.001'
+    stop: '0.1'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1424, 1328.0]
+    rotation: 0
+    state: enabled
+- name: hdr_format
+  id: variable
+  parameters:
+    comment: header_format_default
+    value: digital.header_format_default(access_key, 0)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [752, 272.0]
+    rotation: 0
+    state: enabled
+- name: nfilts
+  id: variable
+  parameters:
+    comment: ''
+    value: '32'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1928, 1320.0]
+    rotation: 0
+    state: enabled
+- name: noise_volt
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Noise Voltage
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.01'
+    stop: '1'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1120, 1328.0]
+    rotation: 0
+    state: enabled
+- name: phase_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.0628'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1960, 1048.0]
+    rotation: 0
+    state: enabled
+- name: qpsk
+  id: variable_constellation_rect
+  parameters:
+    comment: ''
+    const_points: '[0.707+0.707j, -0.707+0.707j, -0.707-0.707j, 0.707-0.707j]'
+    imag_sect: '2'
+    precision: '8'
+    real_sect: '2'
+    rot_sym: '4'
+    soft_dec_lut: None
+    sym_map: '[0, 1, 2, 3]'
+    w_imag_sect: '1'
+    w_real_sect: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [632, 932.0]
+    rotation: 0
+    state: enabled
+- name: rrc_taps
+  id: variable
+  parameters:
+    comment: ''
+    value: firdes.root_raised_cosine(nfilts, nfilts, 1.0/float(sps), 0.35, 11*sps*nfilts)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2008, 1320.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '48000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [360, 288.0]
+    rotation: 0
+    state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [424, 1056.0]
+    rotation: 0
+    state: enabled
+- name: taps
+  id: variable
+  parameters:
+    comment: ''
+    value: '[1.0 + 0.0j, ]'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1184, 1248.0]
+    rotation: 0
+    state: enabled
+- name: time_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Timing Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.999'
+    step: '0.0001'
+    stop: '1.001'
+    value: '1.000'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 1328.0]
+    rotation: 0
+    state: enabled
+- name: usrp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '768000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [512, 1056.0]
+    rotation: 0
+    state: enabled
+- name: variable_adaptive_algorithm_0
+  id: variable_adaptive_algorithm
+  parameters:
+    comment: ''
+    cons: qpsk
+    delta: '10.0'
+    ffactor: '0.99'
+    modulus: '4'
+    step_size: '.0001'
+    type: cma
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2344, 1000.0]
+    rotation: 0
+    state: enabled
+- name: ConFile
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: the confirm.txt file
+    short_id: ''
+    type: str
+    value: default
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 584.0]
+    rotation: 0
+    state: enabled
+- name: MsgFile
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: the packet file
+    short_id: ''
+    type: str
+    value: default
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [360, 520.0]
+    rotation: 0
+    state: enabled
+- name: RnFile
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: the packet file
+    short_id: ''
+    type: str
+    value: default
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [360, 648.0]
+    rotation: 0
+    state: enabled
+- name: blocks_repack_bits_bb_1
+  id: blocks_repack_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    align_output: 'False'
+    comment: ''
+    endianness: gr.GR_MSB_FIRST
+    k: '1'
+    l: '8'
+    len_tag_key: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2360, 2032.0]
+    rotation: 180
+    state: enabled
+- name: blocks_tagged_stream_mux_0
+  id: blocks_tagged_stream_mux
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    lengthtagname: packet_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ninputs: '2'
+    tag_preserve_head_pos: '0'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1224, 444.0]
+    rotation: 0
+    state: true
+- name: blocks_throttle2_0_0_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: usrp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 1176.0]
+    rotation: 0
+    state: true
+- name: blocks_unpack_k_bits_bb_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1904, 1828.0]
+    rotation: 0
+    state: enabled
+- name: channels_channel_model_0
+  id: channels_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    block_tags: 'True'
+    comment: ''
+    epsilon: time_offset
+    freq_offset: freq_offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_voltage: noise_volt
+    seed: '0'
+    taps: taps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1304, 1140.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_decoder_cb_0_1
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 1844.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_modulator_0_0
+  id: digital_constellation_modulator
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk
+    differential: 'True'
+    excess_bw: excess_bw
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: sps
+    truncate: 'False'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 1152.0]
+    rotation: 0
+    state: enabled
+- name: digital_correlate_access_code_xx_ts_0_0
+  id: digital_correlate_access_code_xx_ts
+  parameters:
+    access_code: '11100001010110101110100010010011'
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tagname: '"packet_len"'
+    threshold: '2'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2232, 1804.0]
+    rotation: 0
+    state: enabled
+- name: digital_costas_loop_cc_0_1
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: '4'
+    use_snr: 'False'
+    w: phase_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 1860.0]
+    rotation: 0
+    state: enabled
+- name: digital_diff_decoder_bb_0_1
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1160, 1832.0]
+    rotation: 0
+    state: enabled
+- name: digital_linear_equalizer_0
+  id: digital_linear_equalizer
+  parameters:
+    adapt_after_training: 'True'
+    affinity: ''
+    alg: variable_adaptive_algorithm_0
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_taps: '15'
+    sps: '2'
+    training_sequence: '[ ]'
+    training_start_tag: corr_est
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2312, 1124.0]
+    rotation: 0
+    state: enabled
+- name: digital_map_bb_0_1
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    map: '[0,1,2,3]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1600, 1828.0]
+    rotation: 0
+    state: enabled
+- name: digital_pfb_clock_sync_xxx_0
+  id: digital_pfb_clock_sync_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    filter_size: nfilts
+    init_phase: nfilts/2
+    loop_bw: phase_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    osps: '2'
+    sps: sps
+    taps: rrc_taps
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1960, 1128.0]
+    rotation: 0
+    state: enabled
+- name: digital_protocol_formatter_bb_0
+  id: digital_protocol_formatter_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    format: hdr_format
+    len_tag_key: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 384.0]
+    rotation: 0
+    state: true
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "# Embedded Python Block\n# Input: byte stream (numpy uint8)\n#\
+      \ Output: just prints full 13-byte messages when available\n\nimport numpy as\
+      \ np\nfrom gnuradio import gr\nimport os.path\nimport sys\nimport struct\nimport\
+      \ subprocess\n\n\nfolder = \"D:/Academics/Semester 3/CDP/Repo/Simulations/Playground/Hiruna/Sickle\"\
+      \n\nstate = 0\naddr = \"11\"\n# base_dir = os.path.dirname(__file__)\npath_to_output_tmp\
+      \ = os.path.join(folder, \"baseTOuser\", \"rec_side_stuff.\", \"misc\", \"output.tmp\"\
+      )\nrequest_file = os.path.join(folder, \"baseTOuser\", \"misc\", \"req_num.txt\"\
+      ) # '../misc/req_num.txt' \nconfirm_file = os.path.join(folder, \"baseTOuser\"\
+      , \"misc\", \"confirm.txt\") # '../misc/confirm.txt' \noutput_file = os.path.join(folder,\
+      \ \"baseTOuser\", \"misc\", \"final.txt\") # '../misc/final.txt'\n# message_file\
+      \ = \"message.txt\"\nreq = 0\npacket = ''\npkt_size = 64\nend_file_delimiter\
+      \ = \"1010101010101010101010101010101010101010101010101010101010101010\"\nheaded_pkt_list\
+      \ = []\n\n## CODE FOR TESTING!\ntesting_req_file = os.path.join(folder, \"userTObase\"\
+      , \"rec_side_stuff\", \"misc\", \"request.txt\")\ntesting_con_file = os.path.join(folder,\
+      \ \"userTObase\", \"rec_side_stuff\", \"misc\", \"confirm.txt\")\n##-----------------\n\
+      \n\ndef deheadify(headed_pkt_list):\n    payload_bit_string = \"\"\n\n    for\
+      \ headed_pkt in headed_pkt_list:\n        addr = headed_pkt[0:2]\n        seq_no\
+      \ = headed_pkt[2:8]\n        payload = headed_pkt[8:72]\n        crc = headed_pkt[72:104]\n\
+      \n        payload_bit_string += payload\n    \n    size_bits = payload_bit_string[-12:]\n\
+      \n    size = int(size_bits, 2)\n    msg_bitstring = payload_bit_string[:size]\n\
+      \n    byte_list = [int(msg_bitstring[i:i+8], 2) for i in range(0, len(msg_bitstring),\
+      \ 8)]\n    data_bytes = bytes(byte_list)\n    text = data_bytes.decode(\"utf-8\"\
+      )\n\n    return text\n\n\ndef crc_generator(bits): # bits should be a bit string\
+      \ |||  the output will also be 32bit string\n    poly = 0x104C11DB7\n\n    data\
+      \ = int(bits,2)\n\n    data <<= 32\n\n    poly_length = poly.bit_length()\n\n\
+      \    while data.bit_length() >= poly_length:\n        data ^= poly << (data.bit_length()\
+      \ - poly_length)\n\n    crc_bits = format(data, \"032b\")\n    # print(len(bits),\
+      \ len(crc_bits))\n    return crc_bits\n\n\nclass blk(gr.sync_block):\n    \"\
+      \"\"\n    Collects bytes and prints a message every 13 bytes.\n    \"\"\"\n\
+      \    def __init__(self):\n        gr.sync_block.__init__(\n            self,\n\
+      \            name=\"Print 13-byte message\",\n            in_sig=[np.uint8],\n\
+      \            out_sig=None  # No output stream\n        )\n        self.buffer\
+      \ = bytearray()  # store incoming bytes\n\n    def work(self, input_items, output_items):\n\
+      \        in_bytes = input_items[0]\n\n        # Append incoming bytes to buffer\n\
+      \        self.buffer.extend(in_bytes)\n\n        print(\"bytes : \", in_bytes)\n\
+      \n        # Check if we have a full 13-byte message\n        while len(self.buffer)\
+      \ >= 13:\n            msg = self.buffer[:13]           # take first 13 bytes\n\
+      \            self.buffer = self.buffer[13:]   # remove them from buffer\n\n\
+      \            # Convert to hex string or bit string for printing\n          \
+      \  hex_str = ' '.join(f\"{b:02X}\" for b in msg)\n            bit_str = ''.join(f\"\
+      {b:08b}\" for b in msg)\n\n            print(f\"13-byte message (hex): {hex_str}\"\
+      )\n            #print(f\"13-byte message (bits): {bit_str}\\n\")\n\n       \
+      \     doTheThing(bit_str)\n\n            bit_str = ''\n\n\n        return len(in_bytes)\n\
+      \n\nprint(\"oshan program started!\")\n\n\ndef doTheThing(bit_str):\n    global\
+      \ req  # <--- Add this\n    global headed_pkt_list  # needed if you want to\
+      \ append packets\n    rx_crc_string = bit_str[-32:]\n    header_string = bit_str[:8]\n\
+      \    payload_string = bit_str[8:-32]\n    \n    #print(\"input packet with header\"\
+      , bit_str)\n\n    if int(crc_generator(bit_str)) != 0:\n        print('CRC Failed')\n\
+      \        state2()\n        return\n    else:\n        print(\"CRC successful\"\
+      )\n\n        rx_addr = header_string[:2]   # first 2 bits\n        rx_seq =\
+      \ header_string[2:8]\n\n        if rx_addr != addr: \n            print(\"Incorrect\
+      \ Address\")\n            return\n\n        if req == int(rx_seq, 2):\n    \
+      \        req += 1  # works now because req is global\n            with open(request_file,\
+      \ \"w\") as req_file:\n                req_file.write(str(req))\n          \
+      \  with open(testing_req_file, \"w\") as req_file:\n                req_file.write(str(req))\n\
+      \            \n            state2()\n            \n            print(\"received\
+      \ payload packet => \", payload_string)\n            if payload_string == end_file_delimiter:\n\
+      \                text = deheadify(headed_pkt_list)\n                print(text)\n\
+      \                with open(output_file, \"w\") as o_file:\n                \
+      \    o_file.write(text)\n                \n                \n            else:\n\
+      \                headed_pkt_list.append(bit_str)\n        else:\n          \
+      \  print(\"incorrect seq number\")\n            state2()\n        print(\"req\
+      \ \", req)\n\n\ndef state2():\n    global req  # <--- Add this\n    print(\"\
+      oshan: state 2 started\")\n    print(\"Sending ACK for \", req)\n    with open(testing_con_file,\
+      \ \"w\") as conf:\n        conf.write(\"True\")\n\n        \n\n\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Print 13-byte message', 'blk', [], [('0', 'byte', 1)], [], '\n    Collects
+      bytes and prints a message every 13 bytes.\n    ', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2352, 2136.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport os.path\nimport time\nimport pmt\n\n\"\"\"\n\
+      states: \n    0 - main cheking state: TODO\n    1 - this state will again send\
+      \ the current packet, then start the timer change the state back to 0\n    2\
+      \ - this will send the next packet, start the timer and then change the state\
+      \ back to 0 and write \"False\" to the confirm.txt file\n    3 - sending the\
+      \ end_of_file packet then will shift to state 4\n    4 - idle state. nothing\
+      \ will happen from this point on\n    \n    7 - ERROR STATE\n\"\"\"\n\nclass\
+      \ Stopwatch:\n    def __init__(self):\n        self.start_time = None\n    \
+      \    self.elapsed = 0.0\n    \n    def start(self):\n        if self.start_time\
+      \ is None:\n            self.start_time = time.perf_counter()\n    \n    def\
+      \ stop(self):\n        if self.start_time is not None:\n            self.elapsed\
+      \ += time.perf_counter() - self.start_time\n            self.start_time = None\n\
+      \    \n    def reset(self):\n        self.start_time = None\n        self.elapsed\
+      \ = 0.0\n    \n    def get_time(self):\n        if self.start_time is not None:\
+      \  # running\n            return self.elapsed + (time.perf_counter() - self.start_time)\n\
+      \        return self.elapsed\n\n\n\n\ndef packify(data_bit_string, pkt_len):\n\
+      \    pkt_list = []\n    number_of_packets = int(len(data_bit_string) / pkt_len)\n\
+      \    i = 0\n    for _ in range(number_of_packets):\n        pkt = data_bit_string[i:i+\
+      \ pkt_len]\n        pkt_list.append(pkt)\n        i += 64\n    return pkt_list\n\
+      \n\ndef crc_generator(bits): # bits should be a bit string |||  the output will\
+      \ also be 32bit string\n    poly = 0x104C11DB7\n\n    data = int(bits,2)\n\n\
+      \    data <<= 32\n\n    poly_length = poly.bit_length()\n\n    while data.bit_length()\
+      \ >= poly_length:\n        data ^= poly << (data.bit_length() - poly_length)\n\
+      \n    crc_bits = format(data, \"032b\")\n    # print(len(bits), len(crc_bits))\n\
+      \    return crc_bits\n\n\ndef headify(pkt_list):\n    # the header format =>\
+      \     | addr - 2bits | seq_no - 6bits  | payload - 64bits | crc - 32bits |\n\
+      \    seq_no = 0\n    headed_pkt_list = []\n    addr = \"11\" # dummy address\n\
+      \    for pkt in pkt_list:\n        headed_pkt = \"\"\n        headed_pkt +=\
+      \ addr\n        seq_no_bits = format(seq_no, '06b') # convert the sequence number\
+      \ into 6bit bitstring\n        headed_pkt += seq_no_bits\n        headed_pkt\
+      \ += pkt\n        crc_bits = crc_generator(headed_pkt)\n        headed_pkt +=\
+      \ crc_bits\n        headed_pkt_list.append(headed_pkt)\n        seq_no += 1\n\
+      \    \n    return headed_pkt_list\n\n\ntimer = Stopwatch()\ntimer.start()\n\
+      # timeout_period = 5\n\n\n\nclass blk(gr.sync_block):  # other base classes\
+      \ are basic_block, decim_block, interp_block\n\n\n    def __init__(self, message_file='None',\
+      \ confirmation_file = 'None', request_number_file = 'None', timeout_period =\
+      \ 2):  # only default arguments here\n\n        gr.sync_block.__init__(\n  \
+      \          self,\n            name='advanced pickaxe packet sender',   # will\
+      \ show up in GRC\n            in_sig=None,\n            out_sig=[np.uint8]\n\
+      \        )\n        \n        self.message_file = message_file # contains the\
+      \ message\n        self.confirmation_file = confirmation_file # contains whether\
+      \ an ACK is received or not\n        self.request_number_file = request_number_file\
+      \ # contains the request number of the received ACK\n        self.state = 2\n\
+      \        self.final_packet_sent = False\n        self.seq = 0\n        self.msg_size\
+      \ = 0 # this will store the number of bits in the message\n        self.pkt_size\
+      \ = 64 # number of bits in the payload\n        self.current_pkt = \"\"\n  \
+      \      self.timeout_period = timeout_period\n        self.indx = 0\n       \
+      \ self.end_file_delimiter = \"1010101010101010101010101010101010101010101010101010101010101010\"\
+      \n        self.end_file_sent = False\n\n\n        # loading the message and\
+      \ making a payload list\n        self.payload_list = []\n        if (os.path.exists(self.message_file)):\n\
+      \            with open(self.message_file, \"rb\") as msg_file:\n           \
+      \     data = msg_file.read()\n                self.msg_size = len(data) * 8\n\
+      \n                size_bit_string = format(self.msg_size, \"012b\")\n\n    \
+      \            number_of_padding = (self.pkt_size -((self.msg_size + 12) % self.pkt_size))\
+      \ % self.pkt_size\n\n                data_bitstring = ''.join(format(byte, \"\
+      08b\") for byte in data)\n                padding_bitstring = '0' * number_of_padding\n\
+      \n                final_bitstring = data_bitstring + padding_bitstring + size_bit_string\n\
+      \n                pkt_list = packify(final_bitstring, self.pkt_size)\n\n   \
+      \             self.payload_list = headify(pkt_list)\n                # print(self.payload_list)\n\
+      \        else:\n            print(\"the message file does not exist\")\n   \
+      \         self.state = 4\n\n        # self.timer = Stopwatch()\n        # self.timer.start()\n\
+      \        print(\"timer started\")\n\n        # if (len(self.payload_list) >\
+      \ 0):\n        #     self.current_pkt = self.payload_list.pop(0)\n        #\
+      \ else:\n        #     print(\"dkflsudgflaskujfdhlasdkjfhalsdujfhalksdjfhlasdufhlakuf\"\
+      )\n\n\n\n\n\n                \n\n    def work(self, input_items, output_items):\n\
+      \        \n        if (self.state == 0):\n            if (timer.get_time() >\
+      \ self.timeout_period):\n                # print(time.gmtime())\n          \
+      \      timer.reset()\n                self.state = 1\n                # print(\"\
+      current packet =>\", self.current_pkt)\n                return (0)\n       \
+      \ \n            if (os.path.exists(self.confirmation_file)):\n             \
+      \   with open(self.confirmation_file, \"r\") as confirm_file:\n            \
+      \        c = str(confirm_file.read().strip())\n                    #print(\"\
+      confirm open with \", c)\n                    if (c == \"True\"):\n        \
+      \                if (os.path.exists(self.request_number_file)):\n          \
+      \                  with open(self.request_number_file, \"r\") as req_file:\n\
+      \                                rn = int(req_file.read().strip())\n       \
+      \                         #print(\"request open with \", rn)\n             \
+      \                   if (rn > self.seq):\n                                  \
+      \  timer.reset()\n                                    self.seq += 1\n      \
+      \                              if (len(self.payload_list) > 0):\n          \
+      \                              self.state = 2\n                            \
+      \            return (0)\n                                    else:\n       \
+      \                                 if (self.end_file_sent == True):\n       \
+      \                                     self.state = 4\n                     \
+      \                   else:\n                                            self.state\
+      \ = 3\n                                        return (0)\n                \
+      \                else:\n                                    self.state = 0\n\
+      \                                    return (0)\n\n                        else:\n\
+      \                            print(\" the request number file did not exist\"\
+      )\n                            self.state = 7\n                    \n      \
+      \              else:\n                        self.state = 0\n             \
+      \           return (0)\n                        \n            else:\n      \
+      \          print(\" the confirm.txt file did not exists\")\n               \
+      \ self.state = 7\n        \n\n\n        elif (self.state == 1):\n          \
+      \  pkt_bytes = np.packbits(np.frombuffer(self.current_pkt.encode(\"ascii\"),\
+      \ dtype=np.uint8) - 48) # [43 65 34 34 23 23 54 23]\n            p_len = len(pkt_bytes)\n\
+      \n            key0 = pmt.intern(\"packet_len\")\n            val0 = pmt.from_long(p_len)\n\
+      \            self.add_item_tag(0,\n                              self.indx,\n\
+      \                              key0,\n                              val0\n \
+      \                             )\n            self.indx += p_len\n\n        \
+      \    i = 0\n            while (i < p_len):\n                output_items[0][i]\
+      \ = pkt_bytes[i]\n                i += 1\n            #print(\"current packet\
+      \ =>\", self.current_pkt)\n            if (os.path.exists(self.confirmation_file)):\n\
+      \                with open(self.confirmation_file, \"w\") as confirm_file:\n\
+      \                    confirm_file.write(\"False\")\n\n            self.state\
+      \ = 0\n\n            timer.start()\n            return (p_len)\n        \n\n\
+      \n\n        elif (self.state == 2): # sending the next packet\n            self.current_pkt\
+      \ = self.payload_list.pop(0)\n\n            pkt_bytes = np.packbits(np.frombuffer(self.current_pkt.encode(\"\
+      ascii\"), dtype=np.uint8) - 48)\n            p_len = len(pkt_bytes)\n\n    \
+      \        key0 = pmt.intern(\"packet_len\")\n            val0 = pmt.from_long(p_len)\n\
+      \            self.add_item_tag(0,\n                              self.indx,\n\
+      \                              key0,\n                              val0\n \
+      \                             )\n            self.indx += p_len\n\n        \
+      \    i = 0\n            while (i < p_len):\n                output_items[0][i]\
+      \ = pkt_bytes[i]\n                i += 1\n            \n            if (os.path.exists(self.confirmation_file)):\n\
+      \                with open(self.confirmation_file, \"w\") as confirm_file:\n\
+      \                    confirm_file.write(\"False\")\n                    print(\"\
+      setted to false\")\n            \n            self.state = 0\n\n           \
+      \ timer.start()\n            return(p_len)\n        \n\n\n\n\n        elif (self.state\
+      \ == 3):\n            # sending the end of file delimeter packet\n         \
+      \   \n            pkt = self.end_file_delimiter\n\n            seq_bits = format(self.seq,\
+      \ \"06b\")\n            pkt = seq_bits + pkt\n\n            addr = \"11\"\n\
+      \            pkt = addr + pkt\n\n            crc_bits = crc_generator(pkt)\n\
+      \            pkt = pkt + crc_bits\n\n            pkt_bytes = np.packbits(np.frombuffer(pkt.encode(\"\
+      ascii\"), dtype=np.uint8) - 48)\n            p_len = len(pkt_bytes)\n\n    \
+      \        key0 = pmt.intern(\"packet_len\")\n            val0 = pmt.from_long(p_len)\n\
+      \            self.add_item_tag(0,\n                              self.indx,\n\
+      \                              key0,\n                              val0\n \
+      \                             )\n            self.indx += p_len\n\n        \
+      \    i = 0\n            while (i < p_len):\n                output_items[0][i]\
+      \ = pkt_bytes[i]\n                i += 1\n            \n            if (os.path.exists(self.confirmation_file)):\n\
+      \                with open(self.confirmation_file, \"w\") as confirm_file:\n\
+      \                    confirm_file.write(\"False\")\n\n            self.state\
+      \ = 0\n            self.end_file_sent = True\n            self.current_pkt =\
+      \ pkt\n            timer.start()\n            return (p_len)\n        \n\n\n\
+      \n        # elif (self.state == 4):\n        #     return (0)\n        \n  \
+      \          \n\n\n            \n\n\n                \n\n        # output_items[0][:]\
+      \ = input_items[0] * self.example_param\n        # return len(output_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    confirmation_file: ConFile
+    maxoutbuf: '0'
+    message_file: MsgFile
+    minoutbuf: '0'
+    request_number_file: RnFile
+    timeout_period: '2'
+  states:
+    _io_cache: ('advanced pickaxe packet sender', 'blk', [('message_file', "'None'"),
+      ('confirmation_file', "'None'"), ('request_number_file', "'None'"), ('timeout_period',
+      '2')], [], [('0', 'byte', 1)], '', ['confirmation_file', 'message_file', 'request_number_file',
+      'timeout_period'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 544.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_0_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: t1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1896, 444.0]
+    rotation: 0
+    state: true
+- name: virtual_sink_1
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: rx1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2832, 1116.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: t1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [160, 1188.0]
+    rotation: 0
+    state: true
+- name: virtual_source_0_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: rx1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 1876.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [blocks_repack_bits_bb_1, '0', epy_block_0, '0']
+- [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
+- [blocks_throttle2_0_0_0, '0', channels_channel_model_0, '0']
+- [blocks_unpack_k_bits_bb_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
+- [channels_channel_model_0, '0', digital_pfb_clock_sync_xxx_0, '0']
+- [digital_constellation_decoder_cb_0_1, '0', digital_diff_decoder_bb_0_1, '0']
+- [digital_constellation_modulator_0_0, '0', blocks_throttle2_0_0_0, '0']
+- [digital_correlate_access_code_xx_ts_0_0, '0', blocks_repack_bits_bb_1, '0']
+- [digital_costas_loop_cc_0_1, '0', digital_constellation_decoder_cb_0_1, '0']
+- [digital_diff_decoder_bb_0_1, '0', digital_map_bb_0_1, '0']
+- [digital_linear_equalizer_0, '0', virtual_sink_1, '0']
+- [digital_map_bb_0_1, '0', blocks_unpack_k_bits_bb_0, '0']
+- [digital_pfb_clock_sync_xxx_0, '0', digital_linear_equalizer_0, '0']
+- [digital_protocol_formatter_bb_0, '0', blocks_tagged_stream_mux_0, '0']
+- [epy_block_1, '0', blocks_tagged_stream_mux_0, '1']
+- [epy_block_1, '0', digital_protocol_formatter_bb_0, '0']
+- [virtual_source_0, '0', digital_constellation_modulator_0_0, '0']
+- [virtual_source_0_0_0, '0', digital_costas_loop_cc_0_1, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0

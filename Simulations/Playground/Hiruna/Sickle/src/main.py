@@ -39,8 +39,8 @@ except:
 
 
 # start oshan's receiver
-path_to_oshan_script = os.path.join(base_dir, "..", "baseTOuser", "rec_side_stuff", "src", "t.py")
-op = subprocess.Popen(["python", path_to_oshan_script])
+# path_to_oshan_script = os.path.join(base_dir, "..", "baseTOuser", "rec_side_stuff", "src", "t.py")
+# op = subprocess.Popen(["python", path_to_oshan_script])
 
 
 time.sleep(1)
@@ -64,7 +64,7 @@ time.sleep(1)
 
 # start malinda transmitter
 path_to_malinda_script = os.path.join(base_dir, "..", "baseTOuser", "gnu_scripts", "base_to_user_flowgraph.py")
-mp = subprocess.Popen(["c:\Users\jhdka\radioconda\python.exe", path_to_malinda_script, "--MsgFile=misc/message.txt", "--ConFile=userTObase/rec_side_stuff/misc/confirm.txt", "--RnFile=userTObase/rec_side_stuff/misc/request.txt"])
+mp = subprocess.Popen(["c:/Users/jhdka/radioconda/python.exe", path_to_malinda_script, "--MsgFile=misc/message.txt", "--ConFile=userTObase/rec_side_stuff/misc/confirm.txt", "--RnFile=userTObase/rec_side_stuff/misc/request.txt"])
 
 
 # time.sleep(1)
