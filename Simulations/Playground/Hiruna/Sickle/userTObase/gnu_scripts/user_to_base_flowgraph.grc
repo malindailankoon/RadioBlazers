@@ -668,7 +668,7 @@ blocks:
       from gnuradio import gr\nimport os.path\n\nfolder = \"D:/Academics/Semester\
       \ 3/CDP/Repo/Simulations/Playground/Hiruna/Sickle\"\n\nstate = 0\naddr = \"\
       11\"\n\nrequest_file = os.path.join(folder, \"userTObase\", \"rec_side_stuff\"\
-      , \"misc\", \"req_num.txt\")\nconfirm_file = os.path.join(folder, \"userTObase\"\
+      , \"misc\", \"request.txt\")\nconfirm_file = os.path.join(folder, \"userTObase\"\
       , \"rec_side_stuff\", \"misc\", \"confirm.txt\")\n\n\n\ndef crc_generator(bits):\n\
       \    poly = 0x104C11DB7\n\n    data = int(bits, 2)\n\n    data <<= 32\n\n  \
       \  poly_length = poly.bit_length()\n\n    while data.bit_length() >= poly_length:\n\

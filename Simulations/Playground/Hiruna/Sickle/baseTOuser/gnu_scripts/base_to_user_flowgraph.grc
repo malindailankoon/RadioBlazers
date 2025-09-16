@@ -628,17 +628,18 @@ blocks:
       \ Address\")\n            return\n\n        if req == int(rx_seq, 2):\n    \
       \        req += 1  # works now because req is global\n            with open(request_file,\
       \ \"w\") as req_file:\n                req_file.write(str(req))\n          \
-      \  with open(testing_req_file, \"w\") as req_file:\n                req_file.write(str(req))\n\
-      \            \n            state2()\n            \n            print(\"received\
-      \ payload packet => \", payload_string)\n            if payload_string == end_file_delimiter:\n\
-      \                text = deheadify(headed_pkt_list)\n                print(text)\n\
-      \                with open(output_file, \"w\") as o_file:\n                \
-      \    o_file.write(text)\n                \n                \n            else:\n\
-      \                headed_pkt_list.append(bit_str)\n        else:\n          \
-      \  print(\"incorrect seq number\")\n            state2()\n        print(\"req\
-      \ \", req)\n\n\ndef state2():\n    global req  # <--- Add this\n    print(\"\
-      oshan: state 2 started\")\n    print(\"Sending ACK for \", req)\n    with open(testing_con_file,\
-      \ \"w\") as conf:\n        conf.write(\"True\")\n\n        \n\n\n\n"
+      \  # with open(testing_req_file, \"w\") as req_file:\n            #     req_file.write(str(req))\n\
+      \            \n            state2()\n            \n            # print(\"received\
+      \ payload packet => \", payload_string)\n            # if payload_string ==\
+      \ end_file_delimiter:\n            #     text = deheadify(headed_pkt_list)\n\
+      \            #     print(text)\n            #     with open(output_file, \"\
+      w\") as o_file:\n            #         o_file.write(text)\n            # else:\n\
+      \        \n            headed_pkt_list.append(bit_str)\n            text = deheadify(headed_pkt_list)\n\
+      \            print(text)\n        else:\n            print(\"incorrect seq number\"\
+      )\n            state2()\n        print(\"req \", req)\n\n\ndef state2():\n \
+      \   global req  # <--- Add this\n    # print(\"oshan: state 2 started\")\n \
+      \   print(\"Sending ACK for \", req)\n    with open(confirm_file, \"w\") as\
+      \ conf:\n        conf.write(\"True\")\n\n        \n\n\n\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -696,7 +697,7 @@ blocks:
       # timeout_period = 5\n\n\n\nclass blk(gr.sync_block):  # other base classes\
       \ are basic_block, decim_block, interp_block\n\n\n    def __init__(self, message_file='None',\
       \ confirmation_file = 'None', request_number_file = 'None', timeout_period =\
-      \ 2):  # only default arguments here\n\n        gr.sync_block.__init__(\n  \
+      \ 1):  # only default arguments here\n\n        gr.sync_block.__init__(\n  \
       \          self,\n            name='advanced pickaxe packet sender',   # will\
       \ show up in GRC\n            in_sig=None,\n            out_sig=[np.uint8]\n\
       \        )\n        \n        self.message_file = message_file # contains the\
@@ -725,16 +726,16 @@ blocks:
       \ 0):\n        #     self.current_pkt = self.payload_list.pop(0)\n        #\
       \ else:\n        #     print(\"dkflsudgflaskujfdhlasdkjfhalsdujfhalksdjfhlasdufhlakuf\"\
       )\n\n\n\n\n\n                \n\n    def work(self, input_items, output_items):\n\
-      \        \n        if (self.state == 0):\n            if (timer.get_time() >\
-      \ self.timeout_period):\n                # print(time.gmtime())\n          \
-      \      timer.reset()\n                self.state = 1\n                # print(\"\
-      current packet =>\", self.current_pkt)\n                return (0)\n       \
-      \ \n            if (os.path.exists(self.confirmation_file)):\n             \
-      \   with open(self.confirmation_file, \"r\") as confirm_file:\n            \
-      \        c = str(confirm_file.read().strip())\n                    #print(\"\
-      confirm open with \", c)\n                    if (c == \"True\"):\n        \
-      \                if (os.path.exists(self.request_number_file)):\n          \
-      \                  with open(self.request_number_file, \"r\") as req_file:\n\
+      \        \n        # print(\"state : \", self.state)\n        if (self.state\
+      \ == 0):\n            if (timer.get_time() > self.timeout_period):\n       \
+      \         # print(time.gmtime())\n                timer.reset()\n          \
+      \      self.state = 1\n                # print(\"current packet =>\", self.current_pkt)\n\
+      \                return (0)\n        \n            if (os.path.exists(self.confirmation_file)):\n\
+      \                with open(self.confirmation_file, \"r\") as confirm_file:\n\
+      \                    c = str(confirm_file.read().strip())\n                \
+      \    #print(\"confirm open with \", c)\n                    if (c == \"True\"\
+      ):\n                        if (os.path.exists(self.request_number_file)):\n\
+      \                            with open(self.request_number_file, \"r\") as req_file:\n\
       \                                rn = int(req_file.read().strip())\n       \
       \                         #print(\"request open with \", rn)\n             \
       \                   if (rn > self.seq):\n                                  \
@@ -761,42 +762,52 @@ blocks:
       \                              key0,\n                              val0\n \
       \                             )\n            self.indx += p_len\n\n        \
       \    i = 0\n            while (i < p_len):\n                output_items[0][i]\
-      \ = pkt_bytes[i]\n                i += 1\n            #print(\"current packet\
-      \ =>\", self.current_pkt)\n            if (os.path.exists(self.confirmation_file)):\n\
-      \                with open(self.confirmation_file, \"w\") as confirm_file:\n\
-      \                    confirm_file.write(\"False\")\n\n            self.state\
-      \ = 0\n\n            timer.start()\n            return (p_len)\n        \n\n\
-      \n\n        elif (self.state == 2): # sending the next packet\n            self.current_pkt\
-      \ = self.payload_list.pop(0)\n\n            pkt_bytes = np.packbits(np.frombuffer(self.current_pkt.encode(\"\
-      ascii\"), dtype=np.uint8) - 48)\n            p_len = len(pkt_bytes)\n\n    \
-      \        key0 = pmt.intern(\"packet_len\")\n            val0 = pmt.from_long(p_len)\n\
-      \            self.add_item_tag(0,\n                              self.indx,\n\
-      \                              key0,\n                              val0\n \
-      \                             )\n            self.indx += p_len\n\n        \
-      \    i = 0\n            while (i < p_len):\n                output_items[0][i]\
-      \ = pkt_bytes[i]\n                i += 1\n            \n            if (os.path.exists(self.confirmation_file)):\n\
+      \ = pkt_bytes[i]\n                i += 1\n            # print(\"current packet\
+      \ =>\", self.current_pkt)\n            print(\"state 1 packet sent\")\n    \
+      \        # time.sleep(5)\n            \n            if (os.path.exists(self.confirmation_file)):\n\
       \                with open(self.confirmation_file, \"w\") as confirm_file:\n\
       \                    confirm_file.write(\"False\")\n                    print(\"\
-      setted to false\")\n            \n            self.state = 0\n\n           \
-      \ timer.start()\n            return(p_len)\n        \n\n\n\n\n        elif (self.state\
-      \ == 3):\n            # sending the end of file delimeter packet\n         \
-      \   \n            pkt = self.end_file_delimiter\n\n            seq_bits = format(self.seq,\
-      \ \"06b\")\n            pkt = seq_bits + pkt\n\n            addr = \"11\"\n\
-      \            pkt = addr + pkt\n\n            crc_bits = crc_generator(pkt)\n\
-      \            pkt = pkt + crc_bits\n\n            pkt_bytes = np.packbits(np.frombuffer(pkt.encode(\"\
+      setted to false\")\n                    with open(self.confirmation_file, \"\
+      r\") as confirm_file:\n                        c = str(confirm_file.read().strip())\n\
+      \                        confirm_file.flush()\n                        print(\"\
+      falseda \",c)\n\n            self.state = 0\n\n            timer.start()\n \
+      \           return (p_len)\n        \n\n\n\n        elif (self.state == 2):\
+      \ # sending the next packet\n            self.current_pkt = self.payload_list.pop(0)\n\
+      \n            pkt_bytes = np.packbits(np.frombuffer(self.current_pkt.encode(\"\
       ascii\"), dtype=np.uint8) - 48)\n            p_len = len(pkt_bytes)\n\n    \
       \        key0 = pmt.intern(\"packet_len\")\n            val0 = pmt.from_long(p_len)\n\
       \            self.add_item_tag(0,\n                              self.indx,\n\
       \                              key0,\n                              val0\n \
       \                             )\n            self.indx += p_len\n\n        \
       \    i = 0\n            while (i < p_len):\n                output_items[0][i]\
-      \ = pkt_bytes[i]\n                i += 1\n            \n            if (os.path.exists(self.confirmation_file)):\n\
+      \ = pkt_bytes[i]\n                i += 1\n\n            print(\"state 2 packet\
+      \ sent\")\n            # time.sleep(5)\n            \n            if (os.path.exists(self.confirmation_file)):\n\
       \                with open(self.confirmation_file, \"w\") as confirm_file:\n\
-      \                    confirm_file.write(\"False\")\n\n            self.state\
+      \                    confirm_file.write(\"False\")\n                    print(\"\
+      setted to false\")\n                    with open(self.confirmation_file, \"\
+      r\") as confirm_file:\n                        c = str(confirm_file.read().strip())\n\
+      \                        confirm_file.flush()\n                        print(\"\
+      falseda \",c)\n            \n            self.state = 0\n\n            timer.start()\n\
+      \            return(p_len)\n        \n\n\n\n\n        elif (self.state == 3):\n\
+      \            # sending the end of file delimeter packet\n            print(\"\
+      State 3 started\")\n            pkt = self.end_file_delimiter\n\n          \
+      \  seq_bits = format(self.seq, \"06b\")\n            pkt = seq_bits + pkt\n\n\
+      \            addr = \"11\"\n            pkt = addr + pkt\n\n            crc_bits\
+      \ = crc_generator(pkt)\n            pkt = pkt + crc_bits\n\n            pkt_bytes\
+      \ = np.packbits(np.frombuffer(pkt.encode(\"ascii\"), dtype=np.uint8) - 48)\n\
+      \            p_len = len(pkt_bytes)\n\n            key0 = pmt.intern(\"packet_len\"\
+      )\n            val0 = pmt.from_long(p_len)\n            self.add_item_tag(0,\n\
+      \                              self.indx,\n                              key0,\n\
+      \                              val0\n                              )\n     \
+      \       self.indx += p_len\n\n            i = 0\n            while (i < p_len):\n\
+      \                output_items[0][i] = pkt_bytes[i]\n                i += 1\n\
+      \            \n            if (os.path.exists(self.confirmation_file)):\n  \
+      \              with open(self.confirmation_file, \"w\") as confirm_file:\n \
+      \                   confirm_file.write(\"False\")\n\n            self.state\
       \ = 0\n            self.end_file_sent = True\n            self.current_pkt =\
-      \ pkt\n            timer.start()\n            return (p_len)\n        \n\n\n\
-      \n        # elif (self.state == 4):\n        #     return (0)\n        \n  \
-      \          \n\n\n            \n\n\n                \n\n        # output_items[0][:]\
+      \ pkt\n            timer.start()\n            return (p_len)\n        return(0)\n\
+      \n\n\n        # elif (self.state == 4):\n        #     return (0)\n        \n\
+      \            \n\n\n            \n\n\n                \n\n        # output_items[0][:]\
       \ = input_items[0] * self.example_param\n        # return len(output_items[0])\n"
     affinity: ''
     alias: ''
@@ -806,11 +817,11 @@ blocks:
     message_file: MsgFile
     minoutbuf: '0'
     request_number_file: RnFile
-    timeout_period: '2'
+    timeout_period: '1'
   states:
     _io_cache: ('advanced pickaxe packet sender', 'blk', [('message_file', "'None'"),
       ('confirmation_file', "'None'"), ('request_number_file', "'None'"), ('timeout_period',
-      '2')], [], [('0', 'byte', 1)], '', ['confirmation_file', 'message_file', 'request_number_file',
+      '1')], [], [('0', 'byte', 1)], '', ['confirmation_file', 'message_file', 'request_number_file',
       'timeout_period'])
     bus_sink: false
     bus_source: false

@@ -55,11 +55,11 @@ time.sleep(1)
 
 
 # # start isitha's transmitter
-# path_to_isitha_script = os.path.join(base_dir, "..", "userTObase", "gnu_scripts", "user_to_base_flowgraph.py")
-# ip = subprocess.Popen(["C:/Users/immkb/radioconda/python.exe", path_to_isitha_script, "--ConFile=baseTOuser/rec_side_stuff/misc/confirm.txt", "--RnFile=baseTOuser/rec_side_stuff/misc/req_num.txt"])
+path_to_isitha_script = os.path.join(base_dir, "..", "userTObase", "gnu_scripts", "user_to_base_flowgraph.py")
+ip = subprocess.Popen(["c:/Users/jhdka/radioconda/python.exe", path_to_isitha_script, "--ConFile=baseTOuser/misc/confirm.txt", "--RnFile=baseTOuser/misc/req_num.txt"])
 
 
-# time.sleep(1)
+time.sleep(1)
 
 
 # start malinda transmitter
@@ -67,7 +67,7 @@ path_to_malinda_script = os.path.join(base_dir, "..", "baseTOuser", "gnu_scripts
 mp = subprocess.Popen(["c:/Users/jhdka/radioconda/python.exe", path_to_malinda_script, "--MsgFile=misc/message.txt", "--ConFile=userTObase/rec_side_stuff/misc/confirm.txt", "--RnFile=userTObase/rec_side_stuff/misc/request.txt"])
 
 
-# time.sleep(1)
+time.sleep(1)
 
 request_file = "userTObase/rec_side_stuff/misc/request.txt"
 confirm_file = "userTObase/rec_side_stuff/misc/confirm.txt"

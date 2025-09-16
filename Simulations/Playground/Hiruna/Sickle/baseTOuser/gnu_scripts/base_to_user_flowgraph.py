@@ -103,7 +103,7 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         self._freq_offset_range = qtgui.Range(-0.1, 0.1, 0.001, 0, 200)
         self._freq_offset_win = qtgui.RangeWidget(self._freq_offset_range, self.set_freq_offset, "Frequency Offset", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._freq_offset_win)
-        self.epy_block_1 = epy_block_1.blk(message_file=MsgFile, confirmation_file=ConFile, request_number_file=RnFile, timeout_period=2)
+        self.epy_block_1 = epy_block_1.blk(message_file=MsgFile, confirmation_file=ConFile, request_number_file=RnFile, timeout_period=1)
         self.epy_block_0 = epy_block_0.blk()
         self.digital_protocol_formatter_bb_0 = digital.protocol_formatter_bb(hdr_format, "packet_len")
         self.digital_pfb_clock_sync_xxx_0 = digital.pfb_clock_sync_ccf(sps, phase_bw, rrc_taps, nfilts, (nfilts/2), 1.5, 2)

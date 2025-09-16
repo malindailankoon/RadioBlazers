@@ -15,7 +15,7 @@ folder = "D:/Academics/Semester 3/CDP/Repo/Simulations/Playground/Hiruna/Sickle"
 state = 0
 addr = "11"
 
-request_file = os.path.join(folder, "userTObase", "rec_side_stuff", "misc", "req_num.txt")
+request_file = os.path.join(folder, "userTObase", "rec_side_stuff", "misc", "request.txt")
 confirm_file = os.path.join(folder, "userTObase", "rec_side_stuff", "misc", "confirm.txt")
 
 

@@ -143,21 +143,22 @@ def doTheThing(bit_str):
             req += 1  # works now because req is global
             with open(request_file, "w") as req_file:
                 req_file.write(str(req))
-            with open(testing_req_file, "w") as req_file:
-                req_file.write(str(req))
+            # with open(testing_req_file, "w") as req_file:
+            #     req_file.write(str(req))
             
             state2()
             
-            print("received payload packet => ", payload_string)
-            if payload_string == end_file_delimiter:
-                text = deheadify(headed_pkt_list)
-                print(text)
-                with open(output_file, "w") as o_file:
-                    o_file.write(text)
-                
-                
-            else:
-                headed_pkt_list.append(bit_str)
+            # print("received payload packet => ", payload_string)
+            # if payload_string == end_file_delimiter:
+            #     text = deheadify(headed_pkt_list)
+            #     print(text)
+            #     with open(output_file, "w") as o_file:
+            #         o_file.write(text)
+            # else:
+        
+            headed_pkt_list.append(bit_str)
+            text = deheadify(headed_pkt_list)
+            print(text)
         else:
             print("incorrect seq number")
             state2()
@@ -166,9 +167,9 @@ def doTheThing(bit_str):
 
 def state2():
     global req  # <--- Add this
-    print("oshan: state 2 started")
+    # print("oshan: state 2 started")
     print("Sending ACK for ", req)
-    with open(testing_con_file, "w") as conf:
+    with open(confirm_file, "w") as conf:
         conf.write("True")
 
         

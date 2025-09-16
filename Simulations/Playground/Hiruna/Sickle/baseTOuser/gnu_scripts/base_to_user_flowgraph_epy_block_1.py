@@ -105,7 +105,7 @@ timer.start()
 class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
 
 
-    def __init__(self, message_file='None', confirmation_file = 'None', request_number_file = 'None', timeout_period = 2):  # only default arguments here
+    def __init__(self, message_file='None', confirmation_file = 'None', request_number_file = 'None', timeout_period = 1):  # only default arguments here
 
         gr.sync_block.__init__(
             self,
@@ -170,6 +170,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
 
     def work(self, input_items, output_items):
         
+        # print("state : ", self.state)
         if (self.state == 0):
             if (timer.get_time() > self.timeout_period):
                 # print(time.gmtime())
@@ -234,10 +235,18 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             while (i < p_len):
                 output_items[0][i] = pkt_bytes[i]
                 i += 1
-            #print("current packet =>", self.current_pkt)
+            # print("current packet =>", self.current_pkt)
+            print("state 1 packet sent")
+            # time.sleep(5)
+            
             if (os.path.exists(self.confirmation_file)):
                 with open(self.confirmation_file, "w") as confirm_file:
                     confirm_file.write("False")
+                    print("setted to false")
+                    with open(self.confirmation_file, "r") as confirm_file:
+                        c = str(confirm_file.read().strip())
+                        confirm_file.flush()
+                        print("falseda ",c)
 
             self.state = 0
 
@@ -266,11 +275,18 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             while (i < p_len):
                 output_items[0][i] = pkt_bytes[i]
                 i += 1
+
+            print("state 2 packet sent")
+            # time.sleep(5)
             
             if (os.path.exists(self.confirmation_file)):
                 with open(self.confirmation_file, "w") as confirm_file:
                     confirm_file.write("False")
                     print("setted to false")
+                    with open(self.confirmation_file, "r") as confirm_file:
+                        c = str(confirm_file.read().strip())
+                        confirm_file.flush()
+                        print("falseda ",c)
             
             self.state = 0
 
@@ -283,7 +299,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
 
         elif (self.state == 3):
             # sending the end of file delimeter packet
-            
+            print("State 3 started")
             pkt = self.end_file_delimiter
 
             seq_bits = format(self.seq, "06b")
@@ -321,7 +337,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
             self.current_pkt = pkt
             timer.start()
             return (p_len)
-        
+        return(0)
 
 
 
