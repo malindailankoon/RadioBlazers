@@ -321,7 +321,7 @@ blocks:
     bus_structure: null
     coordinate: [2000, 1964.0]
     rotation: 180
-    state: true
+    state: disabled
 - name: blocks_repack_bits_bb_1
   id: blocks_repack_bits_bb
   parameters:
@@ -601,10 +601,10 @@ blocks:
       \"Embedded Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self,\
       \ confirm_file = 'None', request_number_file = 'None'):  # only default arguments\
       \ here\n        \"\"\"arguments to this function show up as parameters in GRC\"\
-      \"\"\n        gr.sync_block.__init__(\n            self,\n            name='Embedded\
-      \ Python Block',   # will show up in GRC\n            in_sig=None,\n       \
-      \     out_sig=[np.uint8]\n        )\n        # if an attribute with the same\
-      \ name as a parameter is found,\n        # a callback is registered (properties\
+      \"\"\n        gr.sync_block.__init__(\n            self,\n            name='User\
+      \ side transmitter block',   # will show up in GRC\n            in_sig=None,\n\
+      \            out_sig=[np.uint8]\n        )\n        # if an attribute with the\
+      \ same name as a parameter is found,\n        # a callback is registered (properties\
       \ work, too).\n        self.confirm_file = confirm_file\n        self.request_number_file\
       \ = request_number_file\n        self.state = 0\n        self.user_address =\
       \ \"11\"\n        self.request_num = None\n        self.indx = 0\n\n    def\
@@ -614,11 +614,10 @@ blocks:
       \ while data.bit_length() >= poly_length:\n            data ^= poly << (data.bit_length()\
       \ - poly_length)\n        crc_bits = format(data, \"032b\")\n        return\
       \ bits + crc_bits\n\n\n\n\n    def work(self, input_items, output_items):\n\
-      \        \"\"\"example: multiply with constant\"\"\"\n        \n        if (self.state\
-      \ == 0):\n            if (os.path.exists(self.confirm_file)):\n            \
-      \    with open(self.confirm_file, \"r\") as confirm_file:\n                \
-      \    c = confirm_file.read().strip()\n                    if (c == \"True\"\
-      ):\n                        if (os.path.exists(self.request_number_file)):\n\
+      \        \n        if (self.state == 0):\n            if (os.path.exists(self.confirm_file)):\n\
+      \                with open(self.confirm_file, \"r\") as confirm_file:\n    \
+      \                c = confirm_file.read().strip()\n                    if (c\
+      \ == \"True\"):\n                        if (os.path.exists(self.request_number_file)):\n\
       \                            with open(self.request_number_file , \"r\") as\
       \ req_num_file:\n                                self.request_num = int(req_num_file.read().strip())\n\
       \                                self.state = 1\n                        else:\n\
@@ -641,7 +640,7 @@ blocks:
       \   with open(self.confirm_file, \"w\") as con_file:\n                    con_file.write(\"\
       False\")\n\n\n            return (msg_len)\n\n\n\n\n        \n        \n   \
       \     # output_items[0][:] = input_items[0] * self.example_param\n        #\
-      \ return len(output_items[0])\n"
+      \ return len(output_items[0])"
     affinity: ''
     alias: ''
     comment: ''
@@ -650,13 +649,51 @@ blocks:
     minoutbuf: '0'
     request_number_file: RnFile
   states:
-    _io_cache: ('Embedded Python Block', 'blk', [('confirm_file', "'None'"), ('request_number_file',
-      "'None'")], [], [('0', 'byte', 1)], 'Embedded Python Block example - a simple
-      multiply const', ['confirm_file', 'request_number_file'])
+    _io_cache: ('User side transmitter block', 'blk', [('confirm_file', "'None'"),
+      ('request_number_file', "'None'")], [], [('0', 'byte', 1)], 'Embedded Python
+      Block example - a simple multiply const', ['confirm_file', 'request_number_file'])
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [624, 508.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport os.path\n\nfolder = \"D:/Academics/Semester\
+      \ 3/CDP/Repo/Simulations/Playground/Hiruna/Sickle\"\n\nstate = 0\naddr = \"\
+      11\"\n\nrequest_file = os.path.join(folder, \"userTObase\", \"rec_side_stuff\"\
+      , \"misc\", \"output.tmp\")\n\nclass blk(gr.sync_block):  # other base classes\
+      \ are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python Block\
+      \ example - a simple multiply const\"\"\"\n\n    def __init__(self, example_param=1.0):\
+      \  # only default arguments here\n        \"\"\"arguments to this function show\
+      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
+      \   self,\n            name='Embedded Python Block',   # will show up in GRC\n\
+      \            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n  \
+      \      )\n        # if an attribute with the same name as a parameter is found,\n\
+      \        # a callback is registered (properties work, too).\n        self.example_param\
+      \ = example_param\n\n    def work(self, input_items, output_items):\n      \
+      \  \"\"\"example: multiply with constant\"\"\"\n        output_items[0][:] =\
+      \ input_items[0] * self.example_param\n        return len(output_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    example_param: '1.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Embedded Python Block', 'blk', [('example_param', '1.0')], [('0',
+      'complex', 1)], [('0', 'complex', 1)], 'Embedded Python Block example - a simple
+      multiply const', ['example_param'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1680, 1988.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_0_0
