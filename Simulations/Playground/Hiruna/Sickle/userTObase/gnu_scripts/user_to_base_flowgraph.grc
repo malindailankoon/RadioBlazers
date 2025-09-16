@@ -668,32 +668,45 @@ blocks:
       from gnuradio import gr\nimport os.path\n\nfolder = \"D:/Academics/Semester\
       \ 3/CDP/Repo/Simulations/Playground/Hiruna/Sickle\"\n\nstate = 0\naddr = \"\
       11\"\n\nrequest_file = os.path.join(folder, \"userTObase\", \"rec_side_stuff\"\
-      , \"misc\", \"output.tmp\")\n\nclass blk(gr.sync_block):  # other base classes\
-      \ are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python Block\
-      \ example - a simple multiply const\"\"\"\n\n    def __init__(self, example_param=1.0):\
-      \  # only default arguments here\n        \"\"\"arguments to this function show\
-      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
-      \   self,\n            name='Embedded Python Block',   # will show up in GRC\n\
-      \            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n  \
-      \      )\n        # if an attribute with the same name as a parameter is found,\n\
-      \        # a callback is registered (properties work, too).\n        self.example_param\
-      \ = example_param\n\n    def work(self, input_items, output_items):\n      \
-      \  \"\"\"example: multiply with constant\"\"\"\n        output_items[0][:] =\
-      \ input_items[0] * self.example_param\n        return len(output_items[0])\n"
+      , \"misc\", \"req_num.txt\")\nconfirm_file = os.path.join(folder, \"userTObase\"\
+      , \"rec_side_stuff\", \"misc\", \"confirm.txt\")\n\n\n\ndef crc_generator(bits):\n\
+      \    poly = 0x104C11DB7\n\n    data = int(bits, 2)\n\n    data <<= 32\n\n  \
+      \  poly_length = poly.bit_length()\n\n    while data.bit_length() >= poly_length:\n\
+      \        data ^= poly << (data.bit_length() - poly_length)\n    \n    crc_bits\
+      \ = format(data, \"032b\")\n\n    return crc_bits\n\n\n\nclass blk(gr.sync_block):\
+      \  # other base classes are basic_block, decim_block, interp_block\n    \"\"\
+      \"Embedded Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self):\
+      \  # only default arguments here\n        \n        gr.sync_block.__init__(\n\
+      \            self,\n            name='ack receiver block',   # will show up\
+      \ in GRC\n            in_sig=[np.uint8],\n            out_sig=None\n       \
+      \ )\n        # if an attribute with the same name as a parameter is found,\n\
+      \        # a callback is registered (properties work, too).\n        self.buffer\
+      \ = bytearray()\n\n\n\n    def work(self, input_items, output_items):\n    \
+      \    \n        in_bytes = input_items[0]\n\n        self.buffer.extend(in_bytes)\n\
+      \n        print(\"bytes: \", in_bytes)\n\n\n        while len(self.buffer) >=\
+      \ 5:\n            msg = self.buffer[:5]\n            self.buffer = self.buffer[5:]\n\
+      \n            bit_str = ''.join(f\"{b:08b}\" for b in msg)\n\n            doTheThing(bit_str)\n\
+      \n            bit_str = ''\n\n        return len(in_bytes)\n\n\n\n\n\n\ndef\
+      \ doTheThing(bit_str):\n    \n    header_string = bit_str[:8]\n\n    if int(crc_generator(bit_str))\
+      \ != 0:\n        print('CRC failed')\n        return\n    else:\n        print('CRC\
+      \ successful')\n\n        rx_addr = header_string[:2]\n        rx_seq = header_string[2:8]\n\
+      \n        if rx_addr != addr:\n            print(\"incorrect address\")\n  \
+      \          return \n        \n        request_number = rx_seq\n\n        with\
+      \ open(request_file, \"w\") as req_file:\n            req_file.write(str(request_number))\n\
+      \        \n        with open(confirm_file, \"w\") as con_file:\n           \
+      \ con_file.write(\"True\")\n\n        \n\n\n\n\n\n\n\n"
     affinity: ''
     alias: ''
     comment: ''
-    example_param: '1.0'
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Embedded Python Block', 'blk', [('example_param', '1.0')], [('0',
-      'complex', 1)], [('0', 'complex', 1)], 'Embedded Python Block example - a simple
-      multiply const', ['example_param'])
+    _io_cache: ('ack receiver block', 'blk', [], [('0', 'byte', 1)], [], 'Embedded
+      Python Block example - a simple multiply const', [])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1680, 1988.0]
+    coordinate: [2360, 2096.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_0_0
@@ -751,6 +764,7 @@ blocks:
 
 connections:
 - [blocks_repack_bits_bb_1, '0', blocks_file_sink_0, '0']
+- [blocks_repack_bits_bb_1, '0', epy_block_1, '0']
 - [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
 - [blocks_throttle2_0_0_0, '0', channels_channel_model_0, '0']
 - [blocks_unpack_k_bits_bb_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
