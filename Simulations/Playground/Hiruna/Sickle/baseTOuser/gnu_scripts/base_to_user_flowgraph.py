@@ -24,6 +24,7 @@ from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
+import base_to_user_flowgraph_epy_block_0 as epy_block_0  # embedded python block
 import base_to_user_flowgraph_epy_block_1 as epy_block_1  # embedded python block
 import threading
 
@@ -102,7 +103,8 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         self._freq_offset_range = qtgui.Range(-0.1, 0.1, 0.001, 0, 200)
         self._freq_offset_win = qtgui.RangeWidget(self._freq_offset_range, self.set_freq_offset, "Frequency Offset", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._freq_offset_win)
-        self.epy_block_1 = epy_block_1.blk(message_file=MsgFile, confirmation_file=ConFile, request_number_file=RnFile, timeout_period=5)
+        self.epy_block_1 = epy_block_1.blk(message_file=MsgFile, confirmation_file=ConFile, request_number_file=RnFile, timeout_period=1)
+        self.epy_block_0 = epy_block_0.blk()
         self.digital_protocol_formatter_bb_0 = digital.protocol_formatter_bb(hdr_format, "packet_len")
         self.digital_pfb_clock_sync_xxx_0 = digital.pfb_clock_sync_ccf(sps, phase_bw, rrc_taps, nfilts, (nfilts/2), 1.5, 2)
         self.digital_map_bb_0_1 = digital.map_bb([0,1,2,3])
@@ -132,17 +134,12 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         self.blocks_throttle2_0_0_0 = blocks.throttle( gr.sizeof_gr_complex*1, usrp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * usrp_rate) if "auto" == "time" else int(0.1), 1) )
         self.blocks_tagged_stream_mux_0 = blocks.tagged_stream_mux(gr.sizeof_char*1, 'packet_len', 0)
         self.blocks_repack_bits_bb_1 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
-        self.blocks_file_sink_0_0 = blocks.file_sink(gr.sizeof_char*1, 'C:\\Users\\immkb\\Desktop\\semester_3\\communication_design_project\\sickle\\baseTOuser\\rec_side_stuff\\misc\\output2.tmp', False)
-        self.blocks_file_sink_0_0.set_unbuffered(True)
-        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, 'C:\\Users\\immkb\\Desktop\\semester_3\\communication_design_project\\sickle\\baseTOuser\\rec_side_stuff\\misc\\output.tmp', False)
-        self.blocks_file_sink_0.set_unbuffered(True)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_repack_bits_bb_1, 0), (self.blocks_file_sink_0, 0))
-        self.connect((self.blocks_repack_bits_bb_1, 0), (self.blocks_file_sink_0_0, 0))
+        self.connect((self.blocks_repack_bits_bb_1, 0), (self.epy_block_0, 0))
         self.connect((self.blocks_tagged_stream_mux_0, 0), (self.digital_constellation_modulator_0_0, 0))
         self.connect((self.blocks_throttle2_0_0_0, 0), (self.channels_channel_model_0, 0))
         self.connect((self.blocks_unpack_k_bits_bb_0, 0), (self.digital_correlate_access_code_xx_ts_0_0, 0))

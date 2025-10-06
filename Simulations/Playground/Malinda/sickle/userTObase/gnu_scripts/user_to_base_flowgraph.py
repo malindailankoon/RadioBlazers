@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # GNU Radio Python Flow Graph
-# Title: the base transmitter and the user receiver flowgraph
+# Title: Not titled yet
 # Author: malindatemp
 # GNU Radio version: 3.10.12.0
 
@@ -24,17 +24,17 @@ from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
-import base_to_user_flowgraph_epy_block_1 as epy_block_1  # embedded python block
 import threading
+import user_to_base_flowgraph_epy_block_0 as epy_block_0  # embedded python block
 
 
 
-class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
+class user_to_base_flowgraph(gr.top_block, Qt.QWidget):
 
-    def __init__(self, ConFile='default', MsgFile='default', RnFile='default'):
-        gr.top_block.__init__(self, "the base transmitter and the user receiver flowgraph", catch_exceptions=True)
+    def __init__(self, ConFile='default', RnFile='default'):
+        gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("the base transmitter and the user receiver flowgraph")
+        self.setWindowTitle("Not titled yet")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -52,7 +52,7 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("gnuradio/flowgraphs", "base_to_user_flowgraph")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "user_to_base_flowgraph")
 
         try:
             geometry = self.settings.value("geometry")
@@ -66,7 +66,6 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         # Parameters
         ##################################################
         self.ConFile = ConFile
-        self.MsgFile = MsgFile
         self.RnFile = RnFile
 
         ##################################################
@@ -84,7 +83,7 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate = 48000
         self.rrc_taps = rrc_taps = firdes.root_raised_cosine(nfilts, nfilts, 1.0/float(sps), 0.35, 11*sps*nfilts)
         self.phase_bw = phase_bw = 0.0628
-        self.noise_volt = noise_volt = 0
+        self.noise_volt = noise_volt = 0.5
         self.hdr_format = hdr_format = digital.header_format_default(access_key, 0)
         self.freq_offset = freq_offset = 0
         self.excess_bw = excess_bw = 0.35
@@ -96,13 +95,13 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         self._time_offset_range = qtgui.Range(0.999, 1.001, 0.0001, 1.000, 200)
         self._time_offset_win = qtgui.RangeWidget(self._time_offset_range, self.set_time_offset, "Timing Offset", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._time_offset_win)
-        self._noise_volt_range = qtgui.Range(0, 1, 0.01, 0, 200)
+        self._noise_volt_range = qtgui.Range(0, 1, 0.01, 0.5, 200)
         self._noise_volt_win = qtgui.RangeWidget(self._noise_volt_range, self.set_noise_volt, "Noise Voltage", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._noise_volt_win)
         self._freq_offset_range = qtgui.Range(-0.1, 0.1, 0.001, 0, 200)
         self._freq_offset_win = qtgui.RangeWidget(self._freq_offset_range, self.set_freq_offset, "Frequency Offset", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._freq_offset_win)
-        self.epy_block_1 = epy_block_1.blk(message_file=MsgFile, confirmation_file=ConFile, request_number_file=RnFile, timeout_period=5)
+        self.epy_block_0 = epy_block_0.blk(confirm_file=ConFile, request_number_file=RnFile)
         self.digital_protocol_formatter_bb_0 = digital.protocol_formatter_bb(hdr_format, "packet_len")
         self.digital_pfb_clock_sync_xxx_0 = digital.pfb_clock_sync_ccf(sps, phase_bw, rrc_taps, nfilts, (nfilts/2), 1.5, 2)
         self.digital_map_bb_0_1 = digital.map_bb([0,1,2,3])
@@ -132,9 +131,7 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         self.blocks_throttle2_0_0_0 = blocks.throttle( gr.sizeof_gr_complex*1, usrp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * usrp_rate) if "auto" == "time" else int(0.1), 1) )
         self.blocks_tagged_stream_mux_0 = blocks.tagged_stream_mux(gr.sizeof_char*1, 'packet_len', 0)
         self.blocks_repack_bits_bb_1 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
-        self.blocks_file_sink_0_0 = blocks.file_sink(gr.sizeof_char*1, 'C:\\Users\\immkb\\Desktop\\semester_3\\communication_design_project\\sickle\\baseTOuser\\rec_side_stuff\\misc\\output2.tmp', False)
-        self.blocks_file_sink_0_0.set_unbuffered(True)
-        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, 'C:\\Users\\immkb\\Desktop\\semester_3\\communication_design_project\\sickle\\baseTOuser\\rec_side_stuff\\misc\\output.tmp', False)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, 'C:\\Users\\immkb\\Desktop\\semester_3\\communication_design_project\\sickle\\userTObase\\rec_side_stuff\\misc\\output.tmp', False)
         self.blocks_file_sink_0.set_unbuffered(True)
 
 
@@ -142,7 +139,6 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.connect((self.blocks_repack_bits_bb_1, 0), (self.blocks_file_sink_0, 0))
-        self.connect((self.blocks_repack_bits_bb_1, 0), (self.blocks_file_sink_0_0, 0))
         self.connect((self.blocks_tagged_stream_mux_0, 0), (self.digital_constellation_modulator_0_0, 0))
         self.connect((self.blocks_throttle2_0_0_0, 0), (self.channels_channel_model_0, 0))
         self.connect((self.blocks_unpack_k_bits_bb_0, 0), (self.digital_correlate_access_code_xx_ts_0_0, 0))
@@ -156,12 +152,12 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
         self.connect((self.digital_map_bb_0_1, 0), (self.blocks_unpack_k_bits_bb_0, 0))
         self.connect((self.digital_pfb_clock_sync_xxx_0, 0), (self.digital_linear_equalizer_0, 0))
         self.connect((self.digital_protocol_formatter_bb_0, 0), (self.blocks_tagged_stream_mux_0, 0))
-        self.connect((self.epy_block_1, 0), (self.blocks_tagged_stream_mux_0, 1))
-        self.connect((self.epy_block_1, 0), (self.digital_protocol_formatter_bb_0, 0))
+        self.connect((self.epy_block_0, 0), (self.blocks_tagged_stream_mux_0, 1))
+        self.connect((self.epy_block_0, 0), (self.digital_protocol_formatter_bb_0, 0))
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("gnuradio/flowgraphs", "base_to_user_flowgraph")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "user_to_base_flowgraph")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -173,21 +169,14 @@ class base_to_user_flowgraph(gr.top_block, Qt.QWidget):
 
     def set_ConFile(self, ConFile):
         self.ConFile = ConFile
-        self.epy_block_1.confirmation_file = self.ConFile
-
-    def get_MsgFile(self):
-        return self.MsgFile
-
-    def set_MsgFile(self, MsgFile):
-        self.MsgFile = MsgFile
-        self.epy_block_1.message_file = self.MsgFile
+        self.epy_block_0.confirm_file = self.ConFile
 
     def get_RnFile(self):
         return self.RnFile
 
     def set_RnFile(self, RnFile):
         self.RnFile = RnFile
-        self.epy_block_1.request_number_file = self.RnFile
+        self.epy_block_0.request_number_file = self.RnFile
 
     def get_sps(self):
         return self.sps
@@ -300,21 +289,18 @@ def argument_parser():
         "--ConFile", dest="ConFile", type=str, default='default',
         help="Set the confirm.txt file [default=%(default)r]")
     parser.add_argument(
-        "--MsgFile", dest="MsgFile", type=str, default='default',
-        help="Set the packet file [default=%(default)r]")
-    parser.add_argument(
         "--RnFile", dest="RnFile", type=str, default='default',
         help="Set the packet file [default=%(default)r]")
     return parser
 
 
-def main(top_block_cls=base_to_user_flowgraph, options=None):
+def main(top_block_cls=user_to_base_flowgraph, options=None):
     if options is None:
         options = argument_parser().parse_args()
 
     qapp = Qt.QApplication(sys.argv)
 
-    tb = top_block_cls(ConFile=options.ConFile, MsgFile=options.MsgFile, RnFile=options.RnFile)
+    tb = top_block_cls(ConFile=options.ConFile, RnFile=options.RnFile)
 
     tb.start()
     tb.flowgraph_started.set()
