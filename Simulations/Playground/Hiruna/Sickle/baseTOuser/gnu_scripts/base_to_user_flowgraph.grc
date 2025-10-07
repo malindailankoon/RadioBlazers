@@ -250,7 +250,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2344, 1000.0]
+    coordinate: [2312, 968.0]
     rotation: 0
     state: enabled
 - name: ConFile
@@ -415,7 +415,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [840, 1844.0]
+    coordinate: [872, 1844.0]
     rotation: 0
     state: enabled
 - name: digital_constellation_modulator_0_0
@@ -456,7 +456,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2232, 1804.0]
+    coordinate: [2208, 1844.0]
     rotation: 0
     state: enabled
 - name: digital_costas_loop_cc_0_1
@@ -491,7 +491,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1160, 1832.0]
+    coordinate: [1248, 1832.0]
     rotation: 0
     state: enabled
 - name: digital_linear_equalizer_0
@@ -528,7 +528,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1600, 1828.0]
+    coordinate: [1560, 1836.0]
     rotation: 0
     state: enabled
 - name: digital_pfb_clock_sync_xxx_0
@@ -651,7 +651,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2352, 2136.0]
+    coordinate: [2384, 2168.0]
     rotation: 0
     state: enabled
 - name: epy_block_1

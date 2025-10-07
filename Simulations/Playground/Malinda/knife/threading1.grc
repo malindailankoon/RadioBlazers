@@ -42,7 +42,40 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1904, 64.0]
+    coordinate: [1760, 88.0]
+    rotation: 0
+    state: enabled
+- name: excess_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.35'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3208, 472.0]
+    rotation: 0
+    state: enabled
+- name: freq_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Frequency Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-0.1'
+    step: '0.001'
+    stop: '0.1'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [4136, 832.0]
     rotation: 0
     state: enabled
 - name: hdr_format
@@ -54,7 +87,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2144, 64.0]
+    coordinate: [1512, 80.0]
     rotation: 0
     state: enabled
 - name: nfilts
@@ -66,7 +99,40 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [928, 36.0]
+    coordinate: [4632, 824.0]
+    rotation: 0
+    state: enabled
+- name: noise_volt
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Noise Voltage
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.01'
+    stop: '1'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3832, 832.0]
+    rotation: 0
+    state: enabled
+- name: phase_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.0628'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [4664, 552.0]
     rotation: 0
     state: enabled
 - name: qpsk
@@ -86,7 +152,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 348.0]
+    coordinate: [3336, 444.0]
     rotation: 0
     state: enabled
 - name: rrc_taps
@@ -98,7 +164,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1272, 28.0]
+    coordinate: [4712, 824.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -110,31 +176,31 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 12]
+    coordinate: [392, 32.0]
     rotation: 0
     state: enabled
 - name: sps
   id: variable
   parameters:
-    comment: Samples Per Symbol
+    comment: ''
     value: '4'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1472, 28.0]
+    coordinate: [3128, 560.0]
     rotation: 0
     state: enabled
 - name: taps
   id: variable
   parameters:
     comment: ''
-    value: '[1.0, 0.25-0.25j, 0.50 + 0.10j, -0.3 + 0.2j]'
+    value: '[1.0 + 0.0j, ]'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1024, 36.0]
+    coordinate: [3896, 752.0]
     rotation: 0
     state: enabled
 - name: thresh
@@ -146,7 +212,40 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2576, 784.0]
+    coordinate: [3312, 1656.0]
+    rotation: 0
+    state: enabled
+- name: time_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Timing Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.999'
+    step: '0.0001'
+    stop: '1.001'
+    value: '1.000'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3992, 832.0]
+    rotation: 0
+    state: enabled
+- name: usrp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '768000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3224, 560.0]
     rotation: 0
     state: enabled
 - name: variable_adaptive_algorithm_0
@@ -163,7 +262,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [608, 32.0]
+    coordinate: [4776, 480.0]
     rotation: 0
     state: enabled
 - name: blocks_message_debug_0
@@ -178,7 +277,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 1828.0]
+    coordinate: [3088, 1916.0]
     rotation: 0
     state: enabled
 - name: blocks_message_debug_0_0
@@ -193,7 +292,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1296, 244.0]
+    coordinate: [1232, 516.0]
     rotation: 0
     state: enabled
 - name: blocks_message_strobe_0
@@ -227,29 +326,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 1968.0]
+    coordinate: [2128, 2192.0]
     rotation: 0
     state: enabled
-- name: blocks_repack_bits_bb_1_0
-  id: blocks_repack_bits_bb
-  parameters:
-    affinity: ''
-    alias: ''
-    align_output: 'False'
-    comment: MSB
-    endianness: gr.GR_MSB_FIRST
-    k: '8'
-    l: '1'
-    len_tag_key: '"packet_len"'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2456, 456.0]
-    rotation: 180
-    state: true
 - name: blocks_repack_bits_bb_1_0_0
   id: blocks_repack_bits_bb
   parameters:
@@ -267,8 +346,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1672, 696.0]
-    rotation: 180
+    coordinate: [2424, 1712.0]
+    rotation: 0
     state: true
 - name: blocks_repack_bits_bb_1_0_0_0
   id: blocks_repack_bits_bb
@@ -287,28 +366,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 1256.0]
+    coordinate: [1264, 2848.0]
     rotation: 180
-    state: true
-- name: blocks_repack_bits_bb_1_0_1
-  id: blocks_repack_bits_bb
-  parameters:
-    affinity: ''
-    alias: ''
-    align_output: 'False'
-    comment: MSB
-    endianness: gr.GR_MSB_FIRST
-    k: '8'
-    l: '1'
-    len_tag_key: '"packet_len"'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [448, 1624.0]
-    rotation: 0
     state: true
 - name: blocks_tagged_stream_mux_0
   id: blocks_tagged_stream_mux
@@ -347,10 +406,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 1748.0]
+    coordinate: [1120, 1988.0]
     rotation: 180
     state: true
-- name: blocks_throttle2_0
+- name: blocks_throttle2_0_0_0
   id: blocks_throttle2
   parameters:
     affinity: ''
@@ -361,36 +420,186 @@ blocks:
     maximum: '0.1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: byte
+    samples_per_second: usrp_rate
+    type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2448, 568.0]
+    coordinate: [3544, 680.0]
+    rotation: 0
+    state: true
+- name: blocks_throttle2_0_0_0_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: usrp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2200, 2488.0]
+    rotation: 0
+    state: true
+- name: blocks_unpack_k_bits_bb_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2984, 1532.0]
+    rotation: 180
+    state: enabled
+- name: blocks_unpack_k_bits_bb_0_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2288, 3172.0]
+    rotation: 180
+    state: enabled
+- name: channels_channel_model_0
+  id: channels_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    block_tags: 'True'
+    comment: ''
+    epsilon: time_offset
+    freq_offset: freq_offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_voltage: noise_volt
+    seed: '0'
+    taps: taps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [4008, 652.0]
     rotation: 0
     state: enabled
-- name: blocks_throttle2_0_0
-  id: blocks_throttle2
+- name: channels_channel_model_0_0
+  id: channels_channel_model
   parameters:
     affinity: ''
     alias: ''
+    block_tags: 'True'
     comment: ''
-    ignoretag: 'True'
-    limit: auto
-    maximum: '0.1'
+    epsilon: time_offset
+    freq_offset: freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: byte
-    vlen: '1'
+    noise_voltage: noise_volt
+    seed: '0'
+    taps: taps
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 1512.0]
+    coordinate: [2472, 2452.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_decoder_cb_0_1
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3528, 1244.0]
     rotation: 180
+    state: enabled
+- name: digital_constellation_decoder_cb_0_1_0
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2760, 3004.0]
+    rotation: 180
+    state: enabled
+- name: digital_constellation_modulator_0_0
+  id: digital_constellation_modulator
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk
+    differential: 'True'
+    excess_bw: excess_bw
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: sps
+    truncate: 'False'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3160, 656.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_modulator_0_0_0
+  id: digital_constellation_modulator
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk
+    differential: 'True'
+    excess_bw: excess_bw
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: sps
+    truncate: 'False'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1816, 2464.0]
+    rotation: 0
     state: enabled
 - name: digital_correlate_access_code_xx_ts_0
   id: digital_correlate_access_code_xx_ts
@@ -408,7 +617,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2368, 676.0]
+    coordinate: [2368, 1588.0]
     rotation: 180
     state: true
 - name: digital_correlate_access_code_xx_ts_0_0
@@ -427,9 +636,199 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [416, 1372.0]
-    rotation: 0
+    coordinate: [1728, 3004.0]
+    rotation: 180
     state: true
+- name: digital_costas_loop_cc_0_1
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: '4'
+    use_snr: 'False'
+    w: phase_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3496, 1100.0]
+    rotation: 0
+    state: enabled
+- name: digital_costas_loop_cc_0_1_0
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: '4'
+    use_snr: 'False'
+    w: phase_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2728, 2860.0]
+    rotation: 0
+    state: enabled
+- name: digital_diff_decoder_bb_0_1
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3528, 1312.0]
+    rotation: 0
+    state: enabled
+- name: digital_diff_decoder_bb_0_1_0
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2760, 3088.0]
+    rotation: 0
+    state: enabled
+- name: digital_linear_equalizer_0
+  id: digital_linear_equalizer
+  parameters:
+    adapt_after_training: 'True'
+    affinity: ''
+    alg: variable_adaptive_algorithm_0
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_taps: '15'
+    sps: '2'
+    training_sequence: '[ ]'
+    training_start_tag: corr_est
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [5016, 644.0]
+    rotation: 0
+    state: enabled
+- name: digital_linear_equalizer_0_0
+  id: digital_linear_equalizer
+  parameters:
+    adapt_after_training: 'True'
+    affinity: ''
+    alg: variable_adaptive_algorithm_0
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_taps: '15'
+    sps: '2'
+    training_sequence: '[ ]'
+    training_start_tag: corr_est
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3048, 2508.0]
+    rotation: 0
+    state: enabled
+- name: digital_map_bb_0_1
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    map: '[0,1,2,3]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3552, 1412.0]
+    rotation: 180
+    state: enabled
+- name: digital_map_bb_0_1_0
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    map: '[0,1,2,3]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2776, 3180.0]
+    rotation: 180
+    state: enabled
+- name: digital_pfb_clock_sync_xxx_0
+  id: digital_pfb_clock_sync_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    filter_size: nfilts
+    init_phase: nfilts/2
+    loop_bw: phase_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    osps: '2'
+    sps: sps
+    taps: rrc_taps
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [4664, 632.0]
+    rotation: 0
+    state: enabled
+- name: digital_pfb_clock_sync_xxx_0_0
+  id: digital_pfb_clock_sync_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    filter_size: nfilts
+    init_phase: nfilts/2
+    loop_bw: phase_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    osps: '2'
+    sps: sps
+    taps: rrc_taps
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2728, 2440.0]
+    rotation: 0
+    state: enabled
 - name: digital_protocol_formatter_async_0
   id: digital_protocol_formatter_async
   parameters:
@@ -459,7 +858,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1144, 1748.0]
+    coordinate: [1944, 1948.0]
     rotation: 180
     state: enabled
 - name: epy_block_0
@@ -981,277 +1380,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1224, 1840.0]
+    coordinate: [2528, 2112.0]
     rotation: 0
     state: enabled
-- name: epy_block_1
-  id: epy_block
-  parameters:
-    _source_code: "#!/usr/bin/env python\n# -*- coding: utf-8 -*-\n\nimport numpy\
-      \ as np\nfrom gnuradio import gr\nimport pmt\n\nclass pdu_to_bitstream(gr.sync_block):\n\
-      \    \"\"\"\n    Converts PDU messages to a framed bitstream.\n    Frame format:\
-      \ [SYNC_WORD (4 bytes)] [LENGTH (2 bytes)] [DATA (N bytes)]\n    Each byte is\
-      \ unpacked into 8 bits (MSB first).\n    \"\"\"\n    def __init__(self, sync_word=0x1ACFFC1D):\n\
-      \        gr.sync_block.__init__(\n            self,\n            name=\"PDU\
-      \ to Bitstream\",\n            in_sig=None,\n            out_sig=[np.uint8]\n\
-      \        )\n        \n        self.message_port_register_in(pmt.intern('pdu_in'))\n\
-      \        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu)\n     \
-      \   \n        self.sync_word = sync_word\n        self.bit_buffer = []\n   \
-      \     \n    def handle_pdu(self, pdu):\n        \"\"\"Handle incoming PDU messages\"\
-      \"\"\n        # Extract data from PDU (ignore metadata for now)\n        data\
-      \ = pmt.cdr(pdu)\n        \n        # Convert PMT vector to numpy array\n  \
-      \      if pmt.is_u8vector(data):\n            data_bytes = np.array(pmt.u8vector_elements(data),\
-      \ dtype=np.uint8)\n        else:\n            return\n        \n        # Build\
-      \ frame: [SYNC][LENGTH][DATA]\n        frame = []\n        \n        # Add sync\
-      \ word (4 bytes, big-endian)\n        sync_bytes = np.array([\n            (self.sync_word\
-      \ >> 24) & 0xFF,\n            (self.sync_word >> 16) & 0xFF,\n            (self.sync_word\
-      \ >> 8) & 0xFF,\n            self.sync_word & 0xFF\n        ], dtype=np.uint8)\n\
-      \        frame.extend(sync_bytes)\n        \n        # Add length (2 bytes,\
-      \ big-endian)\n        length = len(data_bytes)\n        length_bytes = np.array([\n\
-      \            (length >> 8) & 0xFF,\n            length & 0xFF\n        ], dtype=np.uint8)\n\
-      \        frame.extend(length_bytes)\n        \n        # Add data\n        frame.extend(data_bytes)\n\
-      \        \n        # Convert frame to numpy array and unpack to bits\n     \
-      \   frame_array = np.array(frame, dtype=np.uint8)\n        bits = np.unpackbits(frame_array)\n\
-      \        \n        # Add bits to buffer\n        self.bit_buffer.extend(bits.tolist())\n\
-      \    \n    def work(self, input_items, output_items):\n        \"\"\"Output\
-      \ buffered bits\"\"\"\n        out = output_items[0]\n        \n        # Determine\
-      \ how many bits to output\n        n_output = min(len(self.bit_buffer), len(out))\n\
-      \        \n        if n_output > 0:\n            # Copy bits to output\n   \
-      \         out[:n_output] = self.bit_buffer[:n_output]\n            # Remove\
-      \ outputted bits from buffer\n            self.bit_buffer = self.bit_buffer[n_output:]\n\
-      \            \n        return n_output"
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sync_word: '0x1ACFFC1D'
-  states:
-    _io_cache: '(''PDU to Bitstream'', ''pdu_to_bitstream'', [(''sync_word'', ''449838109'')],
-      [(''pdu_in'', ''message'', 1)], [(''0'', ''byte'', 1)], ''\n    Converts PDU
-      messages to a framed bitstream.\n    Frame format: [SYNC_WORD (4 bytes)] [LENGTH
-      (2 bytes)] [DATA (N bytes)]\n    Each byte is unpacked into 8 bits (MSB first).\n    '',
-      [''sync_word''])'
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1808, 428.0]
-    rotation: 0
-    state: disabled
-- name: epy_block_1_0
-  id: epy_block
-  parameters:
-    _source_code: "#!/usr/bin/env python\n# -*- coding: utf-8 -*-\n\nimport numpy\
-      \ as np\nfrom gnuradio import gr\nimport pmt\n\nclass pdu_to_bitstream(gr.sync_block):\n\
-      \    \"\"\"\n    Converts PDU messages to a framed bitstream.\n    Frame format:\
-      \ [SYNC_WORD (4 bytes)] [LENGTH (2 bytes)] [DATA (N bytes)]\n    Each byte is\
-      \ unpacked into 8 bits (MSB first).\n    \"\"\"\n    def __init__(self, sync_word=0x1ACFFC1D):\n\
-      \        gr.sync_block.__init__(\n            self,\n            name=\"PDU\
-      \ to Bitstream\",\n            in_sig=None,\n            out_sig=[np.uint8]\n\
-      \        )\n        \n        self.message_port_register_in(pmt.intern('pdu_in'))\n\
-      \        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu)\n     \
-      \   \n        self.sync_word = sync_word\n        self.bit_buffer = []\n   \
-      \     \n    def handle_pdu(self, pdu):\n        \"\"\"Handle incoming PDU messages\"\
-      \"\"\n        # Extract data from PDU (ignore metadata for now)\n        data\
-      \ = pmt.cdr(pdu)\n        \n        # Convert PMT vector to numpy array\n  \
-      \      if pmt.is_u8vector(data):\n            data_bytes = np.array(pmt.u8vector_elements(data),\
-      \ dtype=np.uint8)\n        else:\n            return\n        \n        # Build\
-      \ frame: [SYNC][LENGTH][DATA]\n        frame = []\n        \n        # Add sync\
-      \ word (4 bytes, big-endian)\n        sync_bytes = np.array([\n            (self.sync_word\
-      \ >> 24) & 0xFF,\n            (self.sync_word >> 16) & 0xFF,\n            (self.sync_word\
-      \ >> 8) & 0xFF,\n            self.sync_word & 0xFF\n        ], dtype=np.uint8)\n\
-      \        frame.extend(sync_bytes)\n        \n        # Add length (2 bytes,\
-      \ big-endian)\n        length = len(data_bytes)\n        length_bytes = np.array([\n\
-      \            (length >> 8) & 0xFF,\n            length & 0xFF\n        ], dtype=np.uint8)\n\
-      \        frame.extend(length_bytes)\n        \n        # Add data\n        frame.extend(data_bytes)\n\
-      \        \n        # Convert frame to numpy array and unpack to bits\n     \
-      \   frame_array = np.array(frame, dtype=np.uint8)\n        bits = np.unpackbits(frame_array)\n\
-      \        \n        # Add bits to buffer\n        self.bit_buffer.extend(bits.tolist())\n\
-      \    \n    def work(self, input_items, output_items):\n        \"\"\"Output\
-      \ buffered bits\"\"\"\n        out = output_items[0]\n        \n        # Determine\
-      \ how many bits to output\n        n_output = min(len(self.bit_buffer), len(out))\n\
-      \        \n        if n_output > 0:\n            # Copy bits to output\n   \
-      \         out[:n_output] = self.bit_buffer[:n_output]\n            # Remove\
-      \ outputted bits from buffer\n            self.bit_buffer = self.bit_buffer[n_output:]\n\
-      \            \n        return n_output"
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sync_word: '0x1ACFFC1D'
-  states:
-    _io_cache: '(''PDU to Bitstream'', ''pdu_to_bitstream'', [(''sync_word'', ''449838109'')],
-      [(''pdu_in'', ''message'', 1)], [(''0'', ''byte'', 1)], ''\n    Converts PDU
-      messages to a framed bitstream.\n    Frame format: [SYNC_WORD (4 bytes)] [LENGTH
-      (2 bytes)] [DATA (N bytes)]\n    Each byte is unpacked into 8 bits (MSB first).\n    '',
-      [''sync_word''])'
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [360, 564.0]
-    rotation: 180
-    state: disabled
-- name: epy_block_2
-  id: epy_block
-  parameters:
-    _source_code: "#!/usr/bin/env python\n# -*- coding: utf-8 -*-\n\nimport numpy\
-      \ as np\nfrom gnuradio import gr\nimport pmt\n\nclass bitstream_to_pdu(gr.sync_block):\n\
-      \    \"\"\"\n    Converts a framed bitstream back to PDU messages.\n    Searches\
-      \ for sync word and reconstructs PDUs based on length field.\n    Frame format:\
-      \ [SYNC_WORD (4 bytes)] [LENGTH (2 bytes)] [DATA (N bytes)]\n    \"\"\"\n  \
-      \  def __init__(self, sync_word=0x1ACFFC1D, threshold=0):\n        gr.sync_block.__init__(\n\
-      \            self,\n            name=\"Bitstream to PDU\",\n            in_sig=[np.uint8],\n\
-      \            out_sig=None\n        )\n        \n        self.message_port_register_out(pmt.intern('pdu_out'))\n\
-      \        \n        self.sync_word = sync_word\n        self.threshold = threshold\
-      \  # Number of bit errors allowed in sync\n        \n        # Convert sync\
-      \ word to bit pattern\n        sync_bytes = np.array([\n            (sync_word\
-      \ >> 24) & 0xFF,\n            (sync_word >> 16) & 0xFF,\n            (sync_word\
-      \ >> 8) & 0xFF,\n            sync_word & 0xFF\n        ], dtype=np.uint8)\n\
-      \        self.sync_bits = np.unpackbits(sync_bytes)\n        \n        self.bit_buffer\
-      \ = []\n        self.state = 'SEARCH'  # States: SEARCH, READ_LENGTH, READ_DATA\n\
-      \        self.pdu_length = 0\n        self.bits_needed = 0\n        \n    def\
-      \ correlate_sync(self, bits):\n        \"\"\"Check if bits match sync word (with\
-      \ threshold)\"\"\"\n        if len(bits) < len(self.sync_bits):\n          \
-      \  return False\n        \n        errors = np.sum(bits[:len(self.sync_bits)]\
-      \ != self.sync_bits)\n        return errors <= self.threshold\n    \n    def\
-      \ work(self, input_items, output_items):\n        \"\"\"Process input bitstream\
-      \ and reconstruct PDUs\"\"\"\n        in0 = input_items[0]\n        n_input\
-      \ = len(in0)\n        \n        # Add incoming bits to buffer\n        self.bit_buffer.extend(in0[:n_input].tolist())\n\
-      \        \n        # Process buffer based on current state\n        while True:\n\
-      \            if self.state == 'SEARCH':\n                # Search for sync word\n\
-      \                if len(self.bit_buffer) >= len(self.sync_bits):\n         \
-      \           if self.correlate_sync(np.array(self.bit_buffer[:len(self.sync_bits)])):\n\
-      \                        # Found sync word, remove it from buffer\n        \
-      \                self.bit_buffer = self.bit_buffer[len(self.sync_bits):]\n \
-      \                       self.state = 'READ_LENGTH'\n                    else:\n\
-      \                        # Shift by one bit and continue searching\n       \
-      \                 self.bit_buffer.pop(0)\n                else:\n          \
-      \          break  # Not enough bits yet\n                    \n            elif\
-      \ self.state == 'READ_LENGTH':\n                # Need 16 bits (2 bytes) for\
-      \ length\n                if len(self.bit_buffer) >= 16:\n                 \
-      \   # Extract length bits and convert to bytes\n                    length_bits\
-      \ = np.array(self.bit_buffer[:16], dtype=np.uint8)\n                    length_bytes\
-      \ = np.packbits(length_bits)\n                    self.pdu_length = (int(length_bytes[0])\
-      \ << 8) | int(length_bytes[1])\n                    \n                    #\
-      \ Remove length bits from buffer\n                    self.bit_buffer = self.bit_buffer[16:]\n\
-      \                    \n                    # Calculate bits needed for data\n\
-      \                    self.bits_needed = self.pdu_length * 8\n              \
-      \      self.state = 'READ_DATA'\n                else:\n                   \
-      \ break  # Not enough bits yet\n                    \n            elif self.state\
-      \ == 'READ_DATA':\n                # Check if we have all data bits\n      \
-      \          if len(self.bit_buffer) >= self.bits_needed:\n                  \
-      \  # Extract data bits\n                    data_bits = np.array(self.bit_buffer[:self.bits_needed],\
-      \ dtype=np.uint8)\n                    self.bit_buffer = self.bit_buffer[self.bits_needed:]\n\
-      \                    \n                    # Pack bits back into bytes\n   \
-      \                 data_bytes = np.packbits(data_bits)\n                    \n\
-      \                    # Create and send PDU (with empty metadata)\n         \
-      \           pdu_vector = pmt.init_u8vector(len(data_bytes), data_bytes.tolist())\n\
-      \                    pdu = pmt.cons(pmt.make_dict(), pdu_vector)\n         \
-      \           self.message_port_pub(pmt.intern('pdu_out'), pdu)\n            \
-      \        \n                    # Go back to searching for next frame\n     \
-      \               self.state = 'SEARCH'\n                else:\n             \
-      \       break  # Not enough bits yet\n        \n        return n_input\n"
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sync_word: '0x1ACFFC1D'
-    threshold: '1'
-  states:
-    _io_cache: '(''Bitstream to PDU'', ''bitstream_to_pdu'', [(''sync_word'', ''449838109''),
-      (''threshold'', ''0'')], [(''0'', ''byte'', 1)], [(''pdu_out'', ''message'',
-      1)], ''\n    Converts a framed bitstream back to PDU messages.\n    Searches
-      for sync word and reconstructs PDUs based on length field.\n    Frame format:
-      [SYNC_WORD (4 bytes)] [LENGTH (2 bytes)] [DATA (N bytes)]\n    '', [''sync_word'',
-      ''threshold''])'
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1816, 488.0]
-    rotation: 180
-    state: disabled
-- name: epy_block_2_0
-  id: epy_block
-  parameters:
-    _source_code: "#!/usr/bin/env python\n# -*- coding: utf-8 -*-\n\nimport numpy\
-      \ as np\nfrom gnuradio import gr\nimport pmt\n\nclass bitstream_to_pdu(gr.sync_block):\n\
-      \    \"\"\"\n    Converts a framed bitstream back to PDU messages.\n    Searches\
-      \ for sync word and reconstructs PDUs based on length field.\n    Frame format:\
-      \ [SYNC_WORD (4 bytes)] [LENGTH (2 bytes)] [DATA (N bytes)]\n    \"\"\"\n  \
-      \  def __init__(self, sync_word=0x1ACFFC1D, threshold=0):\n        gr.sync_block.__init__(\n\
-      \            self,\n            name=\"Bitstream to PDU\",\n            in_sig=[np.uint8],\n\
-      \            out_sig=None\n        )\n        \n        self.message_port_register_out(pmt.intern('pdu_out'))\n\
-      \        \n        self.sync_word = sync_word\n        self.threshold = threshold\
-      \  # Number of bit errors allowed in sync\n        \n        # Convert sync\
-      \ word to bit pattern\n        sync_bytes = np.array([\n            (sync_word\
-      \ >> 24) & 0xFF,\n            (sync_word >> 16) & 0xFF,\n            (sync_word\
-      \ >> 8) & 0xFF,\n            sync_word & 0xFF\n        ], dtype=np.uint8)\n\
-      \        self.sync_bits = np.unpackbits(sync_bytes)\n        \n        self.bit_buffer\
-      \ = []\n        self.state = 'SEARCH'  # States: SEARCH, READ_LENGTH, READ_DATA\n\
-      \        self.pdu_length = 0\n        self.bits_needed = 0\n        \n    def\
-      \ correlate_sync(self, bits):\n        \"\"\"Check if bits match sync word (with\
-      \ threshold)\"\"\"\n        if len(bits) < len(self.sync_bits):\n          \
-      \  return False\n        \n        errors = np.sum(bits[:len(self.sync_bits)]\
-      \ != self.sync_bits)\n        return errors <= self.threshold\n    \n    def\
-      \ work(self, input_items, output_items):\n        \"\"\"Process input bitstream\
-      \ and reconstruct PDUs\"\"\"\n        in0 = input_items[0]\n        n_input\
-      \ = len(in0)\n        \n        # Add incoming bits to buffer\n        self.bit_buffer.extend(in0[:n_input].tolist())\n\
-      \        \n        # Process buffer based on current state\n        while True:\n\
-      \            if self.state == 'SEARCH':\n                # Search for sync word\n\
-      \                if len(self.bit_buffer) >= len(self.sync_bits):\n         \
-      \           if self.correlate_sync(np.array(self.bit_buffer[:len(self.sync_bits)])):\n\
-      \                        # Found sync word, remove it from buffer\n        \
-      \                self.bit_buffer = self.bit_buffer[len(self.sync_bits):]\n \
-      \                       self.state = 'READ_LENGTH'\n                    else:\n\
-      \                        # Shift by one bit and continue searching\n       \
-      \                 self.bit_buffer.pop(0)\n                else:\n          \
-      \          break  # Not enough bits yet\n                    \n            elif\
-      \ self.state == 'READ_LENGTH':\n                # Need 16 bits (2 bytes) for\
-      \ length\n                if len(self.bit_buffer) >= 16:\n                 \
-      \   # Extract length bits and convert to bytes\n                    length_bits\
-      \ = np.array(self.bit_buffer[:16], dtype=np.uint8)\n                    length_bytes\
-      \ = np.packbits(length_bits)\n                    self.pdu_length = (int(length_bytes[0])\
-      \ << 8) | int(length_bytes[1])\n                    \n                    #\
-      \ Remove length bits from buffer\n                    self.bit_buffer = self.bit_buffer[16:]\n\
-      \                    \n                    # Calculate bits needed for data\n\
-      \                    self.bits_needed = self.pdu_length * 8\n              \
-      \      self.state = 'READ_DATA'\n                else:\n                   \
-      \ break  # Not enough bits yet\n                    \n            elif self.state\
-      \ == 'READ_DATA':\n                # Check if we have all data bits\n      \
-      \          if len(self.bit_buffer) >= self.bits_needed:\n                  \
-      \  # Extract data bits\n                    data_bits = np.array(self.bit_buffer[:self.bits_needed],\
-      \ dtype=np.uint8)\n                    self.bit_buffer = self.bit_buffer[self.bits_needed:]\n\
-      \                    \n                    # Pack bits back into bytes\n   \
-      \                 data_bytes = np.packbits(data_bits)\n                    \n\
-      \                    # Create and send PDU (with empty metadata)\n         \
-      \           pdu_vector = pmt.init_u8vector(len(data_bytes), data_bytes.tolist())\n\
-      \                    pdu = pmt.cons(pmt.make_dict(), pdu_vector)\n         \
-      \           self.message_port_pub(pmt.intern('pdu_out'), pdu)\n            \
-      \        \n                    # Go back to searching for next frame\n     \
-      \               self.state = 'SEARCH'\n                else:\n             \
-      \       break  # Not enough bits yet\n        \n        return n_input\n"
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sync_word: '0x1ACFFC1D'
-    threshold: '1'
-  states:
-    _io_cache: '(''Bitstream to PDU'', ''bitstream_to_pdu'', [(''sync_word'', ''449838109''),
-      (''threshold'', ''0'')], [(''0'', ''byte'', 1)], [(''pdu_out'', ''message'',
-      1)], ''\n    Converts a framed bitstream back to PDU messages.\n    Searches
-      for sync word and reconstructs PDUs based on length field.\n    Frame format:
-      [SYNC_WORD (4 bytes)] [LENGTH (2 bytes)] [DATA (N bytes)]\n    '', [''sync_word'',
-      ''threshold''])'
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [368, 480.0]
-    rotation: 0
-    state: disabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1300,7 +1431,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [776, 1716.0]
+    coordinate: [1488, 1924.0]
     rotation: 180
     state: true
 - name: pdu_pdu_to_tagged_stream_0_1
@@ -1317,7 +1448,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [776, 1788.0]
+    coordinate: [1504, 2012.0]
     rotation: 180
     state: true
 - name: pdu_tagged_stream_to_pdu_0_0
@@ -1334,7 +1465,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 796.0]
+    coordinate: [2400, 1828.0]
     rotation: 180
     state: true
 - name: pdu_tagged_stream_to_pdu_0_0_0
@@ -1351,43 +1482,107 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 860.0]
-    rotation: 0
+    coordinate: [68.0, 1912]
+    rotation: 90
     state: true
+- name: virtual_sink_1
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: rx1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [5544, 620.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_1_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: rx2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3384, 2548.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_0_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: rx1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3160, 1068.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_0_0_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: rx2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2448, 2876.0]
+    rotation: 0
+    state: enabled
 
 connections:
 - [blocks_message_strobe_0, strobe, epy_block_0, msg_in]
 - [blocks_message_strobe_0_0, strobe, epy_block_0_0, msg_in]
-- [blocks_repack_bits_bb_1_0, '0', blocks_throttle2_0, '0']
 - [blocks_repack_bits_bb_1_0_0, '0', pdu_tagged_stream_to_pdu_0_0, '0']
 - [blocks_repack_bits_bb_1_0_0_0, '0', pdu_tagged_stream_to_pdu_0_0_0, '0']
-- [blocks_repack_bits_bb_1_0_1, '0', blocks_throttle2_0_0, '0']
-- [blocks_tagged_stream_mux_0, '0', blocks_repack_bits_bb_1_0, '0']
-- [blocks_tagged_stream_mux_0_0, '0', blocks_repack_bits_bb_1_0_1, '0']
-- [blocks_throttle2_0, '0', digital_correlate_access_code_xx_ts_0, '0']
-- [blocks_throttle2_0_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
+- [blocks_tagged_stream_mux_0, '0', digital_constellation_modulator_0_0, '0']
+- [blocks_tagged_stream_mux_0_0, '0', digital_constellation_modulator_0_0_0, '0']
+- [blocks_throttle2_0_0_0, '0', channels_channel_model_0, '0']
+- [blocks_throttle2_0_0_0_0, '0', channels_channel_model_0_0, '0']
+- [blocks_unpack_k_bits_bb_0, '0', digital_correlate_access_code_xx_ts_0, '0']
+- [blocks_unpack_k_bits_bb_0_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
+- [channels_channel_model_0, '0', digital_pfb_clock_sync_xxx_0, '0']
+- [channels_channel_model_0_0, '0', digital_pfb_clock_sync_xxx_0_0, '0']
+- [digital_constellation_decoder_cb_0_1, '0', digital_diff_decoder_bb_0_1, '0']
+- [digital_constellation_decoder_cb_0_1_0, '0', digital_diff_decoder_bb_0_1_0, '0']
+- [digital_constellation_modulator_0_0, '0', blocks_throttle2_0_0_0, '0']
+- [digital_constellation_modulator_0_0_0, '0', blocks_throttle2_0_0_0_0, '0']
 - [digital_correlate_access_code_xx_ts_0, '0', blocks_repack_bits_bb_1_0_0, '0']
 - [digital_correlate_access_code_xx_ts_0_0, '0', blocks_repack_bits_bb_1_0_0_0, '0']
+- [digital_costas_loop_cc_0_1, '0', digital_constellation_decoder_cb_0_1, '0']
+- [digital_costas_loop_cc_0_1_0, '0', digital_constellation_decoder_cb_0_1_0, '0']
+- [digital_diff_decoder_bb_0_1, '0', digital_map_bb_0_1, '0']
+- [digital_diff_decoder_bb_0_1_0, '0', digital_map_bb_0_1_0, '0']
+- [digital_linear_equalizer_0, '0', virtual_sink_1, '0']
+- [digital_linear_equalizer_0_0, '0', virtual_sink_1_0, '0']
+- [digital_map_bb_0_1, '0', blocks_unpack_k_bits_bb_0, '0']
+- [digital_map_bb_0_1_0, '0', blocks_unpack_k_bits_bb_0_0, '0']
+- [digital_pfb_clock_sync_xxx_0, '0', digital_linear_equalizer_0, '0']
+- [digital_pfb_clock_sync_xxx_0_0, '0', digital_linear_equalizer_0_0, '0']
 - [digital_protocol_formatter_async_0, header, pdu_pdu_to_tagged_stream_0, pdus]
 - [digital_protocol_formatter_async_0, payload, pdu_pdu_to_tagged_stream_0_0, pdus]
 - [digital_protocol_formatter_async_0_0, header, pdu_pdu_to_tagged_stream_0_0_0, pdus]
 - [digital_protocol_formatter_async_0_0, payload, pdu_pdu_to_tagged_stream_0_1, pdus]
 - [epy_block_0, msg_out, blocks_message_debug_0_0, print]
 - [epy_block_0, pdu_out, digital_protocol_formatter_async_0, in]
-- [epy_block_0, pdu_out, epy_block_1, pdu_in]
 - [epy_block_0_0, msg_out, blocks_message_debug_0, print]
 - [epy_block_0_0, pdu_out, digital_protocol_formatter_async_0_0, in]
-- [epy_block_0_0, pdu_out, epy_block_1_0, pdu_in]
-- [epy_block_1, '0', epy_block_2, '0']
-- [epy_block_1_0, '0', epy_block_2_0, '0']
-- [epy_block_2, pdu_out, epy_block_0_0, pdu_in]
-- [epy_block_2_0, pdu_out, epy_block_0, pdu_in]
 - [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0_0, '0']
 - [pdu_pdu_to_tagged_stream_0_1, '0', blocks_tagged_stream_mux_0_0, '1']
 - [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_0_0, pdu_in]
 - [pdu_tagged_stream_to_pdu_0_0_0, pdus, epy_block_0, pdu_in]
+- [virtual_source_0_0_0, '0', digital_costas_loop_cc_0_1, '0']
+- [virtual_source_0_0_0_0, '0', digital_costas_loop_cc_0_1_0, '0']
 
 metadata:
   file_format: 1
