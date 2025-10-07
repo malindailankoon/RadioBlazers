@@ -2429,7 +2429,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [880, 316.0]
+    coordinate: [888, 320.0]
     rotation: 0
     state: disabled
 - name: soapy_bladerf_sink_0_0
