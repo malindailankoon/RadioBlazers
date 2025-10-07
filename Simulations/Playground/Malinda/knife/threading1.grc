@@ -1103,7 +1103,7 @@ blocks:
       \        return True\n"
     affinity: ''
     alias: ''
-    aloha_prob: '0.5'
+    aloha_prob: '1'
     comment: ''
     max_retries: '3'
     maxoutbuf: '0'
@@ -1364,7 +1364,7 @@ blocks:
       \        return True\n"
     affinity: ''
     alias: ''
-    aloha_prob: '0.5'
+    aloha_prob: '1'
     comment: ''
     max_retries: '3'
     maxoutbuf: '0'

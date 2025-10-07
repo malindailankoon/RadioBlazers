@@ -155,7 +155,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3016, 0.0]
+    coordinate: [2808, 696.0]
     rotation: 0
     state: enabled
 - name: phase_bw
@@ -208,7 +208,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3216, 660.0]
+    coordinate: [3216, 732.0]
     rotation: 0
     state: enabled
 - name: rf_gain_0
@@ -265,7 +265,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2416, 108.0]
+    coordinate: [2320, 200.0]
     rotation: 0
     state: enabled
 - name: spr
@@ -331,7 +331,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3200, 8.0]
+    coordinate: [3240, 16.0]
     rotation: 0
     state: enabled
 - name: txbw
@@ -621,7 +621,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1208, 496.0]
+    coordinate: [1144, 496.0]
     rotation: 0
     state: enabled
 - name: channels_channel_model_0_0
@@ -676,7 +676,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3472, 364.0]
+    coordinate: [3504, 816.0]
     rotation: 0
     state: enabled
 - name: digital_constellation_decoder_cb_0
@@ -693,7 +693,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2000, 856.0]
+    coordinate: [2248, 860.0]
     rotation: 180
     state: enabled
 - name: digital_constellation_decoder_cb_0_0
@@ -810,7 +810,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1944, 616.0]
+    coordinate: [2112, 620.0]
     rotation: 0
     state: enabled
 - name: digital_costas_loop_cc_0_0
@@ -906,7 +906,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1808, 392.0]
+    coordinate: [1880, 388.0]
     rotation: 0
     state: enabled
 - name: digital_linear_equalizer_0_0_0
@@ -1020,7 +1020,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1496, 480.0]
+    coordinate: [1504, 500.0]
     rotation: 0
     state: enabled
 - name: digital_symbol_sync_xx_0_0
@@ -1862,7 +1862,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2032, 532.0]
+    coordinate: [2152, 536.0]
     rotation: 180
     state: enabled
 - name: qtgui_const_sink_x_0_0
@@ -2409,7 +2409,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3432, 468.0]
+    coordinate: [3456, 616.0]
     rotation: 0
     state: enabled
 - name: soapy_bladerf_sink_0
