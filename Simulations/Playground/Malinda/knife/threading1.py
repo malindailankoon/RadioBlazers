@@ -27,8 +27,6 @@ from gnuradio import gr, pdu
 import threading
 import threading1_epy_block_0 as epy_block_0  # embedded python block
 import threading1_epy_block_0_0 as epy_block_0_0  # embedded python block
-import threading1_epy_block_1_0 as epy_block_1_0  # embedded python block
-import threading1_epy_block_2_0 as epy_block_2_0  # embedded python block
 
 
 
@@ -84,18 +82,26 @@ class threading1(gr.top_block, Qt.QWidget):
         # Blocks
         ##################################################
 
+        self.pdu_tagged_stream_to_pdu_0_0_0 = pdu.tagged_stream_to_pdu(gr.types.byte_t, 'packet_len')
         self.pdu_tagged_stream_to_pdu_0_0 = pdu.tagged_stream_to_pdu(gr.types.byte_t, 'packet_len')
+        self.pdu_pdu_to_tagged_stream_0_1 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
+        self.pdu_pdu_to_tagged_stream_0_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.epy_block_2_0 = epy_block_2_0.bitstream_to_pdu(sync_word=0x1ACFFC1D, threshold=1)
-        self.epy_block_1_0 = epy_block_1_0.pdu_to_bitstream(sync_word=0x1ACFFC1D)
         self.epy_block_0_0 = epy_block_0_0.blk(node_id=2, aloha_prob=0.5, timeout=1, max_retries=3)
         self.epy_block_0 = epy_block_0.blk(node_id=1, aloha_prob=0.5, timeout=1, max_retries=3)
+        self.digital_protocol_formatter_async_0_0 = digital.protocol_formatter_async(hdr_format)
         self.digital_protocol_formatter_async_0 = digital.protocol_formatter_async(hdr_format)
+        self.digital_correlate_access_code_xx_ts_0_0 = digital.correlate_access_code_bb_ts("11100001010110101110100010010011",
+          thresh, 'packet_len')
         self.digital_correlate_access_code_xx_ts_0 = digital.correlate_access_code_bb_ts("11100001010110101110100010010011",
           thresh, 'packet_len')
+        self.blocks_throttle2_0_0 = blocks.throttle( gr.sizeof_char*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
         self.blocks_throttle2_0 = blocks.throttle( gr.sizeof_char*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
+        self.blocks_tagged_stream_mux_0_0 = blocks.tagged_stream_mux(gr.sizeof_char*1, 'packet_len', 0)
         self.blocks_tagged_stream_mux_0 = blocks.tagged_stream_mux(gr.sizeof_char*1, 'packet_len', 0)
+        self.blocks_repack_bits_bb_1_0_1 = blocks.repack_bits_bb(8, 1, "packet_len", False, gr.GR_MSB_FIRST)
+        self.blocks_repack_bits_bb_1_0_0_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
         self.blocks_repack_bits_bb_1_0_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
         self.blocks_repack_bits_bb_1_0 = blocks.repack_bits_bb(8, 1, "packet_len", False, gr.GR_MSB_FIRST)
         self.blocks_message_strobe_0_0 = blocks.message_strobe(pmt.intern("1:Hello from B"), 1000)
@@ -111,20 +117,28 @@ class threading1(gr.top_block, Qt.QWidget):
         self.msg_connect((self.blocks_message_strobe_0_0, 'strobe'), (self.epy_block_0_0, 'msg_in'))
         self.msg_connect((self.digital_protocol_formatter_async_0, 'header'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
+        self.msg_connect((self.digital_protocol_formatter_async_0_0, 'header'), (self.pdu_pdu_to_tagged_stream_0_0_0, 'pdus'))
+        self.msg_connect((self.digital_protocol_formatter_async_0_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_1, 'pdus'))
         self.msg_connect((self.epy_block_0, 'msg_out'), (self.blocks_message_debug_0_0, 'print'))
         self.msg_connect((self.epy_block_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
         self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.blocks_message_debug_0, 'print'))
-        self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.epy_block_1_0, 'pdu_in'))
-        self.msg_connect((self.epy_block_2_0, 'pdu_out'), (self.epy_block_0, 'pdu_in'))
+        self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0_0, 'in'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_0_0, 'pdu_in'))
+        self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0_0, 'pdus'), (self.epy_block_0, 'pdu_in'))
         self.connect((self.blocks_repack_bits_bb_1_0, 0), (self.blocks_throttle2_0, 0))
         self.connect((self.blocks_repack_bits_bb_1_0_0, 0), (self.pdu_tagged_stream_to_pdu_0_0, 0))
+        self.connect((self.blocks_repack_bits_bb_1_0_0_0, 0), (self.pdu_tagged_stream_to_pdu_0_0_0, 0))
+        self.connect((self.blocks_repack_bits_bb_1_0_1, 0), (self.blocks_throttle2_0_0, 0))
         self.connect((self.blocks_tagged_stream_mux_0, 0), (self.blocks_repack_bits_bb_1_0, 0))
+        self.connect((self.blocks_tagged_stream_mux_0_0, 0), (self.blocks_repack_bits_bb_1_0_1, 0))
         self.connect((self.blocks_throttle2_0, 0), (self.digital_correlate_access_code_xx_ts_0, 0))
+        self.connect((self.blocks_throttle2_0_0, 0), (self.digital_correlate_access_code_xx_ts_0_0, 0))
         self.connect((self.digital_correlate_access_code_xx_ts_0, 0), (self.blocks_repack_bits_bb_1_0_0, 0))
-        self.connect((self.epy_block_1_0, 0), (self.epy_block_2_0, 0))
+        self.connect((self.digital_correlate_access_code_xx_ts_0_0, 0), (self.blocks_repack_bits_bb_1_0_0_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.blocks_tagged_stream_mux_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0_0, 0), (self.blocks_tagged_stream_mux_0, 1))
+        self.connect((self.pdu_pdu_to_tagged_stream_0_0_0, 0), (self.blocks_tagged_stream_mux_0_0, 0))
+        self.connect((self.pdu_pdu_to_tagged_stream_0_1, 0), (self.blocks_tagged_stream_mux_0_0, 1))
 
 
     def closeEvent(self, event):
@@ -186,6 +200,7 @@ class threading1(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.blocks_throttle2_0.set_sample_rate(self.samp_rate)
+        self.blocks_throttle2_0_0.set_sample_rate(self.samp_rate)
 
     def get_rrc_taps(self):
         return self.rrc_taps
