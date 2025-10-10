@@ -81,7 +81,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 328.0]
+    coordinate: [896, 408.0]
     rotation: 0
     state: enabled
 - name: epy_block_1
@@ -142,7 +142,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [408, 244.0]
+    coordinate: [448, 316.0]
     rotation: 0
     state: enabled
 
