@@ -13,13 +13,16 @@ def main():
 
     try:
         while True:
-            msg = pull.recv_json()
-            print("RX from GUI:", json.dumps(msg, indent=2))
+            msg = pull.recv()
+            print(msg.decode("utf-8"))
     except KeyboardInterrupt:
         pass
     finally:
         pull.close(0)
         ctx.term()
+    
+    d = json.loads(msg)
+    print(d["message_id"])
 
 if __name__ == "__main__":
     main()

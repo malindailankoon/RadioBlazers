@@ -225,7 +225,7 @@ class BaseStationGUI:
         self.worker_thread.start()
 
         # Feedback listener (re-used by worker with blocking wait, but also buffers)
-        self.feedback_buffer = {}  # message_id -> {"ok":bool}
+        self.feedback_buffer = []  # each element {"ok":bool}
         self.feedback_lock = threading.Lock()
         self.feedback_thread = threading.Thread(target=self._feedback_listener_loop, daemon=True)
         self.feedback_thread.start()
@@ -244,28 +244,23 @@ class BaseStationGUI:
                 continue
 
             message_id = msg["message_id"]
-            user = msg["to_user"]
+            
 
             # mark sending
             msg["status"] = STATUS_SENDING
             self._set_status(message_id, STATUS_SENDING)
 
             # send over ZMQ PUSH
-            payload = {
-                "type": "tx",
-                "message_id": message_id,
-                "to_addr": msg["to_addr"],
-                "text": msg["text"]
-            }
+            payload = msg["text"]
             try:
-                self.push_sock.send_json(payload, flags=0)
+                self.push_sock.send_string(payload, flags=0)
             except Exception:
                 msg["status"] = STATUS_FAILED
                 self._set_status(message_id, STATUS_FAILED)
                 continue
 
             # WAIT INDEFINITELY for feedback (sent/failed). If none, remain 'sending'.
-            ok = self._wait_for_feedback(message_id)  # blocks until feedback or stop
+            ok = self._wait_for_feedback()  # blocks until feedback or stop
             if ok is None:
                 # stopping; leave as-is
                 continue
@@ -276,13 +271,16 @@ class BaseStationGUI:
                 msg["status"] = STATUS_FAILED
                 self._set_status(message_id, STATUS_FAILED)
 
-    def _wait_for_feedback(self, message_id: str) -> bool | None:
+    def _wait_for_feedback(self) -> bool | None:
         """Block in worker thread until feedback for message_id arrives.
         Returns True/False on feedback, or None if we're stopping.
         """
         while not self._stop.is_set():
             with self.feedback_lock:
-                data = self.feedback_buffer.pop(message_id, None)
+                try:
+                    data = self.feedback_buffer.pop()
+                except:
+                    data = None
             if data is not None:
                 return bool(data["ok"])
             time.sleep(0.05)
@@ -298,13 +296,22 @@ class BaseStationGUI:
             socks = dict(poller.poll(timeout=200))  # ms
             if self.feedback_pull in socks and socks[self.feedback_pull] == zmq.POLLIN:
                 try:
-                    msg = self.feedback_pull.recv_json(flags=zmq.NOBLOCK)
+                    msg = self.feedback_pull.recv(flags=zmq.NOBLOCK)
                 except zmq.Again:
                     continue
-                # Expect: {"type":"tx_ack","message_id":"...","ok":true/false}
-                if msg.get("type") == "tx_ack" and "message_id" in msg:
+                # Expect: "True" or "False"
+                fb = msg.decode("utf-8")
+                if fb == "True":
                     with self.feedback_lock:
-                        self.feedback_buffer[msg["message_id"]] = {"ok": bool(msg.get("ok"))}
+                        self.feedback_buffer.append({"ok": True})
+                if fb == "False":
+                    with self.feedback_lock:
+                        self.feedback_buffer.append({"ok": False})
+
+
+                # if msg.get("type") == "tx_ack" and "message_id" in msg:
+                #     with self.feedback_lock:
+                #         self.feedback_buffer[msg["message_id"]] = {"ok": bool(msg.get("ok"))}
 
     def _incoming_listener_loop(self):
         """Continuously read incoming chat and post to the correct tab."""

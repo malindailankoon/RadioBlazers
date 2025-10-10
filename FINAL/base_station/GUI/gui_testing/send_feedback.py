@@ -13,14 +13,11 @@ def main():
 
     try:
         while True:
-            mid = input("message_id: ").strip()
-            if not mid:
-                continue
             ok_str = input("ok? (y/n): ").strip().lower()
             ok = ok_str in ("y", "yes", "true", "1")
 
-            payload = {"type": "tx_ack", "message_id": mid, "ok": ok}
-            push.send_json(payload)
+            payload = str(ok)
+            push.send_string(payload)
             print("Sent:", payload, "\n")
     except KeyboardInterrupt:
         pass
