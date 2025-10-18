@@ -1441,7 +1441,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 348.0]
+    coordinate: [296, 332.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_to_tagged_stream_0
