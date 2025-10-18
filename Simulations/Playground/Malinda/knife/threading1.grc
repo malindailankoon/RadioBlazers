@@ -309,9 +309,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [112, 224.0]
+    coordinate: [216, 208.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_message_strobe_0_0
   id: blocks_message_strobe
   parameters:
@@ -1383,6 +1383,67 @@ blocks:
     coordinate: [2528, 2112.0]
     rotation: 0
     state: enabled
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: "import threading\nimport zmq\nimport pmt\nfrom gnuradio import\
+      \ gr\nimport json\n\nclass blk(gr.basic_block):\n    \"\"\"\n    ZMQ PULL ->\
+      \ GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings\
+      \ from external senders without PMT serialization.\n    \"\"\"\n\n    def __init__(self,\
+      \ endpoint='tcp://127.0.0.1:5555', bind=False, rcv_timeout_ms=100):\n      \
+      \  gr.basic_block.__init__(self, name=\"pyzmq_pull\", in_sig=[], out_sig=[])\n\
+      \n        # Params (editable in GRC via block args if you expose them)\n   \
+      \     self.endpoint = endpoint\n        self.bind = bool(bind)\n        self.rcv_timeout_ms\
+      \ = int(rcv_timeout_ms)\n\n        # Message out port\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))\n\n        # ZMQ state\n        self._ctx = None\n        self._sock\
+      \ = None\n        self._thread = None\n        self._running = threading.Event()\n\
+      \n    # Start/stop are the right places to spin threads/sockets in GNU Radio\n\
+      \    def start(self):\n        self._ctx = zmq.Context.instance()\n        self._sock\
+      \ = self._ctx.socket(zmq.PULL)\n\n        # Tame shutdown and avoid hangs\n\
+      \        self._sock.setsockopt(zmq.LINGER, 0)\n        self._sock.setsockopt(zmq.RCVTIMEO,\
+      \ self.rcv_timeout_ms)\n        # Optional HWM if you want tighter buffering:\n\
+      \        # self._sock.setsockopt(zmq.RCVHWM, 100)\n\n        if self.bind:\n\
+      \            # Bind (listener)\n            self._sock.bind(self.endpoint) \
+      \          # e.g., \"tcp://*:5555\"\n        else:\n            # Connect (dialer)\n\
+      \            self._sock.connect(self.endpoint)        # e.g., \"tcp://127.0.0.1:5555\"\
+      \n\n        self._running.set()\n        self._thread = threading.Thread(target=self._rx_loop,\
+      \ daemon=True)\n        self._thread.start()\n        return super().start()\n\
+      \n    def stop(self):\n        self._running.clear()\n        try:\n       \
+      \     if self._thread:\n                self._thread.join(timeout=1.0)\n   \
+      \     except Exception:\n            pass\n        try:\n            if self._sock:\n\
+      \                self._sock.close(0)\n        except Exception:\n          \
+      \  pass\n        # Don\u2019t terminate the shared context; other blocks may\
+      \ use it\n        self._ctx = None\n        self._sock = None\n        return\
+      \ super().stop()\n\n    def _rx_loop(self):\n        while self._running.is_set():\n\
+      \            try:\n                # Receive one ZMQ frame (bytes). Works with\
+      \ send(), send_string(), send_json() etc.\n                frame = self._sock.recv()\
+      \  # bytes; RCVTIMEO makes this return after timeout\n            except zmq.Again:\n\
+      \                continue  # timeout, loop again\n            except Exception\
+      \ as e:\n                print(\"[pyzmq_pull] recv error:\", e)\n          \
+      \      break\n\n            if not frame:\n                continue\n      \
+      \      \n            message = frame.decode(\"utf-8\")\n            message\
+      \ = pmt.intern(message)\n            pdu = pmt.cons(pmt.PMT_NIL, message)\n\
+      \            self.message_port_pub(pmt.intern(\"out\"), pdu)\n"
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    endpoint: '''tcp://127.0.0.1:5555'''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rcv_timeout_ms: '100'
+  states:
+    _io_cache: ('pyzmq_pull', 'blk', [('endpoint', "'tcp://127.0.0.1:5555'"), ('bind',
+      'False'), ('rcv_timeout_ms', '100')], [], [('out', 'message', 1)], '\n    ZMQ
+      PULL -> GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings
+      from external senders without PMT serialization.\n    ', ['bind', 'endpoint',
+      'rcv_timeout_ms'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 348.0]
+    rotation: 0
+    state: enabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1575,6 +1636,7 @@ connections:
 - [epy_block_0, pdu_out, digital_protocol_formatter_async_0, in]
 - [epy_block_0_0, msg_out, blocks_message_debug_0, print]
 - [epy_block_0_0, pdu_out, digital_protocol_formatter_async_0_0, in]
+- [epy_block_1, out, epy_block_0, msg_in]
 - [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0_0, '0']
