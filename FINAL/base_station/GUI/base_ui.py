@@ -31,10 +31,15 @@ class BaseStationGUI:
         self.incoming_pull.connect("tcp://localhost:5556")
 
         # --- Users / addresses ---
+        # self.users = {
+        #     "User 1": "0x0001",
+        #     "User 2": "0x0002",
+        #     "User 3": "0x0003",
+        # }
         self.users = {
-            "User 1": "0x0001",
-            "User 2": "0x0002",
-            "User 3": "0x0003",
+            "User 1": "01",
+            "User 2": "02",
+            "User 3": "03",
         }
         self.addr_to_user = {v: k for k, v in self.users.items()}
 
