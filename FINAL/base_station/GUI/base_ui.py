@@ -38,8 +38,8 @@ class BaseStationGUI:
         # }
         self.users = {
             "User 1": "01",
-            "User 2": "02",
-            "User 3": "03",
+            "User 2": "10",
+            "User 3": "11",
         }
         self.addr_to_user = {v: k for k, v in self.users.items()}
 
@@ -257,6 +257,8 @@ class BaseStationGUI:
 
             # send over ZMQ PUSH
             payload = msg["text"]
+            payload = msg["to_addr"] + ":" + payload
+            print(payload)
             try:
                 self.push_sock.send_string(payload, flags=0)
             except Exception:
@@ -326,16 +328,21 @@ class BaseStationGUI:
             socks = dict(poller.poll(timeout=200))  # ms
             if self.incoming_pull in socks and socks[self.incoming_pull] == zmq.POLLIN:
                 try:
-                    msg = self.incoming_pull.recv_json(flags=zmq.NOBLOCK)
+                    msg = self.incoming_pull.recv(flags=zmq.NOBLOCK)
                 except zmq.Again:
                     continue
-                # Expect: {"type":"rx","from_addr":"0x0002","text":"hello"}
-                if msg.get("type") == "rx":
-                    from_addr = msg.get("from_addr")
-                    text = msg.get("text", "")
-                    user = self.addr_to_user.get(from_addr, None)
-                    if user:
-                        self._append_received_message(user, text)
+                # Expect: "02:message"
+                x = msg.decode("utf-8")
+                from_addr, text = x.split(":")
+                self._append_received_message(self.addr_to_user[from_addr], text)
+
+
+                # if msg.get("type") == "rx":
+                #     from_addr = msg.get("from_addr")
+                #     text = msg.get("text", "")
+                #     user = self.addr_to_user.get(from_addr, None)
+                #     if user:
+                #         self._append_received_message(user, text)
 
     def on_close(self):
         self._stop.set()

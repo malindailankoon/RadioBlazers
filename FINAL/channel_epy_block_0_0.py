@@ -27,27 +27,27 @@ def bitstring_to_text(bits, encoding='utf-8'):
     data = bytes(int(bits[i:i+8], 2) for i in range(0, len(bits), 8))
     return data.decode(encoding)
 
-class blk(gr.basic_block):  
 
-    def __init__(self, UiMsgOutPort='tcp://127.0.0.1:5556',
-                 UiFeedbackPort='tcp://127.0.0.1:5557',
+
+class blk(gr.basic_block):
+
+    def __init__(self, UiMsgOutPort='tcp://127.0.0.1:6556',
+                 UiFeedbackPort='tcp://127.0.0.1:6557',
                  NumberOfRetransmissions=10,
                  PropegationTime=0.5,
-                 TransmissionTime=0.2):  
-        """arguments to this function show up as parameters in GRC"""
+                 TransmissionTime=0.2):
         gr.sync_block.__init__(
             self,
-            name='Base_Station_Processor',   
+            name='User_side_Processor', 
             in_sig=[],
             out_sig=[]
         )
 
-        self.number_of_retransmissions = NumberOfRetransmissions
-        self.propegation_time = PropegationTime
-        self.transmission_time = TransmissionTime
-        self.UiFeedbackPort = UiFeedbackPort
         self.UiMsgOutPort = UiMsgOutPort
-        
+        self.UiFeedbackPort = UiFeedbackPort
+        self.NumberOfRetransmissions = NumberOfRetransmissions
+        self.PropegationTime = PropegationTime
+        self.TransmissionTime = TransmissionTime
 
 
         # ui sockets
@@ -58,6 +58,7 @@ class blk(gr.basic_block):
             self.feedback_push_sock.bind(self.UiFeedbackPort)
         except Exception as e:
             print(f"custom_error: cant connect to socket: {e}")
+        
 
         self.msg_to_ui_sock = self.context.socket(zmq.PUSH)
         try:
@@ -66,37 +67,32 @@ class blk(gr.basic_block):
             print(f"custom_error: cant connect to socket: {e}")
         
 
-        
-        
         # types
         self.pkt_data = '00'
         self.pkt_ack = '11'
 
         # my address
-        self.my_address = '00'
+        self.my_address = '01'
 
-        # user node addresses
-        self.addrs = {"User 1": '01', "User 2": '10', "User 3": '11'}
-        self.users = {'01': 'user1', '10': 'user2', '11': 'user3'}
+        # base address
+        self.base_address = '00'
+
 
         # for ack purposes
         self.ack_received = False # the TX will know that an ack was received using this variable, then it reads the received_seq_number
         self.received_ack_seq_number = 0
         self.current_receiver = '' # use this for debug purposes 
 
-        
 
         # defining ports
         self.message_port_register_in(pmt.intern('Msg_in'))
-        # self.message_port_register_out(pmt.intern('Msg_out'))
-        # self.message_port_register_out(pmt.intern('feedback'))
         self.message_port_register_out(pmt.intern('Pkt_out'))
         self.message_port_register_in(pmt.intern('Pkt_in'))
 
         self.set_msg_handler(pmt.intern('Pkt_in'), self.inbound_pdu_handler)
         self.set_msg_handler(pmt.intern('Msg_in'), self.inbound_msg_handler)
 
-        
+
         # setting up threads
         self._stop = threading.Event()
         self.lock = threading.Lock()
@@ -106,17 +102,16 @@ class blk(gr.basic_block):
 
         self.inbound_msg_buffer = queue.Queue()
         self.tx_thread = threading.Thread(target=self.tx_handler)
-        
 
         self.rx_thread.start()
         self.tx_thread.start()
-    
     
 
     def create_packet(self, tpe, dest_addr, src_addr, seq_no, payload=""):
         packet_str = tpe + dest_addr + src_addr + seq_no + payload
         return packet_str
     
+
     def transmit(self, pkt_string):
         try:
             int_arr = bit_string_to_byte_list(pkt_string)
@@ -126,7 +121,7 @@ class blk(gr.basic_block):
             self.message_port_pub(pmt.intern('Pkt_out'), pdu)
         except Exception as e:
             print(f"Custom_error: Error transmitting packet: {e}")
-
+    
 
     def rx_handler(self):
         while not self._stop.is_set():
@@ -158,7 +153,8 @@ class blk(gr.basic_block):
                     
                     payload_text = bitstring_to_text(pkt_payload)
                     
-                    text = pkt_src_addr + ":" + payload_text
+                    # text = self.users[pkt_src_addr] + payload_text
+                    text = payload_text
 
                     # creating the pdu to send to UI
                     # text_b = text.encode("utf-8")
@@ -196,13 +192,13 @@ class blk(gr.basic_block):
                     continue
             
                 msg_string = msg_bytes.decode("utf-8", errors="strict")
-                dest_addr, text = msg_string.split(":")
+                
 
 
-                msg_bitstring = msg_string_to_bitstring(text)
+                msg_bitstring = msg_string_to_bitstring(msg_string)
                 current_seq_num = 0
                 seq_num_str = f"{current_seq_num:02b}"
-                current_pkt = self.create_packet(self.pkt_data, dest_addr, self.my_address, seq_num_str, msg_bitstring)
+                current_pkt = self.create_packet(self.pkt_data, self.base_address, self.my_address, seq_num_str, msg_bitstring)
 
                 K = 0
                 success = False
@@ -217,7 +213,7 @@ class blk(gr.basic_block):
                         with self.lock:
                             self.ack_received = False
                         if (self.received_ack_seq_number > current_seq_num):
-                            if (self.current_receiver != dest_addr):
+                            if (self.current_receiver != self.base_address):
                                 raise ValueError("malinda's custom error: the base got an unintended ack packet!")
                             
                             # send feedback to ui
@@ -237,14 +233,10 @@ class blk(gr.basic_block):
                     time.sleep(Tb)
                     continue
 
-
-            
             except Exception as e:
                 print(f"[custom_handler TX handler error: {e}")
             
                 
-
-
     def inbound_msg_handler(self, pdu):
         try:
             if pmt.is_pair(pdu):
@@ -256,6 +248,7 @@ class blk(gr.basic_block):
         except Exception as e:
             print(f"[custom_error: Error handling Msg_in: {e}")
     
+
     def inbound_pdu_handler(self, pdu):
         try:
             if pmt.is_pair(pdu):
@@ -264,15 +257,27 @@ class blk(gr.basic_block):
                 rx_bytes = bytes(pmt.u8vector_elements(data))
                 self.inbound_pkt_buffer.put(rx_bytes)
 
-        
         except Exception as e:
             print(f"[custom_error: Error handling pdu_in: {e}")
-    
+
 
     def on_close(self):
         self._stop.set()
         if self.rx_thread.is_alive():
             self.rx_thread.join()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

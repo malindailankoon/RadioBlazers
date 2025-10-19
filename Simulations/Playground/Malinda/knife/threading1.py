@@ -29,7 +29,6 @@ from gnuradio import gr, pdu
 import threading
 import threading1_epy_block_0 as epy_block_0  # embedded python block
 import threading1_epy_block_0_0 as epy_block_0_0  # embedded python block
-import threading1_epy_block_1 as epy_block_1  # embedded python block
 
 
 
@@ -106,7 +105,6 @@ class threading1(gr.top_block, Qt.QWidget):
         self.pdu_pdu_to_tagged_stream_0_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.epy_block_1 = epy_block_1.blk(endpoint='tcp://127.0.0.1:5555', bind=True, rcv_timeout_ms=100)
         self.epy_block_0_0 = epy_block_0_0.blk(node_id=2, aloha_prob=1, timeout=1, max_retries=3)
         self.epy_block_0 = epy_block_0.blk(node_id=1, aloha_prob=1, timeout=1, max_retries=3)
         self.digital_protocol_formatter_async_0_0 = digital.protocol_formatter_async(hdr_format)
@@ -168,6 +166,7 @@ class threading1(gr.top_block, Qt.QWidget):
         self.blocks_repack_bits_bb_1_0_0_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
         self.blocks_repack_bits_bb_1_0_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
         self.blocks_message_strobe_0_0 = blocks.message_strobe(pmt.intern("1:Hello from B"), 1000)
+        self.blocks_message_strobe_0 = blocks.message_strobe(pmt.intern("2:Hello from A"), 1000)
         self.blocks_message_debug_0_0 = blocks.message_debug(True, gr.log_levels.info)
         self.blocks_message_debug_0 = blocks.message_debug(True, gr.log_levels.info)
 
@@ -175,6 +174,7 @@ class threading1(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
+        self.msg_connect((self.blocks_message_strobe_0, 'strobe'), (self.epy_block_0, 'msg_in'))
         self.msg_connect((self.blocks_message_strobe_0_0, 'strobe'), (self.epy_block_0_0, 'msg_in'))
         self.msg_connect((self.digital_protocol_formatter_async_0, 'header'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
@@ -184,7 +184,6 @@ class threading1(gr.top_block, Qt.QWidget):
         self.msg_connect((self.epy_block_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
         self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.blocks_message_debug_0, 'print'))
         self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0_0, 'in'))
-        self.msg_connect((self.epy_block_1, 'out'), (self.epy_block_0, 'msg_in'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_0_0, 'pdu_in'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0_0, 'pdus'), (self.epy_block_0, 'pdu_in'))
         self.connect((self.blocks_repack_bits_bb_1_0_0, 0), (self.pdu_tagged_stream_to_pdu_0_0, 0))

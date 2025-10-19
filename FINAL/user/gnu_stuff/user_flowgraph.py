@@ -11,10 +11,8 @@
 
 from PyQt5 import Qt
 from gnuradio import qtgui
-from PyQt5 import QtCore
 from gnuradio import blocks
 from gnuradio import digital
-from gnuradio import filter
 from gnuradio import gr
 from gnuradio.filter import firdes
 from gnuradio.fft import window
@@ -26,13 +24,13 @@ from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import gr, pdu
 from gnuradio import zeromq
-import base_flowgraph_epy_block_0 as epy_block_0  # embedded python block
-import base_flowgraph_epy_block_1 as epy_block_1  # embedded python block
 import threading
+import user_flowgraph_epy_block_0 as epy_block_0  # embedded python block
+import user_flowgraph_epy_block_1 as epy_block_1  # embedded python block
 
 
 
-class base_flowgraph(gr.top_block, Qt.QWidget):
+class user_flowgraph(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
@@ -55,7 +53,7 @@ class base_flowgraph(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("gnuradio/flowgraphs", "base_flowgraph")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "user_flowgraph")
 
         try:
             geometry = self.settings.value("geometry")
@@ -78,7 +76,7 @@ class base_flowgraph(gr.top_block, Qt.QWidget):
         self.thresh = thresh = 1
         self.samp_rate = samp_rate = 32000
         self.rrc_taps = rrc_taps = firdes.root_raised_cosine(nfilts, nfilts, 1.0/float(sps), 0.35, 11*sps*nfilts)
-        self.phase_bw = phase_bw = 6.28/100.0
+        self.phase_bw = phase_bw = 0.0628
         self.hdr_format = hdr_format = digital.header_format_default(access_key, 0)
         self.excess_bw = excess_bw = 0.35
         self.arity = arity = 4
@@ -87,49 +85,15 @@ class base_flowgraph(gr.top_block, Qt.QWidget):
         # Blocks
         ##################################################
 
-        self.controls = Qt.QTabWidget()
-        self.controls_widget_0 = Qt.QWidget()
-        self.controls_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.controls_widget_0)
-        self.controls_grid_layout_0 = Qt.QGridLayout()
-        self.controls_layout_0.addLayout(self.controls_grid_layout_0)
-        self.controls.addTab(self.controls_widget_0, 'Channel')
-        self.controls_widget_1 = Qt.QWidget()
-        self.controls_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.controls_widget_1)
-        self.controls_grid_layout_1 = Qt.QGridLayout()
-        self.controls_layout_1.addLayout(self.controls_grid_layout_1)
-        self.controls.addTab(self.controls_widget_1, 'Receiver')
-        self.top_grid_layout.addWidget(self.controls, 0, 0, 1, 2)
-        for r in range(0, 1):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 2):
-            self.top_grid_layout.setColumnStretch(c, 1)
-        self._phase_bw_range = qtgui.Range(0.0, 1.0, 0.01, 6.28/100.0, 200)
-        self._phase_bw_win = qtgui.RangeWidget(self._phase_bw_range, self.set_phase_bw, "Phase: Bandwidth", "slider", float, QtCore.Qt.Horizontal)
-        self.controls_grid_layout_1.addWidget(self._phase_bw_win, 0, 2, 1, 1)
-        for r in range(0, 1):
-            self.controls_grid_layout_1.setRowStretch(r, 1)
-        for c in range(2, 3):
-            self.controls_grid_layout_1.setColumnStretch(c, 1)
-        self.zeromq_sub_source_0 = zeromq.sub_source(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49202', 100, False, (-1), '', False)
-        self.zeromq_pub_sink_0 = zeromq.pub_sink(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49201', 100, False, (-1), '', True, True)
+        self.zeromq_sub_source_0 = zeromq.sub_source(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49204', 100, False, (-1), '', False)
+        self.zeromq_pub_sink_0 = zeromq.pub_sink(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49203', 100, False, (-1), '', True, True)
         self.pdu_tagged_stream_to_pdu_0 = pdu.tagged_stream_to_pdu(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_1 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.epy_block_1 = epy_block_1.blk(endpoint='tcp://127.0.0.1:5555', bind=True, rcv_timeout_ms=100)
-        self.epy_block_0 = epy_block_0.blk(UiMsgOutPort='tcp://127.0.0.1:5556', UiFeedbackPort='tcp://127.0.0.1:5557', NumberOfRetransmissions=10, PropegationTime=0.5, TransmissionTime=0.2)
-        self.digital_symbol_sync_xx_0 = digital.symbol_sync_cc(
-            digital.TED_SIGNAL_TIMES_SLOPE_ML,
-            sps,
-            phase_bw,
-            1.0,
-            1.0,
-            1.5,
-            4,
-            digital.constellation_bpsk().base(),
-            digital.IR_PFB_MF,
-            32,
-            rrc_taps)
+        self.epy_block_1 = epy_block_1.blk(endpoint='tcp://127.0.0.1:6665', bind=True, rcv_timeout_ms=100)
+        self.epy_block_0 = epy_block_0.blk(UiMsgOutPort='tcp://127.0.0.1:6556', UiFeedbackPort='tcp://127.0.0.1:6667', NumberOfRetransmissions=10, PropegationTime=0.5, TransmissionTime=0.2)
         self.digital_protocol_formatter_async_0 = digital.protocol_formatter_async(hdr_format)
+        self.digital_pfb_clock_sync_xxx_0 = digital.pfb_clock_sync_ccf(sps, phase_bw, rrc_taps, nfilts, (nfilts/2), 1.5, 2)
         self.digital_map_bb_0_1 = digital.map_bb([0,1,2,3])
         self.digital_linear_equalizer_0_0 = digital.linear_equalizer(32, 4, variable_adaptive_algorithm_0, True, [ ], 'corr_est')
         self.digital_diff_decoder_bb_0_1 = digital.diff_decoder_bb(4, digital.DIFF_DIFFERENTIAL)
@@ -175,14 +139,14 @@ class base_flowgraph(gr.top_block, Qt.QWidget):
         self.connect((self.digital_diff_decoder_bb_0_1, 0), (self.digital_map_bb_0_1, 0))
         self.connect((self.digital_linear_equalizer_0_0, 0), (self.digital_costas_loop_cc_0, 0))
         self.connect((self.digital_map_bb_0_1, 0), (self.blocks_unpack_k_bits_bb_0, 0))
-        self.connect((self.digital_symbol_sync_xx_0, 0), (self.digital_linear_equalizer_0_0, 0))
+        self.connect((self.digital_pfb_clock_sync_xxx_0, 0), (self.digital_linear_equalizer_0_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.blocks_tagged_stream_mux_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_1, 0), (self.blocks_tagged_stream_mux_0, 1))
-        self.connect((self.zeromq_sub_source_0, 0), (self.digital_symbol_sync_xx_0, 0))
+        self.connect((self.zeromq_sub_source_0, 0), (self.digital_pfb_clock_sync_xxx_0, 0))
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("gnuradio/flowgraphs", "base_flowgraph")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "user_flowgraph")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -195,7 +159,6 @@ class base_flowgraph(gr.top_block, Qt.QWidget):
     def set_sps(self, sps):
         self.sps = sps
         self.set_rrc_taps(firdes.root_raised_cosine(self.nfilts, self.nfilts, 1.0/float(self.sps), 0.35, 11*self.sps*self.nfilts))
-        self.digital_symbol_sync_xx_0.set_sps(self.sps)
 
     def get_qpsk(self):
         return self.qpsk
@@ -248,6 +211,7 @@ class base_flowgraph(gr.top_block, Qt.QWidget):
 
     def set_rrc_taps(self, rrc_taps):
         self.rrc_taps = rrc_taps
+        self.digital_pfb_clock_sync_xxx_0.update_taps(self.rrc_taps)
 
     def get_phase_bw(self):
         return self.phase_bw
@@ -255,7 +219,7 @@ class base_flowgraph(gr.top_block, Qt.QWidget):
     def set_phase_bw(self, phase_bw):
         self.phase_bw = phase_bw
         self.digital_costas_loop_cc_0.set_loop_bandwidth(self.phase_bw)
-        self.digital_symbol_sync_xx_0.set_loop_bandwidth(self.phase_bw)
+        self.digital_pfb_clock_sync_xxx_0.set_loop_bandwidth(self.phase_bw)
 
     def get_hdr_format(self):
         return self.hdr_format
@@ -278,7 +242,7 @@ class base_flowgraph(gr.top_block, Qt.QWidget):
 
 
 
-def main(top_block_cls=base_flowgraph, options=None):
+def main(top_block_cls=user_flowgraph, options=None):
 
     qapp = Qt.QApplication(sys.argv)
 

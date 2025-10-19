@@ -1,4 +1,4 @@
-
+import random
 
 int_arr = [170, 0, 127, 255] # this would be what pmt.u8vector_elements(vec) returns
 # can convert the int_arr back to a u8vector using 
@@ -14,7 +14,6 @@ def bit_string_to_byte_list(bits):
     return [int(bits[i:i+8], 2) for i in range(0, len(bits), 8)]
 
 
-
 msg = "Hii, my name is malinda."
 
 def msg_string_to_bitstring(msg_str):
@@ -28,4 +27,10 @@ def bitstring_to_text(bits, encoding='utf-8'):
     return data.decode(encoding)
 
 
-print(msg.encode("utf-8"))
+x = "10"
+y = int(x, 2)
+# print(f"{(y+1):02b}")
+
+k = 2
+R = random.getrandbits(k)
+print(R)

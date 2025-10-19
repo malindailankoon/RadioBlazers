@@ -1,0 +1,1643 @@
+options:
+  parameters:
+    author: malindatemp
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: channel
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Not titled yet
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: access_key
+  id: variable
+  parameters:
+    comment: ''
+    value: '''11100001010110101110100010010011'''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1248, 360.0]
+    rotation: 0
+    state: enabled
+- name: arity
+  id: variable
+  parameters:
+    comment: ''
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2216, 1144.0]
+    rotation: 0
+    state: enabled
+- name: excess_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.35'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2336, 624.0]
+    rotation: 0
+    state: enabled
+- name: freq_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'controls@0: 0,1,1,1'
+    label: Frequency Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-0.1'
+    step: '0.001'
+    stop: '0.1'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1216, 32.0]
+    rotation: 0
+    state: enabled
+- name: hdr_format
+  id: variable
+  parameters:
+    comment: header_format_default
+    value: digital.header_format_default(access_key, 0)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1008, 360.0]
+    rotation: 0
+    state: enabled
+- name: nfilts
+  id: variable
+  parameters:
+    comment: ''
+    value: '32'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1344, 1216.0]
+    rotation: 0
+    state: enabled
+- name: noise_volt
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'controls@0: 0,0,1,1'
+    label: Noise Voltage
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.01'
+    stop: '1'
+    value: '0.4'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1048, 32.0]
+    rotation: 0
+    state: enabled
+- name: phase_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.0628'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1360, 944.0]
+    rotation: 0
+    state: enabled
+- name: qpsk
+  id: variable_constellation_rect
+  parameters:
+    comment: ''
+    const_points: '[0.707+0.707j, -0.707+0.707j, -0.707-0.707j, 0.707-0.707j]'
+    imag_sect: '2'
+    precision: '8'
+    real_sect: '2'
+    rot_sym: '4'
+    soft_dec_lut: None
+    sym_map: '[0, 1, 2, 3]'
+    w_imag_sect: '1'
+    w_real_sect: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2224, 244.0]
+    rotation: 0
+    state: enabled
+- name: rrc_taps
+  id: variable
+  parameters:
+    comment: ''
+    value: firdes.root_raised_cosine(nfilts, nfilts, 1.0/float(sps), 0.35, 11*sps*nfilts)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1472, 1216.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '32000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 40.0]
+    rotation: 0
+    state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2256, 712.0]
+    rotation: 0
+    state: enabled
+- name: thresh
+  id: variable
+  parameters:
+    comment: ''
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3144, 1352.0]
+    rotation: 0
+    state: enabled
+- name: time_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'controls@0: 0,2,1,1'
+    label: Timing Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.999'
+    step: '0.0001'
+    stop: '1.001'
+    value: '1.00'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 32.0]
+    rotation: 0
+    state: enabled
+- name: usrp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '768000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2352, 712.0]
+    rotation: 0
+    state: enabled
+- name: variable_adaptive_algorithm_0
+  id: variable_adaptive_algorithm
+  parameters:
+    comment: ''
+    cons: qpsk
+    delta: '10.0'
+    ffactor: '0.99'
+    modulus: '4'
+    step_size: '.0001'
+    type: cma
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1824, 1136.0]
+    rotation: 0
+    state: enabled
+- name: blocks_repack_bits_bb_1_0_0
+  id: blocks_repack_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    align_output: 'False'
+    comment: MSB
+    endianness: gr.GR_MSB_FIRST
+    k: '1'
+    l: '8'
+    len_tag_key: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3256, 1496.0]
+    rotation: 180
+    state: true
+- name: blocks_repack_bits_bb_1_0_0_0
+  id: blocks_repack_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    align_output: 'False'
+    comment: MSB
+    endianness: gr.GR_MSB_FIRST
+    k: '1'
+    l: '8'
+    len_tag_key: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3144, 2920.0]
+    rotation: 180
+    state: true
+- name: blocks_tagged_stream_mux_0
+  id: blocks_tagged_stream_mux
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    lengthtagname: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ninputs: '2'
+    tag_preserve_head_pos: '0'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2032, 516.0]
+    rotation: 0
+    state: enabled
+- name: blocks_tagged_stream_mux_0_0
+  id: blocks_tagged_stream_mux
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    lengthtagname: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ninputs: '2'
+    tag_preserve_head_pos: '0'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2016, 1964.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle2_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2592, 504.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle2_0_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2632, 1952.0]
+    rotation: 0
+    state: enabled
+- name: blocks_unpack_k_bits_bb_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3192, 1132.0]
+    rotation: 180
+    state: enabled
+- name: blocks_unpack_k_bits_bb_0_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3080, 2556.0]
+    rotation: 180
+    state: enabled
+- name: channels_channel_model_0
+  id: channels_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    block_tags: 'False'
+    comment: ''
+    epsilon: '1.0'
+    freq_offset: '0.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_voltage: '0.0'
+    seed: '0'
+    taps: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2848, 456.0]
+    rotation: 0
+    state: enabled
+- name: channels_channel_model_0_0
+  id: channels_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    block_tags: 'False'
+    comment: ''
+    epsilon: '1.0'
+    freq_offset: '0.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_voltage: '0.0'
+    seed: '0'
+    taps: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2888, 1896.0]
+    rotation: 0
+    state: enabled
+- name: controls
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: 0,0,1,2
+    label0: Channel
+    label1: Receiver
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    label2: Tab 2
+    label3: Tab 3
+    label4: Tab 4
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    num_tabs: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1560, 32.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_decoder_cb_0
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Decode a constellation's points from \na complex space to index of constellation\
+      \ \nsymbol based on the map of the  object."
+    constellation: qpsk
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2464, 996.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_decoder_cb_0_0
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Decode a constellation's points from \na complex space to index of constellation\
+      \ \nsymbol based on the map of the  object."
+    constellation: qpsk
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2344, 2412.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_modulator_0_0
+  id: digital_constellation_modulator
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk
+    differential: 'True'
+    excess_bw: excess_bw
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: sps
+    truncate: 'False'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2272, 480.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_modulator_0_0_0
+  id: digital_constellation_modulator
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk
+    differential: 'True'
+    excess_bw: excess_bw
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: sps
+    truncate: 'False'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2288, 1928.0]
+    rotation: 0
+    state: enabled
+- name: digital_correlate_access_code_xx_ts_0
+  id: digital_correlate_access_code_xx_ts
+  parameters:
+    access_code: '"11100001010110101110100010010011"'
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tagname: packet_len
+    threshold: thresh
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3120, 1236.0]
+    rotation: 0
+    state: true
+- name: digital_correlate_access_code_xx_ts_0_0
+  id: digital_correlate_access_code_xx_ts
+  parameters:
+    access_code: '"11100001010110101110100010010011"'
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tagname: packet_len
+    threshold: thresh
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3000, 2660.0]
+    rotation: 0
+    state: true
+- name: digital_costas_loop_cc_0
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Phase and Fine Frequency Correction
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: arity
+    use_snr: 'False'
+    w: phase_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2144, 996.0]
+    rotation: 0
+    state: enabled
+- name: digital_costas_loop_cc_0_0
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Phase and Fine Frequency Correction
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: arity
+    use_snr: 'False'
+    w: phase_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2024, 2412.0]
+    rotation: 0
+    state: enabled
+- name: digital_crc_append_0
+  id: digital_crc_append
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    final_xor: '0xFFFFFFFF'
+    initial_value: '0xFFFFFFFF'
+    input_reflected: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_bits: '32'
+    poly: '0x4C11DB7'
+    result_reflected: 'True'
+    skip_header_bytes: '0'
+    swap_endianness: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [992, 500.0]
+    rotation: 0
+    state: enabled
+- name: digital_crc_append_0_0
+  id: digital_crc_append
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    final_xor: '0xFFFFFFFF'
+    initial_value: '0xFFFFFFFF'
+    input_reflected: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_bits: '32'
+    poly: '0x4C11DB7'
+    result_reflected: 'True'
+    skip_header_bytes: '0'
+    swap_endianness: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [992, 1948.0]
+    rotation: 0
+    state: enabled
+- name: digital_crc_check_0
+  id: digital_crc_check
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    discard_crc: 'False'
+    final_xor: '0xFFFFFFFF'
+    initial_value: '0xFFFFFFFF'
+    input_reflected: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_bits: '32'
+    poly: '0x4C11DB7'
+    result_reflected: 'True'
+    skip_header_bytes: '0'
+    swap_endianness: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2520, 1500.0]
+    rotation: 180
+    state: enabled
+- name: digital_crc_check_0_0
+  id: digital_crc_check
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    discard_crc: 'False'
+    final_xor: '0xFFFFFFFF'
+    initial_value: '0xFFFFFFFF'
+    input_reflected: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_bits: '32'
+    poly: '0x4C11DB7'
+    result_reflected: 'True'
+    skip_header_bytes: '0'
+    swap_endianness: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2408, 2924.0]
+    rotation: 180
+    state: enabled
+- name: digital_diff_decoder_bb_0_1
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2784, 984.0]
+    rotation: 0
+    state: enabled
+- name: digital_diff_decoder_bb_0_1_0
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2664, 2408.0]
+    rotation: 0
+    state: enabled
+- name: digital_linear_equalizer_0_0
+  id: digital_linear_equalizer
+  parameters:
+    adapt_after_training: 'True'
+    affinity: ''
+    alg: variable_adaptive_algorithm_0
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_taps: '32'
+    sps: '4'
+    training_sequence: '[ ]'
+    training_start_tag: corr_est
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1776, 1036.0]
+    rotation: 0
+    state: enabled
+- name: digital_linear_equalizer_0_0_0
+  id: digital_linear_equalizer
+  parameters:
+    adapt_after_training: 'True'
+    affinity: ''
+    alg: variable_adaptive_algorithm_0
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_taps: '32'
+    sps: '4'
+    training_sequence: '[ ]'
+    training_start_tag: corr_est
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1656, 2460.0]
+    rotation: 0
+    state: enabled
+- name: digital_map_bb_0_1
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    map: '[0,1,2,3]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3064, 988.0]
+    rotation: 0
+    state: enabled
+- name: digital_map_bb_0_1_0
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    map: '[0,1,2,3]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2952, 2412.0]
+    rotation: 0
+    state: enabled
+- name: digital_pfb_clock_sync_xxx_0
+  id: digital_pfb_clock_sync_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    filter_size: nfilts
+    init_phase: nfilts/2
+    loop_bw: phase_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    osps: '2'
+    sps: sps
+    taps: rrc_taps
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1360, 1024.0]
+    rotation: 0
+    state: enabled
+- name: digital_pfb_clock_sync_xxx_0_0
+  id: digital_pfb_clock_sync_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    filter_size: nfilts
+    init_phase: nfilts/2
+    loop_bw: phase_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    osps: '2'
+    sps: sps
+    taps: rrc_taps
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1160, 2240.0]
+    rotation: 0
+    state: enabled
+- name: digital_protocol_formatter_async_0
+  id: digital_protocol_formatter_async
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    format: hdr_format
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1296, 500.0]
+    rotation: 0
+    state: enabled
+- name: digital_protocol_formatter_async_0_0
+  id: digital_protocol_formatter_async
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    format: hdr_format
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 1948.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    NumberOfRetransmissions: '10'
+    PropegationTime: '0.5'
+    TransmissionTime: '0.2'
+    UiFeedbackPort: '''tcp://127.0.0.1:5557'''
+    UiMsgOutPort: '''tcp://127.0.0.1:5556'''
+    _source_code: "\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ zmq\nimport threading\nimport queue\nimport time\nimport random\n\ndef byte_list_to_bitstring(int_arr):\n\
+      \    return ''.join(f'{b:08b}' for b in int_arr)\n\ndef bit_string_to_byte_list(bits):\n\
+      \    if len(bits) % 8 != 0:\n        raise ValueError(\"length not multiple\
+      \ of 8\")\n    return [int(bits[i:i+8], 2) for i in range(0, len(bits), 8)]\n\
+      \ndef msg_string_to_bitstring(msg_str):\n    bits = ''.join(f'{b:08b}' for b\
+      \ in msg_str.encode('utf-8'))\n    return bits\n\ndef bitstring_to_text(bits,\
+      \ encoding='utf-8'):\n    if len(bits) % 8 != 0:\n        raise ValueError(\"\
+      Bitstring length must be a multiple of 8\")\n    data = bytes(int(bits[i:i+8],\
+      \ 2) for i in range(0, len(bits), 8))\n    return data.decode(encoding)\n\n\
+      class blk(gr.basic_block):  \n\n    def __init__(self, UiMsgOutPort='tcp://127.0.0.1:5556',\n\
+      \                 UiFeedbackPort='tcp://127.0.0.1:5557',\n                 NumberOfRetransmissions=10,\n\
+      \                 PropegationTime=0.5,\n                 TransmissionTime=0.2):\
+      \  \n        \"\"\"arguments to this function show up as parameters in GRC\"\
+      \"\"\n        gr.sync_block.__init__(\n            self,\n            name='Base_Station_Processor',\
+      \   \n            in_sig=[],\n            out_sig=[]\n        )\n\n        self.number_of_retransmissions\
+      \ = NumberOfRetransmissions\n        self.propegation_time = PropegationTime\n\
+      \        self.transmission_time = TransmissionTime\n        self.UiFeedbackPort\
+      \ = UiFeedbackPort\n        self.UiMsgOutPort = UiMsgOutPort\n        \n\n\n\
+      \        # ui sockets\n        self.context = zmq.Context.instance()\n\n   \
+      \     self.feedback_push_sock = self.context.socket(zmq.PUSH)\n        try:\n\
+      \            self.feedback_push_sock.bind(self.UiFeedbackPort)\n        except\
+      \ Exception as e:\n            print(f\"custom_error: cant connect to socket:\
+      \ {e}\")\n\n        self.msg_to_ui_sock = self.context.socket(zmq.PUSH)\n  \
+      \      try:\n            self.msg_to_ui_sock.bind(self.UiMsgOutPort)\n     \
+      \   except Exception as e:\n            print(f\"custom_error: cant connect\
+      \ to socket: {e}\")\n        \n\n        \n        \n        # types\n     \
+      \   self.pkt_data = '00'\n        self.pkt_ack = '11'\n\n        # my address\n\
+      \        self.my_address = '00'\n\n        # user node addresses\n        self.addrs\
+      \ = {\"User 1\": '01', \"User 2\": '10', \"User 3\": '11'}\n        self.users\
+      \ = {'01': 'user1', '10': 'user2', '11': 'user3'}\n\n        # for ack purposes\n\
+      \        self.ack_received = False # the TX will know that an ack was received\
+      \ using this variable, then it reads the received_seq_number\n        self.received_ack_seq_number\
+      \ = 0\n        self.current_receiver = '' # use this for debug purposes \n\n\
+      \        \n\n        # defining ports\n        self.message_port_register_in(pmt.intern('Msg_in'))\n\
+      \        # self.message_port_register_out(pmt.intern('Msg_out'))\n        #\
+      \ self.message_port_register_out(pmt.intern('feedback'))\n        self.message_port_register_out(pmt.intern('Pkt_out'))\n\
+      \        self.message_port_register_in(pmt.intern('Pkt_in'))\n\n        self.set_msg_handler(pmt.intern('Pkt_in'),\
+      \ self.inbound_pdu_handler)\n        self.set_msg_handler(pmt.intern('Msg_in'),\
+      \ self.inbound_msg_handler)\n\n        \n        # setting up threads\n    \
+      \    self._stop = threading.Event()\n        self.lock = threading.Lock()\n\n\
+      \        self.inbound_pkt_buffer = queue.Queue() # holds byte arrays\n     \
+      \   self.rx_thread = threading.Thread(target=self.rx_handler)\n\n        self.inbound_msg_buffer\
+      \ = queue.Queue()\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
+      \        \n\n        self.rx_thread.start()\n        self.tx_thread.start()\n\
+      \    \n    \n\n    def create_packet(self, tpe, dest_addr, src_addr, seq_no,\
+      \ payload=\"\"):\n        packet_str = tpe + dest_addr + src_addr + seq_no +\
+      \ payload\n        return packet_str\n    \n    def transmit(self, pkt_string):\n\
+      \        try:\n            int_arr = bit_string_to_byte_list(pkt_string)\n \
+      \           vec = pmt.init_u8vector(len(int_arr), int_arr)\n            pdu\
+      \ = pmt.cons(pmt.PMT_NIL, vec)\n\n            self.message_port_pub(pmt.intern('Pkt_out'),\
+      \ pdu)\n        except Exception as e:\n            print(f\"Custom_error: Error\
+      \ transmitting packet: {e}\")\n\n\n    def rx_handler(self):\n        while\
+      \ not self._stop.is_set():\n            # assuming the packet is a uint\n  \
+      \          try:\n                pkt_bytes = self.inbound_pkt_buffer.get(timeout=0.1)\n\
+      \            except queue.Empty:\n                continue\n            \n \
+      \           pkt_bitstring = byte_list_to_bitstring(pkt_bytes)\n\n          \
+      \  pkt_type = pkt_bitstring[:2]\n            pkt_dest_addr = pkt_bitstring[2:4]\n\
+      \            pkt_src_addr = pkt_bitstring[4:6]\n            pkt_seq_num = pkt_bitstring[6:8]\n\
+      \            pkt_payload = pkt_bitstring[8:]\n\n            seq_num_int = int(pkt_seq_num,\
+      \ 2)\n\n\n            if (pkt_type == self.pkt_data): # the pkt received is\
+      \ a data packet\n                if (pkt_dest_addr == self.my_address):\n  \
+      \                  new_seq_num = f\"{(seq_num_int+1):02b}\"\n              \
+      \      pkt_str = self.create_packet(self.pkt_ack, pkt_src_addr, pkt_dest_addr,\
+      \ new_seq_num)\n                    \n                    with self.lock:\n\
+      \                        self.transmit(pkt_str)\n\n                    \n  \
+      \                  payload_text = bitstring_to_text(pkt_payload)\n         \
+      \           \n                    text = pkt_src_addr + \":\" + payload_text\n\
+      \n                    # creating the pdu to send to UI\n                   \
+      \ # text_b = text.encode(\"utf-8\")\n                    # pdu = pmt.cons(pmt.PMT_NIL,\
+      \ pmt.init_u8vector(len(text_b), bytearray(text_b)))\n                    #\
+      \ self.message_port_pub(pmt.intern('Msg_out'), pdu)\n\n                    #\
+      \ send message to ui\n                    self.msg_to_ui_sock.send_string(text)\n\
+      \n\n                else:\n                    # the packet is not meant for\
+      \ me\n                    continue\n            elif (pkt_type == self.pkt_ack):\
+      \ # the pkt received is a ack packet\n                if (pkt_dest_addr == self.my_address):\n\
+      \                    self.current_receiver = pkt_src_addr\n                \
+      \    self.received_ack_seq_number = pkt_seq_num\n                    self.ack_received\
+      \ = True\n                    if (pkt_payload != ''):\n                    \
+      \    raise ValueError(f\"malinda's custom error: an acknowledgement packet cannot\
+      \ have a payload\")\n                else:\n                    # the packet\
+      \ is not meant for me\n                    # POSSIBLE ERROR PLACE, PLEASE CHECK\
+      \ WHEN TESING\n                    continue\n            else:\n           \
+      \     raise ValueError(f\"malinda's custom error: {pkt_type} is not a valid\
+      \ type\")\n    \n\n    def tx_handler(self):\n        while not self._stop.is_set():\n\
+      \            try:\n                try:\n                    msg_bytes = self.inbound_msg_buffer.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \     \n                msg_string = msg_bytes.decode(\"utf-8\", errors=\"strict\"\
+      )\n                dest_addr, text = msg_string.split(\":\")\n\n\n         \
+      \       msg_bitstring = msg_string_to_bitstring(text)\n                current_seq_num\
+      \ = 0\n                seq_num_str = f\"{current_seq_num:02b}\"\n          \
+      \      current_pkt = self.create_packet(self.pkt_data, dest_addr, self.my_address,\
+      \ seq_num_str, msg_bitstring)\n\n                K = 0\n                success\
+      \ = False\n                abort = False\n                while (success !=\
+      \ True and abort != True):\n                    with self.lock:\n          \
+      \              self.transmit(current_pkt)\n                    \n          \
+      \          time.sleep(2 * self.propegation_time)\n\n                    if (self.ack_received\
+      \ == True):\n                        with self.lock:\n                     \
+      \       self.ack_received = False\n                        if (self.received_ack_seq_number\
+      \ > current_seq_num):\n                            if (self.current_receiver\
+      \ != dest_addr):\n                                raise ValueError(\"malinda's\
+      \ custom error: the base got an unintended ack packet!\")\n                \
+      \            \n                            # send feedback to ui\n         \
+      \                   self.feedback_push_sock.send_string(\"True\")\n        \
+      \                    success = True\n                            continue\n\
+      \                    \n                    K += 1\n                    if (K\
+      \ > self.number_of_retransmissions):\n                        self.feedback_push_sock.send_string(\"\
+      False\")\n                        abort = True\n                        continue\n\
+      \n                    R = random.getrandbits(K)\n\n                    Tb =\
+      \ R * self.propegation_time\n                    time.sleep(Tb)\n          \
+      \          continue\n\n\n            \n            except Exception as e:\n\
+      \                print(f\"[custom_handler TX handler error: {e}\")\n       \
+      \     \n                \n\n\n    def inbound_msg_handler(self, pdu):\n    \
+      \    try:\n            if pmt.is_pair(pdu):\n                data = pmt.cdr(pdu)\n\
+      \n                msg_bytes = bytes(pmt.u8vector_elements(data))\n         \
+      \       self.inbound_msg_buffer.put(msg_bytes)\n        \n        except Exception\
+      \ as e:\n            print(f\"[custom_error: Error handling Msg_in: {e}\")\n\
+      \    \n    def inbound_pdu_handler(self, pdu):\n        try:\n            if\
+      \ pmt.is_pair(pdu):\n                data = pmt.cdr(pdu)\n\n               \
+      \ rx_bytes = bytes(pmt.u8vector_elements(data))\n                self.inbound_pkt_buffer.put(rx_bytes)\n\
+      \n        \n        except Exception as e:\n            print(f\"[custom_error:\
+      \ Error handling pdu_in: {e}\")\n    \n\n    def on_close(self):\n        self._stop.set()\n\
+      \        if self.rx_thread.is_alive():\n            self.rx_thread.join()\n\n\
+      \n\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Base_Station_Processor', 'blk', [('UiMsgOutPort', "'tcp://127.0.0.1:5556'"),
+      ('UiFeedbackPort', "'tcp://127.0.0.1:5557'"), ('NumberOfRetransmissions', '10'),
+      ('PropegationTime', '0.5'), ('TransmissionTime', '0.2')], [('Pkt_in', 'message',
+      1), ('Msg_in', 'message', 1)], [('Pkt_out', 'message', 1)], 'arguments to this
+      function show up as parameters in GRC', ['UiFeedbackPort', 'UiMsgOutPort'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [624, 452.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0_0
+  id: epy_block
+  parameters:
+    NumberOfRetransmissions: '10'
+    PropegationTime: '0.5'
+    TransmissionTime: '0.2'
+    UiFeedbackPort: '''tcp://127.0.0.1:6667'''
+    UiMsgOutPort: '''tcp://127.0.0.1:6556'''
+    _source_code: "\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ zmq\nimport threading\nimport queue\nimport time\nimport random\n\ndef byte_list_to_bitstring(int_arr):\n\
+      \    return ''.join(f'{b:08b}' for b in int_arr)\n\ndef bit_string_to_byte_list(bits):\n\
+      \    if len(bits) % 8 != 0:\n        raise ValueError(\"length not multiple\
+      \ of 8\")\n    return [int(bits[i:i+8], 2) for i in range(0, len(bits), 8)]\n\
+      \ndef msg_string_to_bitstring(msg_str):\n    bits = ''.join(f'{b:08b}' for b\
+      \ in msg_str.encode('utf-8'))\n    return bits\n\ndef bitstring_to_text(bits,\
+      \ encoding='utf-8'):\n    if len(bits) % 8 != 0:\n        raise ValueError(\"\
+      Bitstring length must be a multiple of 8\")\n    data = bytes(int(bits[i:i+8],\
+      \ 2) for i in range(0, len(bits), 8))\n    return data.decode(encoding)\n\n\n\
+      \nclass blk(gr.basic_block):\n\n    def __init__(self, UiMsgOutPort='tcp://127.0.0.1:6556',\n\
+      \                 UiFeedbackPort='tcp://127.0.0.1:6557',\n                 NumberOfRetransmissions=10,\n\
+      \                 PropegationTime=0.5,\n                 TransmissionTime=0.2):\n\
+      \        gr.sync_block.__init__(\n            self,\n            name='User_side_Processor',\
+      \ \n            in_sig=[],\n            out_sig=[]\n        )\n\n        self.UiMsgOutPort\
+      \ = UiMsgOutPort\n        self.UiFeedbackPort = UiFeedbackPort\n        self.NumberOfRetransmissions\
+      \ = NumberOfRetransmissions\n        self.PropegationTime = PropegationTime\n\
+      \        self.TransmissionTime = TransmissionTime\n\n\n        # ui sockets\n\
+      \        self.context = zmq.Context.instance()\n\n        self.feedback_push_sock\
+      \ = self.context.socket(zmq.PUSH)\n        try:\n            self.feedback_push_sock.bind(self.UiFeedbackPort)\n\
+      \        except Exception as e:\n            print(f\"custom_error: cant connect\
+      \ to socket: {e}\")\n        \n\n        self.msg_to_ui_sock = self.context.socket(zmq.PUSH)\n\
+      \        try:\n            self.msg_to_ui_sock.bind(self.UiMsgOutPort)\n   \
+      \     except Exception as e:\n            print(f\"custom_error: cant connect\
+      \ to socket: {e}\")\n        \n\n        # types\n        self.pkt_data = '00'\n\
+      \        self.pkt_ack = '11'\n\n        # my address\n        self.my_address\
+      \ = '01'\n\n        # base address\n        self.base_address = '00'\n\n\n \
+      \       # for ack purposes\n        self.ack_received = False # the TX will\
+      \ know that an ack was received using this variable, then it reads the received_seq_number\n\
+      \        self.received_ack_seq_number = 0\n        self.current_receiver = ''\
+      \ # use this for debug purposes \n\n\n        # defining ports\n        self.message_port_register_in(pmt.intern('Msg_in'))\n\
+      \        self.message_port_register_out(pmt.intern('Pkt_out'))\n        self.message_port_register_in(pmt.intern('Pkt_in'))\n\
+      \n        self.set_msg_handler(pmt.intern('Pkt_in'), self.inbound_pdu_handler)\n\
+      \        self.set_msg_handler(pmt.intern('Msg_in'), self.inbound_msg_handler)\n\
+      \n\n        # setting up threads\n        self._stop = threading.Event()\n \
+      \       self.lock = threading.Lock()\n\n        self.inbound_pkt_buffer = queue.Queue()\
+      \ # holds byte arrays\n        self.rx_thread = threading.Thread(target=self.rx_handler)\n\
+      \n        self.inbound_msg_buffer = queue.Queue()\n        self.tx_thread =\
+      \ threading.Thread(target=self.tx_handler)\n\n        self.rx_thread.start()\n\
+      \        self.tx_thread.start()\n    \n\n    def create_packet(self, tpe, dest_addr,\
+      \ src_addr, seq_no, payload=\"\"):\n        packet_str = tpe + dest_addr + src_addr\
+      \ + seq_no + payload\n        return packet_str\n    \n\n    def transmit(self,\
+      \ pkt_string):\n        try:\n            int_arr = bit_string_to_byte_list(pkt_string)\n\
+      \            vec = pmt.init_u8vector(len(int_arr), int_arr)\n            pdu\
+      \ = pmt.cons(pmt.PMT_NIL, vec)\n\n            self.message_port_pub(pmt.intern('Pkt_out'),\
+      \ pdu)\n        except Exception as e:\n            print(f\"Custom_error: Error\
+      \ transmitting packet: {e}\")\n    \n\n    def rx_handler(self):\n        while\
+      \ not self._stop.is_set():\n            # assuming the packet is a uint\n  \
+      \          try:\n                pkt_bytes = self.inbound_pkt_buffer.get(timeout=0.1)\n\
+      \            except queue.Empty:\n                continue\n            \n \
+      \           pkt_bitstring = byte_list_to_bitstring(pkt_bytes)\n\n          \
+      \  pkt_type = pkt_bitstring[:2]\n            pkt_dest_addr = pkt_bitstring[2:4]\n\
+      \            pkt_src_addr = pkt_bitstring[4:6]\n            pkt_seq_num = pkt_bitstring[6:8]\n\
+      \            pkt_payload = pkt_bitstring[8:]\n\n            seq_num_int = int(pkt_seq_num,\
+      \ 2)\n\n\n            if (pkt_type == self.pkt_data): # the pkt received is\
+      \ a data packet\n                if (pkt_dest_addr == self.my_address):\n  \
+      \                  new_seq_num = f\"{(seq_num_int+1):02b}\"\n              \
+      \      pkt_str = self.create_packet(self.pkt_ack, pkt_src_addr, pkt_dest_addr,\
+      \ new_seq_num)\n                    \n                    with self.lock:\n\
+      \                        self.transmit(pkt_str)\n\n                    \n  \
+      \                  payload_text = bitstring_to_text(pkt_payload)\n         \
+      \           \n                    # text = self.users[pkt_src_addr] + payload_text\n\
+      \                    text = payload_text\n\n                    # creating the\
+      \ pdu to send to UI\n                    # text_b = text.encode(\"utf-8\")\n\
+      \                    # pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(text_b),\
+      \ bytearray(text_b)))\n                    # self.message_port_pub(pmt.intern('Msg_out'),\
+      \ pdu)\n\n                    # send message to ui\n                    self.msg_to_ui_sock.send_string(text)\n\
+      \n\n                else:\n                    # the packet is not meant for\
+      \ me\n                    continue\n            elif (pkt_type == self.pkt_ack):\
+      \ # the pkt received is a ack packet\n                if (pkt_dest_addr == self.my_address):\n\
+      \                    self.current_receiver = pkt_src_addr\n                \
+      \    self.received_ack_seq_number = pkt_seq_num\n                    self.ack_received\
+      \ = True\n                    if (pkt_payload != ''):\n                    \
+      \    raise ValueError(f\"malinda's custom error: an acknowledgement packet cannot\
+      \ have a payload\")\n                else:\n                    # the packet\
+      \ is not meant for me\n                    # POSSIBLE ERROR PLACE, PLEASE CHECK\
+      \ WHEN TESING\n                    continue\n            else:\n           \
+      \     raise ValueError(f\"malinda's custom error: {pkt_type} is not a valid\
+      \ type\")\n    \n\n    def tx_handler(self):\n        while not self._stop.is_set():\n\
+      \            try:\n                try:\n                    msg_bytes = self.inbound_msg_buffer.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \     \n                msg_string = msg_bytes.decode(\"utf-8\", errors=\"strict\"\
+      )\n                \n\n\n                msg_bitstring = msg_string_to_bitstring(msg_string)\n\
+      \                current_seq_num = 0\n                seq_num_str = f\"{current_seq_num:02b}\"\
+      \n                current_pkt = self.create_packet(self.pkt_data, self.base_address,\
+      \ self.my_address, seq_num_str, msg_bitstring)\n\n                K = 0\n  \
+      \              success = False\n                abort = False\n            \
+      \    while (success != True and abort != True):\n                    with self.lock:\n\
+      \                        self.transmit(current_pkt)\n                    \n\
+      \                    time.sleep(2 * self.propegation_time)\n\n             \
+      \       if (self.ack_received == True):\n                        with self.lock:\n\
+      \                            self.ack_received = False\n                   \
+      \     if (self.received_ack_seq_number > current_seq_num):\n               \
+      \             if (self.current_receiver != self.base_address):\n           \
+      \                     raise ValueError(\"malinda's custom error: the base got\
+      \ an unintended ack packet!\")\n                            \n             \
+      \               # send feedback to ui\n                            self.feedback_push_sock.send_string(\"\
+      True\")\n                            success = True\n                      \
+      \      continue\n                    \n                    K += 1\n        \
+      \            if (K > self.number_of_retransmissions):\n                    \
+      \    self.feedback_push_sock.send_string(\"False\")\n                      \
+      \  abort = True\n                        continue\n\n                    R =\
+      \ random.getrandbits(K)\n\n                    Tb = R * self.propegation_time\n\
+      \                    time.sleep(Tb)\n                    continue\n\n      \
+      \      except Exception as e:\n                print(f\"[custom_handler TX handler\
+      \ error: {e}\")\n            \n                \n    def inbound_msg_handler(self,\
+      \ pdu):\n        try:\n            if pmt.is_pair(pdu):\n                data\
+      \ = pmt.cdr(pdu)\n\n                msg_bytes = bytes(pmt.u8vector_elements(data))\n\
+      \                self.inbound_msg_buffer.put(msg_bytes)\n        \n        except\
+      \ Exception as e:\n            print(f\"[custom_error: Error handling Msg_in:\
+      \ {e}\")\n    \n\n    def inbound_pdu_handler(self, pdu):\n        try:\n  \
+      \          if pmt.is_pair(pdu):\n                data = pmt.cdr(pdu)\n\n   \
+      \             rx_bytes = bytes(pmt.u8vector_elements(data))\n              \
+      \  self.inbound_pkt_buffer.put(rx_bytes)\n\n        except Exception as e:\n\
+      \            print(f\"[custom_error: Error handling pdu_in: {e}\")\n\n\n   \
+      \ def on_close(self):\n        self._stop.set()\n        if self.rx_thread.is_alive():\n\
+      \            self.rx_thread.join()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('User_side_Processor', 'blk', [('UiMsgOutPort', "'tcp://127.0.0.1:6556'"),
+      ('UiFeedbackPort', "'tcp://127.0.0.1:6557'"), ('NumberOfRetransmissions', '10'),
+      ('PropegationTime', '0.5'), ('TransmissionTime', '0.2')], [('Pkt_in', 'message',
+      1), ('Msg_in', 'message', 1)], [('Pkt_out', 'message', 1)], '', ['NumberOfRetransmissions',
+      'PropegationTime', 'TransmissionTime', 'UiFeedbackPort', 'UiMsgOutPort'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [616, 1908.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: "import threading\nimport zmq\nimport pmt\nfrom gnuradio import\
+      \ gr\nimport json\n\nclass blk(gr.basic_block):\n    \"\"\"\n    ZMQ PULL ->\
+      \ GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings\
+      \ from external senders without PMT serialization.\n    \"\"\"\n\n    def __init__(self,\
+      \ endpoint='tcp://127.0.0.1:5555', bind=False, rcv_timeout_ms=100):\n      \
+      \  gr.basic_block.__init__(self, name=\"pyzmq_pull\", in_sig=[], out_sig=[])\n\
+      \n        # Params (editable in GRC via block args if you expose them)\n   \
+      \     self.endpoint = endpoint\n        self.bind = bool(bind)\n        self.rcv_timeout_ms\
+      \ = int(rcv_timeout_ms)\n\n        # Message out port\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))\n\n        # ZMQ state\n        self._ctx = None\n        self._sock\
+      \ = None\n        self._thread = None\n        self._running = threading.Event()\n\
+      \n    # Start/stop are the right places to spin threads/sockets in GNU Radio\n\
+      \    def start(self):\n        self._ctx = zmq.Context.instance()\n        self._sock\
+      \ = self._ctx.socket(zmq.PULL)\n\n        # Tame shutdown and avoid hangs\n\
+      \        self._sock.setsockopt(zmq.LINGER, 0)\n        self._sock.setsockopt(zmq.RCVTIMEO,\
+      \ self.rcv_timeout_ms)\n        # Optional HWM if you want tighter buffering:\n\
+      \        # self._sock.setsockopt(zmq.RCVHWM, 100)\n\n        if self.bind:\n\
+      \            # Bind (listener)\n            self._sock.bind(self.endpoint) \
+      \          # e.g., \"tcp://*:5555\"\n        else:\n            # Connect (dialer)\n\
+      \            self._sock.connect(self.endpoint)        # e.g., \"tcp://127.0.0.1:5555\"\
+      \n\n        self._running.set()\n        self._thread = threading.Thread(target=self._rx_loop,\
+      \ daemon=True)\n        self._thread.start()\n        return super().start()\n\
+      \n    def stop(self):\n        self._running.clear()\n        try:\n       \
+      \     if self._thread:\n                self._thread.join(timeout=1.0)\n   \
+      \     except Exception:\n            pass\n        try:\n            if self._sock:\n\
+      \                self._sock.close(0)\n        except Exception:\n          \
+      \  pass\n        # Don\u2019t terminate the shared context; other blocks may\
+      \ use it\n        self._ctx = None\n        self._sock = None\n        return\
+      \ super().stop()\n\n    def _rx_loop(self):\n        while self._running.is_set():\n\
+      \            try:\n                # Receive one ZMQ frame (bytes). Works with\
+      \ send(), send_string(), send_json() etc.\n                frame = self._sock.recv()\
+      \  # bytes; RCVTIMEO makes this return after timeout\n            except zmq.Again:\n\
+      \                continue  # timeout, loop again\n            except Exception\
+      \ as e:\n                print(\"[pyzmq_pull] recv error:\", e)\n          \
+      \      break\n\n            if not frame:\n                continue\n      \
+      \      \n            frame = list(frame)\n            print(frame)\n       \
+      \     u8 = pmt.init_u8vector(len(frame), frame)\n            pdu = pmt.cons(pmt.PMT_NIL,\
+      \ u8)\n            self.message_port_pub(pmt.intern(\"out\"), pdu)\n"
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    endpoint: '''tcp://127.0.0.1:5555'''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rcv_timeout_ms: '100'
+  states:
+    _io_cache: ('pyzmq_pull', 'blk', [('endpoint', "'tcp://127.0.0.1:5555'"), ('bind',
+      'False'), ('rcv_timeout_ms', '100')], [], [('out', 'message', 1)], '\n    ZMQ
+      PULL -> GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings
+      from external senders without PMT serialization.\n    ', ['bind', 'endpoint',
+      'rcv_timeout_ms'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 916.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_1_0
+  id: epy_block
+  parameters:
+    _source_code: "import threading\nimport zmq\nimport pmt\nfrom gnuradio import\
+      \ gr\nimport json\n\nclass blk(gr.basic_block):\n    \"\"\"\n    ZMQ PULL ->\
+      \ GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings\
+      \ from external senders without PMT serialization.\n    \"\"\"\n\n    def __init__(self,\
+      \ endpoint='tcp://127.0.0.1:6665', bind=False, rcv_timeout_ms=100):\n      \
+      \  gr.basic_block.__init__(self, name=\"pyzmq_pull\", in_sig=[], out_sig=[])\n\
+      \n        # Params (editable in GRC via block args if you expose them)\n   \
+      \     self.endpoint = endpoint\n        self.bind = bool(bind)\n        self.rcv_timeout_ms\
+      \ = int(rcv_timeout_ms)\n\n        # Message out port\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))\n\n        # ZMQ state\n        self._ctx = None\n        self._sock\
+      \ = None\n        self._thread = None\n        self._running = threading.Event()\n\
+      \n    # Start/stop are the right places to spin threads/sockets in GNU Radio\n\
+      \    def start(self):\n        self._ctx = zmq.Context.instance()\n        self._sock\
+      \ = self._ctx.socket(zmq.PULL)\n\n        # Tame shutdown and avoid hangs\n\
+      \        self._sock.setsockopt(zmq.LINGER, 0)\n        self._sock.setsockopt(zmq.RCVTIMEO,\
+      \ self.rcv_timeout_ms)\n        # Optional HWM if you want tighter buffering:\n\
+      \        # self._sock.setsockopt(zmq.RCVHWM, 100)\n\n        if self.bind:\n\
+      \            # Bind (listener)\n            self._sock.bind(self.endpoint) \
+      \          # e.g., \"tcp://*:5555\"\n        else:\n            # Connect (dialer)\n\
+      \            self._sock.connect(self.endpoint)        # e.g., \"tcp://127.0.0.1:5555\"\
+      \n\n        self._running.set()\n        self._thread = threading.Thread(target=self._rx_loop,\
+      \ daemon=True)\n        self._thread.start()\n        return super().start()\n\
+      \n    def stop(self):\n        self._running.clear()\n        try:\n       \
+      \     if self._thread:\n                self._thread.join(timeout=1.0)\n   \
+      \     except Exception:\n            pass\n        try:\n            if self._sock:\n\
+      \                self._sock.close(0)\n        except Exception:\n          \
+      \  pass\n        # Don\u2019t terminate the shared context; other blocks may\
+      \ use it\n        self._ctx = None\n        self._sock = None\n        return\
+      \ super().stop()\n\n    def _rx_loop(self):\n        while self._running.is_set():\n\
+      \            try:\n                # Receive one ZMQ frame (bytes). Works with\
+      \ send(), send_string(), send_json() etc.\n                frame = self._sock.recv()\
+      \  # bytes; RCVTIMEO makes this return after timeout\n            except zmq.Again:\n\
+      \                continue  # timeout, loop again\n            except Exception\
+      \ as e:\n                print(\"[pyzmq_pull] recv error:\", e)\n          \
+      \      break\n\n            if not frame:\n                continue\n      \
+      \      \n            # message = frame.decode(\"utf-8\")\n            frame\
+      \ = list(frame)\n            print(frame)\n            u8 = pmt.init_u8vector(len(frame),\
+      \ frame)\n            pdu = pmt.cons(pmt.PMT_NIL, u8)\n            self.message_port_pub(pmt.intern(\"\
+      out\"), pdu)\n"
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    endpoint: '''tcp://127.0.0.1:6665'''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rcv_timeout_ms: '100'
+  states:
+    _io_cache: ('pyzmq_pull', 'blk', [('endpoint', "'tcp://127.0.0.1:6665'"), ('bind',
+      'False'), ('rcv_timeout_ms', '100')], [], [('out', 'message', 1)], '\n    ZMQ
+      PULL -> GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings
+      from external senders without PMT serialization.\n    ', ['bind', 'endpoint',
+      'rcv_timeout_ms'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 1948.0]
+    rotation: 0
+    state: enabled
+- name: pdu_pdu_to_tagged_stream_0
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1696, 484.0]
+    rotation: 0
+    state: enabled
+- name: pdu_pdu_to_tagged_stream_0_0
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1664, 1932.0]
+    rotation: 0
+    state: enabled
+- name: pdu_pdu_to_tagged_stream_1
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1664, 548.0]
+    rotation: 0
+    state: enabled
+- name: pdu_pdu_to_tagged_stream_1_0
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1648, 1996.0]
+    rotation: 0
+    state: enabled
+- name: pdu_tagged_stream_to_pdu_0
+  id: pdu_tagged_stream_to_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2864, 1500.0]
+    rotation: 180
+    state: enabled
+- name: pdu_tagged_stream_to_pdu_0_0
+  id: pdu_tagged_stream_to_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2744, 2924.0]
+    rotation: 180
+    state: enabled
+- name: virtual_sink_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: base_to_user
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3176, 516.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_1
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: user_to_base
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3224, 1956.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: base_to_user
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1080, 1092.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_1
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: user_to_base
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [856, 2308.0]
+    rotation: 0
+    state: enabled
+- name: zeromq_pub_sink_0_0
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://127.0.0.1:49202
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3008, 2124.0]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_sink_0_0_0
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://127.0.0.1:49204
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3016, 700.0]
+    rotation: 0
+    state: disabled
+- name: zeromq_sub_source_0_0
+  id: zeromq_sub_source
+  parameters:
+    address: tcp://127.0.0.1:49203
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: ''
+    hwm: '-1'
+    key: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2616, 2132.0]
+    rotation: 0
+    state: disabled
+- name: zeromq_sub_source_0_0_0
+  id: zeromq_sub_source
+  parameters:
+    address: tcp://127.0.0.1:49201
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: ''
+    hwm: '-1'
+    key: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2664, 708.0]
+    rotation: 0
+    state: disabled
+
+connections:
+- [blocks_repack_bits_bb_1_0_0, '0', pdu_tagged_stream_to_pdu_0, '0']
+- [blocks_repack_bits_bb_1_0_0_0, '0', pdu_tagged_stream_to_pdu_0_0, '0']
+- [blocks_tagged_stream_mux_0, '0', digital_constellation_modulator_0_0, '0']
+- [blocks_tagged_stream_mux_0_0, '0', digital_constellation_modulator_0_0_0, '0']
+- [blocks_throttle2_0, '0', channels_channel_model_0, '0']
+- [blocks_throttle2_0_0, '0', channels_channel_model_0_0, '0']
+- [blocks_unpack_k_bits_bb_0, '0', digital_correlate_access_code_xx_ts_0, '0']
+- [blocks_unpack_k_bits_bb_0_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
+- [channels_channel_model_0, '0', virtual_sink_0, '0']
+- [channels_channel_model_0, '0', zeromq_pub_sink_0_0_0, '0']
+- [channels_channel_model_0_0, '0', virtual_sink_1, '0']
+- [channels_channel_model_0_0, '0', zeromq_pub_sink_0_0, '0']
+- [digital_constellation_decoder_cb_0, '0', digital_diff_decoder_bb_0_1, '0']
+- [digital_constellation_decoder_cb_0_0, '0', digital_diff_decoder_bb_0_1_0, '0']
+- [digital_constellation_modulator_0_0, '0', blocks_throttle2_0, '0']
+- [digital_constellation_modulator_0_0_0, '0', blocks_throttle2_0_0, '0']
+- [digital_correlate_access_code_xx_ts_0, '0', blocks_repack_bits_bb_1_0_0, '0']
+- [digital_correlate_access_code_xx_ts_0_0, '0', blocks_repack_bits_bb_1_0_0_0, '0']
+- [digital_costas_loop_cc_0, '0', digital_constellation_decoder_cb_0, '0']
+- [digital_costas_loop_cc_0_0, '0', digital_constellation_decoder_cb_0_0, '0']
+- [digital_crc_append_0, out, digital_protocol_formatter_async_0, in]
+- [digital_crc_append_0_0, out, digital_protocol_formatter_async_0_0, in]
+- [digital_crc_check_0, ok, epy_block_0_0, Pkt_in]
+- [digital_crc_check_0_0, ok, epy_block_0, Pkt_in]
+- [digital_diff_decoder_bb_0_1, '0', digital_map_bb_0_1, '0']
+- [digital_diff_decoder_bb_0_1_0, '0', digital_map_bb_0_1_0, '0']
+- [digital_linear_equalizer_0_0, '0', digital_costas_loop_cc_0, '0']
+- [digital_linear_equalizer_0_0_0, '0', digital_costas_loop_cc_0_0, '0']
+- [digital_map_bb_0_1, '0', blocks_unpack_k_bits_bb_0, '0']
+- [digital_map_bb_0_1_0, '0', blocks_unpack_k_bits_bb_0_0, '0']
+- [digital_pfb_clock_sync_xxx_0, '0', digital_linear_equalizer_0_0, '0']
+- [digital_pfb_clock_sync_xxx_0_0, '0', digital_linear_equalizer_0_0_0, '0']
+- [digital_protocol_formatter_async_0, header, pdu_pdu_to_tagged_stream_0, pdus]
+- [digital_protocol_formatter_async_0, payload, pdu_pdu_to_tagged_stream_1, pdus]
+- [digital_protocol_formatter_async_0_0, header, pdu_pdu_to_tagged_stream_0_0, pdus]
+- [digital_protocol_formatter_async_0_0, payload, pdu_pdu_to_tagged_stream_1_0, pdus]
+- [epy_block_0, Pkt_out, digital_crc_append_0, in]
+- [epy_block_0_0, Pkt_out, digital_crc_append_0_0, in]
+- [epy_block_1, out, epy_block_0, Msg_in]
+- [epy_block_1_0, out, epy_block_0_0, Msg_in]
+- [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
+- [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0_0, '0']
+- [pdu_pdu_to_tagged_stream_1, '0', blocks_tagged_stream_mux_0, '1']
+- [pdu_pdu_to_tagged_stream_1_0, '0', blocks_tagged_stream_mux_0_0, '1']
+- [pdu_tagged_stream_to_pdu_0, pdus, digital_crc_check_0, in]
+- [pdu_tagged_stream_to_pdu_0_0, pdus, digital_crc_check_0_0, in]
+- [virtual_source_0, '0', digital_pfb_clock_sync_xxx_0, '0']
+- [virtual_source_1, '0', digital_pfb_clock_sync_xxx_0_0, '0']
+- [zeromq_sub_source_0_0, '0', channels_channel_model_0_0, '0']
+- [zeromq_sub_source_0_0_0, '0', channels_channel_model_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0

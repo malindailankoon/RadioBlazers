@@ -10,7 +10,7 @@ class blk(gr.basic_block):
     Accepts raw bytes/strings from external senders without PMT serialization.
     """
 
-    def __init__(self, endpoint='tcp://127.0.0.1:5555', bind=False, rcv_timeout_ms=100):
+    def __init__(self, endpoint='tcp://127.0.0.1:6665', bind=False, rcv_timeout_ms=100):
         gr.basic_block.__init__(self, name="pyzmq_pull", in_sig=[], out_sig=[])
 
         # Params (editable in GRC via block args if you expose them)
@@ -81,6 +81,7 @@ class blk(gr.basic_block):
             if not frame:
                 continue
             
+            # message = frame.decode("utf-8")
             frame = list(frame)
             print(frame)
             u8 = pmt.init_u8vector(len(frame), frame)

@@ -31,11 +31,11 @@ class ClientSideGUI:
 
         # Incoming chat messages from GNU Radio
         self.incoming_pull = self.context.socket(zmq.PULL)
-        self.incoming_pull.connect("tcp://localhost:5556")
+        self.incoming_pull.connect("tcp://localhost:6556")
 
-        self.base_addr = "0x0000"
+        self.base_addr = "00"
         # MODIFY THIS FOR DIFFERENT USERS------------
-        self.client_addr = "0x0001"
+        self.client_addr = "01"
         self.client_name = "User 1"
         #-------------------------------------------
 
@@ -242,15 +242,10 @@ class ClientSideGUI:
 
 
             # send over zmq push
-            payload = {
-                "type": "tx",
-                "message_id": message_id,
-                "to_addr": self.base_addr,
-                "text": msg["text"]
-            }
+            payload = msg["text"]
 
             try:
-                self.push_sock.send_json(payload, flags=0)
+                self.push_sock.send_string(payload, flags=0)
             except Exception:
                 msg["status"] = STATUS_FAILED
                 self._set_status(message_id, STATUS_FAILED)
@@ -293,14 +288,21 @@ class ClientSideGUI:
             socks = dict(poller.poll(timeout=200))  # ms
             if self.feedback_pull in socks and socks[self.feedback_pull] == zmq.POLLIN:
                 try:
-                    msg = self.feedback_pull.recv_json(flags=zmq.NOBLOCK)
+                    msg = self.feedback_pull.recv(flags=zmq.NOBLOCK)
                 except zmq.Again:
                     continue
 
-                # expect: {"type":"tx_ack","message_id":"...","ok":true/false}
-                if msg.get("type") == "tx_ack" and "message_id" in msg:
+                # Expect: "True" or "False"
+                fb = msg.decode("utf-8")
+                if fb == "True":
                     with self.feedback_lock:
-                        self.feedback_buffer[msg["message_id"]] = {"ok": bool(msg.get("ok"))}
+                        self.feedback_buffer.append({"ok": True})
+                if fb == "False":
+                    with self.feedback_lock:
+                        self.feedback_buffer.append({"ok": False})
+                # if msg.get("type") == "tx_ack" and "message_id" in msg:
+                #     with self.feedback_lock:
+                #         self.feedback_buffer[msg["message_id"]] = {"ok": bool(msg.get("ok"))}
     
     def _incoming_listener_loop(self):
         """Continuously read incoming chat and post to the correct tab"""
@@ -311,14 +313,16 @@ class ClientSideGUI:
             socks = dict(poller.poll(timeout=200)) # ms
             if self.incoming_pull in socks and socks[self.incoming_pull] == zmq.POLLIN:
                 try:
-                    msg = self.incoming_pull.recv_json(flags=zmq.POLLIN)
+                    msg = self.incoming_pull.recv(flags=zmq.POLLIN)
                 except zmq.Again:
                     continue
 
-                # Expect: {"type":"rx","from_addr":"0x0000","text":"hello"}
-                if msg.get("type") == "rx":
-                    text = msg.get("text", "")
-                    self._append_received_message(text)
+                # Expect: "message"
+                text = msg.decode("utf-8")
+                self._append_received_message(text)
+                # if msg.get("type") == "rx":
+                #     text = msg.get("text", "")
+                #     self._append_received_message(text)
 
     
 
