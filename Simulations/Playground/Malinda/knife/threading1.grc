@@ -311,7 +311,7 @@ blocks:
     bus_structure: null
     coordinate: [208, 456.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_message_strobe_0_0
   id: blocks_message_strobe
   parameters:
@@ -328,7 +328,7 @@ blocks:
     bus_structure: null
     coordinate: [2128, 2192.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_repack_bits_bb_1_0_0
   id: blocks_repack_bits_bb
   parameters:
@@ -1383,6 +1383,256 @@ blocks:
     coordinate: [2528, 2112.0]
     rotation: 0
     state: enabled
+- name: epy_block_0_1_0
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\nfrom gnuradio\
+      \ import gr\nfrom PyQt5 import QtWidgets, QtCore, QtGui\nimport sys\nimport\
+      \ pmt\nimport time\nfrom datetime import datetime  # for timestamps\n\nclass\
+      \ WallpaperScrollArea(QtWidgets.QScrollArea):\n    def __init__(self, bg_image=\"\
+      \", parent=None):\n        super().__init__(parent)\n        self.setWidgetResizable(True)\n\
+      \        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       self.bg_pixmap = QtGui.QPixmap(bg_image) if bg_image else None\n\n \
+      \   def paintEvent(self, event):\n        if self.bg_pixmap:\n            painter\
+      \ = QtGui.QPainter(self.viewport())\n            painter.drawPixmap(self.viewport().rect(),\
+      \ self.bg_pixmap)\n        super().paintEvent(event)\n\n\nclass messenger_gui(gr.basic_block):\n\
+      \    \"\"\"\n    WhatsApp-style Messenger GUI with dynamic bubble resizing,\n\
+      \    horizontal scroll for long messages, timestamp update on delivery,\n  \
+      \  and failure indication if retry limit is exceeded.\n    \"\"\"\n\n    def\
+      \ __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n       \
+      \     self,\n            name=\"Messenger GUI\",\n            in_sig=None,\n\
+      \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))\n        self.message_port_register_in(pmt.intern(\"feedback\"))\n \
+      \       self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      \n        # Qt Application\n        self.app = QtWidgets.QApplication.instance()\n\
+      \        if self.app is None:\n            self.app = QtWidgets.QApplication(sys.argv)\n\
+      \n        self.qt_widget = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\
+      Messenger GUI\")\n        self.qt_widget.resize(600, 500)\n\n        main_layout\
+      \ = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(0, 0, 0,\
+      \ 0)\n        main_layout.setSpacing(0)\n        self.qt_widget.setLayout(main_layout)\n\
+      \n        # Scroll area with background\n        self.scroll_area = WallpaperScrollArea(bg_image=bg_image)\n\
+      \        self.scroll_area.setStyleSheet(\"border: none;\")\n        self.scroll_area.setWidgetResizable(True)\n\
+      \        main_layout.addWidget(self.scroll_area, stretch=1)\n\n        # Chat\
+      \ container\n        self.chat_container = QtWidgets.QWidget()\n        self.chat_layout\
+      \ = QtWidgets.QVBoxLayout()\n        self.chat_layout.setAlignment(QtCore.Qt.AlignTop)\n\
+      \        self.chat_layout.setSpacing(10)\n        self.chat_container.setLayout(self.chat_layout)\n\
+      \        self.chat_container.setStyleSheet(\"background: transparent;\")\n \
+      \       self.scroll_area.setWidget(self.chat_container)\n\n        # Input area\n\
+      \        input_layout = QtWidgets.QHBoxLayout()\n        self.input_box = QtWidgets.QLineEdit()\n\
+      \        self.input_box.setPlaceholderText(\"Type a message...\")\n        self.input_box.setStyleSheet(\"\
+      \"\"\n            QLineEdit {\n                border-radius: 15px;\n      \
+      \          padding: 12px;\n                background-color: rgba(255,255,255,230);\n\
+      \                font-size: 32px;\n            }\n        \"\"\")\n        self.send_button\
+      \ = QtWidgets.QPushButton(\"Send\")\n        self.send_button.setStyleSheet(\"\
+      \"\"\n            QPushButton {\n                background-color: #4CAF50;\n\
+      \                color: white;\n                border-radius: 15px;\n     \
+      \           padding: 12px 24px;\n                font-weight: bold;\n      \
+      \          font-size: 32px;\n            }\n            QPushButton:hover {\n\
+      \                background-color: #45a049;\n            }\n        \"\"\")\n\
+      \        input_layout.addWidget(self.input_box)\n        input_layout.addWidget(self.send_button)\n\
+      \        main_layout.addLayout(input_layout)\n\n        # Connect signals\n\
+      \        self.send_button.clicked.connect(self.send_message)\n        self.input_box.returnPressed.connect(self.send_message)\n\
+      \n        self._last_message_timestamp = None\n        self.qt_widget.show()\n\
+      \n    def send_message(self):\n        text = self.input_box.text().strip()\n\
+      \        if not text:\n            return\n\n        # Send message via GNU\
+      \ Radio port\n        self.message_port_pub(pmt.intern(\"out\"), pmt.string_to_symbol(text))\n\
+      \n        # Scrollable bubble container\n        scroll = QtWidgets.QScrollArea()\n\
+      \        scroll.setWidgetResizable(True)\n        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setStyleSheet(\"border: none; background: transparent;\")\n\n\
+      \        # Message bubble\n        bubble = QtWidgets.QLabel(text)\n       \
+      \ bubble.setWordWrap(False)  # Disable wrapping\n        bubble.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: qlineargradient(x1:0,\
+      \ y1:0, x2:1, y2:1,\n                    stop:0 #4CAF50, stop:1 #66BB6A);\n\
+      \                color: white;\n                border-radius: 15px;\n     \
+      \           padding: 10px 15px;\n                font-size: 32px;\n        \
+      \    }\n        \"\"\")\n\n        # Shadow effect\n        effect = QtWidgets.QGraphicsDropShadowEffect()\n\
+      \        effect.setBlurRadius(6)\n        effect.setXOffset(2)\n        effect.setYOffset(2)\n\
+      \        effect.setColor(QtGui.QColor(0, 0, 0, 100))\n        bubble.setGraphicsEffect(effect)\n\
+      \n        scroll.setWidget(bubble)\n        scroll.setMinimumWidth(200)\n  \
+      \      scroll.setMaximumWidth(550)  # Max visible width of bubble\n        bubble.adjustSize()\n\
+      \        scroll.adjustSize()\n\n        # Timestamp label as small blue pill\
+      \ initially\n        timestamp = QtWidgets.QLabel(\"Sending...\")\n        timestamp.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: #2196F3;  /* blue\
+      \ background */\n                color: white;\n                font-size: 18px;\n\
+      \                border-radius: 8px;\n                padding: 2px 6px;\n  \
+      \          }\n        \"\"\")\n        timestamp.setAlignment(QtCore.Qt.AlignRight)\n\
+      \        timestamp.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Container for bubble + timestamp\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(2)\n        vbox.addWidget(scroll)\n   \
+      \     vbox.addWidget(timestamp, alignment=QtCore.Qt.AlignRight)\n        container.setLayout(vbox)\n\
+      \        container.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Add to chat layout\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignRight)\n\n        # Force proper size recalculation\n\
+      \        bubble.adjustSize()\n        scroll.adjustSize()\n        container.adjustSize()\n\
+      \        self.chat_container.adjustSize()\n        QtWidgets.QApplication.processEvents()\
+      \  # Force layout update\n\n        # Scroll to bottom\n        QtCore.QTimer.singleShot(50,\
+      \ lambda: self.scroll_area.verticalScrollBar().setValue(\n            self.scroll_area.verticalScrollBar().maximum()\n\
+      \        ))\n\n        self.input_box.clear()\n        self._last_message_timestamp\
+      \ = timestamp\n\n    def _process_feedback(self, msg):\n        try:\n     \
+      \       if pmt.is_symbol(msg):\n                feedback = pmt.symbol_to_string(msg)\n\
+      \n                if feedback == \"END_ACK_RECEIVED\" and self._last_message_timestamp:\n\
+      \                    # Successful delivery: show current time in blue pill\n\
+      \                    self._last_message_timestamp.setText(datetime.now().strftime(\"\
+      %H:%M\"))\n                    self._last_message_timestamp.setStyleSheet(\"\
+      \"\"\n                        QLabel {\n                            background-color:\
+      \ #2196F3;  /* blue background */\n                            color: white;\n\
+      \                            font-size: 18px;\n                            border-radius:\
+      \ 8px;\n                            padding: 2px 6px;\n                    \
+      \    }\n                    \"\"\")\n\n                elif feedback == \"RETRY_LIMIT_EXCEEDED\"\
+      \ and self._last_message_timestamp:\n                    # Failed delivery:\
+      \ red pill\n                    self._last_message_timestamp.setText(\"Failed\"\
+      )\n                    self._last_message_timestamp.setStyleSheet(\"\"\"\n \
+      \                       QLabel {\n                            background-color:\
+      \ #F44336;  /* red background */\n                            color: white;\n\
+      \                            font-size: 18px;\n                            border-radius:\
+      \ 8px;\n                            padding: 2px 6px;\n                    \
+      \    }\n                    \"\"\")\n\n        except Exception as e:\n    \
+      \        print(f\"[messenger_gui] Error processing feedback: {e}\")\n\n"
+    affinity: ''
+    alias: ''
+    bg_image: '''/home/vboxuser/Downloads/tx.jpg'''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Messenger GUI', 'messenger_gui', [('bg_image', "''")], [('feedback',
+      'message', 1)], [('out', 'message', 1)], '\n    WhatsApp-style Messenger GUI
+      with dynamic bubble resizing,\n    horizontal scroll for long messages, timestamp
+      update on delivery,\n    and failure indication if retry limit is exceeded.\n    ',
+      [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 280.0]
+    rotation: 180
+    state: enabled
+- name: epy_block_0_1_0_0
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\nfrom gnuradio\
+      \ import gr\nfrom PyQt5 import QtWidgets, QtCore, QtGui\nimport sys\nimport\
+      \ pmt\nimport time\nfrom datetime import datetime  # for timestamps\n\nclass\
+      \ WallpaperScrollArea(QtWidgets.QScrollArea):\n    def __init__(self, bg_image=\"\
+      \", parent=None):\n        super().__init__(parent)\n        self.setWidgetResizable(True)\n\
+      \        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       self.bg_pixmap = QtGui.QPixmap(bg_image) if bg_image else None\n\n \
+      \   def paintEvent(self, event):\n        if self.bg_pixmap:\n            painter\
+      \ = QtGui.QPainter(self.viewport())\n            painter.drawPixmap(self.viewport().rect(),\
+      \ self.bg_pixmap)\n        super().paintEvent(event)\n\n\nclass messenger_gui(gr.basic_block):\n\
+      \    \"\"\"\n    WhatsApp-style Messenger GUI with dynamic bubble resizing,\n\
+      \    horizontal scroll for long messages, timestamp update on delivery,\n  \
+      \  and failure indication if retry limit is exceeded.\n    \"\"\"\n\n    def\
+      \ __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n       \
+      \     self,\n            name=\"Messenger GUI\",\n            in_sig=None,\n\
+      \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))\n        self.message_port_register_in(pmt.intern(\"feedback\"))\n \
+      \       self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      \n        # Qt Application\n        self.app = QtWidgets.QApplication.instance()\n\
+      \        if self.app is None:\n            self.app = QtWidgets.QApplication(sys.argv)\n\
+      \n        self.qt_widget = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\
+      Messenger GUI\")\n        self.qt_widget.resize(600, 500)\n\n        main_layout\
+      \ = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(0, 0, 0,\
+      \ 0)\n        main_layout.setSpacing(0)\n        self.qt_widget.setLayout(main_layout)\n\
+      \n        # Scroll area with background\n        self.scroll_area = WallpaperScrollArea(bg_image=bg_image)\n\
+      \        self.scroll_area.setStyleSheet(\"border: none;\")\n        self.scroll_area.setWidgetResizable(True)\n\
+      \        main_layout.addWidget(self.scroll_area, stretch=1)\n\n        # Chat\
+      \ container\n        self.chat_container = QtWidgets.QWidget()\n        self.chat_layout\
+      \ = QtWidgets.QVBoxLayout()\n        self.chat_layout.setAlignment(QtCore.Qt.AlignTop)\n\
+      \        self.chat_layout.setSpacing(10)\n        self.chat_container.setLayout(self.chat_layout)\n\
+      \        self.chat_container.setStyleSheet(\"background: transparent;\")\n \
+      \       self.scroll_area.setWidget(self.chat_container)\n\n        # Input area\n\
+      \        input_layout = QtWidgets.QHBoxLayout()\n        self.input_box = QtWidgets.QLineEdit()\n\
+      \        self.input_box.setPlaceholderText(\"Type a message...\")\n        self.input_box.setStyleSheet(\"\
+      \"\"\n            QLineEdit {\n                border-radius: 15px;\n      \
+      \          padding: 12px;\n                background-color: rgba(255,255,255,230);\n\
+      \                font-size: 32px;\n            }\n        \"\"\")\n        self.send_button\
+      \ = QtWidgets.QPushButton(\"Send\")\n        self.send_button.setStyleSheet(\"\
+      \"\"\n            QPushButton {\n                background-color: #4CAF50;\n\
+      \                color: white;\n                border-radius: 15px;\n     \
+      \           padding: 12px 24px;\n                font-weight: bold;\n      \
+      \          font-size: 32px;\n            }\n            QPushButton:hover {\n\
+      \                background-color: #45a049;\n            }\n        \"\"\")\n\
+      \        input_layout.addWidget(self.input_box)\n        input_layout.addWidget(self.send_button)\n\
+      \        main_layout.addLayout(input_layout)\n\n        # Connect signals\n\
+      \        self.send_button.clicked.connect(self.send_message)\n        self.input_box.returnPressed.connect(self.send_message)\n\
+      \n        self._last_message_timestamp = None\n        self.qt_widget.show()\n\
+      \n    def send_message(self):\n        text = self.input_box.text().strip()\n\
+      \        if not text:\n            return\n\n        # Send message via GNU\
+      \ Radio port\n        self.message_port_pub(pmt.intern(\"out\"), pmt.string_to_symbol(text))\n\
+      \n        # Scrollable bubble container\n        scroll = QtWidgets.QScrollArea()\n\
+      \        scroll.setWidgetResizable(True)\n        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setStyleSheet(\"border: none; background: transparent;\")\n\n\
+      \        # Message bubble\n        bubble = QtWidgets.QLabel(text)\n       \
+      \ bubble.setWordWrap(False)  # Disable wrapping\n        bubble.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: qlineargradient(x1:0,\
+      \ y1:0, x2:1, y2:1,\n                    stop:0 #4CAF50, stop:1 #66BB6A);\n\
+      \                color: white;\n                border-radius: 15px;\n     \
+      \           padding: 10px 15px;\n                font-size: 32px;\n        \
+      \    }\n        \"\"\")\n\n        # Shadow effect\n        effect = QtWidgets.QGraphicsDropShadowEffect()\n\
+      \        effect.setBlurRadius(6)\n        effect.setXOffset(2)\n        effect.setYOffset(2)\n\
+      \        effect.setColor(QtGui.QColor(0, 0, 0, 100))\n        bubble.setGraphicsEffect(effect)\n\
+      \n        scroll.setWidget(bubble)\n        scroll.setMinimumWidth(200)\n  \
+      \      scroll.setMaximumWidth(550)  # Max visible width of bubble\n        bubble.adjustSize()\n\
+      \        scroll.adjustSize()\n\n        # Timestamp label as small blue pill\
+      \ initially\n        timestamp = QtWidgets.QLabel(\"Sending...\")\n        timestamp.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: #2196F3;  /* blue\
+      \ background */\n                color: white;\n                font-size: 18px;\n\
+      \                border-radius: 8px;\n                padding: 2px 6px;\n  \
+      \          }\n        \"\"\")\n        timestamp.setAlignment(QtCore.Qt.AlignRight)\n\
+      \        timestamp.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Container for bubble + timestamp\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(2)\n        vbox.addWidget(scroll)\n   \
+      \     vbox.addWidget(timestamp, alignment=QtCore.Qt.AlignRight)\n        container.setLayout(vbox)\n\
+      \        container.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Add to chat layout\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignRight)\n\n        # Force proper size recalculation\n\
+      \        bubble.adjustSize()\n        scroll.adjustSize()\n        container.adjustSize()\n\
+      \        self.chat_container.adjustSize()\n        QtWidgets.QApplication.processEvents()\
+      \  # Force layout update\n\n        # Scroll to bottom\n        QtCore.QTimer.singleShot(50,\
+      \ lambda: self.scroll_area.verticalScrollBar().setValue(\n            self.scroll_area.verticalScrollBar().maximum()\n\
+      \        ))\n\n        self.input_box.clear()\n        self._last_message_timestamp\
+      \ = timestamp\n\n    def _process_feedback(self, msg):\n        try:\n     \
+      \       if pmt.is_symbol(msg):\n                feedback = pmt.symbol_to_string(msg)\n\
+      \n                if feedback == \"END_ACK_RECEIVED\" and self._last_message_timestamp:\n\
+      \                    # Successful delivery: show current time in blue pill\n\
+      \                    self._last_message_timestamp.setText(datetime.now().strftime(\"\
+      %H:%M\"))\n                    self._last_message_timestamp.setStyleSheet(\"\
+      \"\"\n                        QLabel {\n                            background-color:\
+      \ #2196F3;  /* blue background */\n                            color: white;\n\
+      \                            font-size: 18px;\n                            border-radius:\
+      \ 8px;\n                            padding: 2px 6px;\n                    \
+      \    }\n                    \"\"\")\n\n                elif feedback == \"RETRY_LIMIT_EXCEEDED\"\
+      \ and self._last_message_timestamp:\n                    # Failed delivery:\
+      \ red pill\n                    self._last_message_timestamp.setText(\"Failed\"\
+      )\n                    self._last_message_timestamp.setStyleSheet(\"\"\"\n \
+      \                       QLabel {\n                            background-color:\
+      \ #F44336;  /* red background */\n                            color: white;\n\
+      \                            font-size: 18px;\n                            border-radius:\
+      \ 8px;\n                            padding: 2px 6px;\n                    \
+      \    }\n                    \"\"\")\n\n        except Exception as e:\n    \
+      \        print(f\"[messenger_gui] Error processing feedback: {e}\")\n\n"
+    affinity: ''
+    alias: ''
+    bg_image: '''/home/vboxuser/Downloads/tx.jpg'''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Messenger GUI', 'messenger_gui', [('bg_image', "''")], [('feedback',
+      'message', 1)], [('out', 'message', 1)], '\n    WhatsApp-style Messenger GUI
+      with dynamic bubble resizing,\n    horizontal scroll for long messages, timestamp
+      update on delivery,\n    and failure indication if retry limit is exceeded.\n    ',
+      [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2496, 2320.0]
+    rotation: 180
+    state: enabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1575,6 +1825,8 @@ connections:
 - [epy_block_0, pdu_out, digital_protocol_formatter_async_0, in]
 - [epy_block_0_0, msg_out, blocks_message_debug_0, print]
 - [epy_block_0_0, pdu_out, digital_protocol_formatter_async_0_0, in]
+- [epy_block_0_1_0, out, epy_block_0, msg_in]
+- [epy_block_0_1_0_0, out, epy_block_0_0, msg_in]
 - [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0_0, '0']

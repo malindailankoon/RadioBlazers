@@ -12,11 +12,10 @@
 from PyQt5 import Qt
 from gnuradio import qtgui
 from PyQt5 import QtCore
-from gnuradio import blocks
-from gnuradio import channels
-from gnuradio.filter import firdes
+from gnuradio import blocks, gr
 from gnuradio import digital
 from gnuradio import gr
+from gnuradio.filter import firdes
 from gnuradio.fft import window
 import sys
 import signal
@@ -24,11 +23,9 @@ from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
-from gnuradio import gr, pdu
 import channel_epy_block_0 as epy_block_0  # embedded python block
 import channel_epy_block_0_0 as epy_block_0_0  # embedded python block
-import channel_epy_block_1 as epy_block_1  # embedded python block
-import channel_epy_block_1_0 as epy_block_1_0  # embedded python block
+import channel_epy_block_0_1_0 as epy_block_0_1_0  # embedded python block
 import threading
 
 
@@ -114,12 +111,6 @@ class channel(gr.top_block, Qt.QWidget):
             self.controls_grid_layout_0.setRowStretch(r, 1)
         for c in range(2, 3):
             self.controls_grid_layout_0.setColumnStretch(c, 1)
-        self.pdu_tagged_stream_to_pdu_0_0 = pdu.tagged_stream_to_pdu(gr.types.byte_t, 'packet_len')
-        self.pdu_tagged_stream_to_pdu_0 = pdu.tagged_stream_to_pdu(gr.types.byte_t, 'packet_len')
-        self.pdu_pdu_to_tagged_stream_1_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.pdu_pdu_to_tagged_stream_1 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.pdu_pdu_to_tagged_stream_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self._noise_volt_range = qtgui.Range(0, 1, 0.01, 0.4, 200)
         self._noise_volt_win = qtgui.RangeWidget(self._noise_volt_range, self.set_noise_volt, "Noise Voltage", "counter_slider", float, QtCore.Qt.Horizontal)
         self.controls_grid_layout_0.addWidget(self._noise_volt_win, 0, 0, 1, 1)
@@ -134,121 +125,19 @@ class channel(gr.top_block, Qt.QWidget):
             self.controls_grid_layout_0.setRowStretch(r, 1)
         for c in range(1, 2):
             self.controls_grid_layout_0.setColumnStretch(c, 1)
-        self.epy_block_1_0 = epy_block_1_0.blk(endpoint='tcp://127.0.0.1:6665', bind=True, rcv_timeout_ms=100)
-        self.epy_block_1 = epy_block_1.blk(endpoint='tcp://127.0.0.1:5555', bind=True, rcv_timeout_ms=100)
+        self.epy_block_0_1_0 = epy_block_0_1_0.messenger_gui(bg_image='/home/vboxuser/Downloads/tx.jpg')
         self.epy_block_0_0 = epy_block_0_0.blk(UiMsgOutPort='tcp://127.0.0.1:6556', UiFeedbackPort='tcp://127.0.0.1:6667', NumberOfRetransmissions=10, PropegationTime=0.5, TransmissionTime=0.2)
         self.epy_block_0 = epy_block_0.blk(UiMsgOutPort='tcp://127.0.0.1:5556', UiFeedbackPort='tcp://127.0.0.1:5557', NumberOfRetransmissions=10, PropegationTime=0.5, TransmissionTime=0.2)
-        self.digital_protocol_formatter_async_0_0 = digital.protocol_formatter_async(hdr_format)
-        self.digital_protocol_formatter_async_0 = digital.protocol_formatter_async(hdr_format)
-        self.digital_pfb_clock_sync_xxx_0_0 = digital.pfb_clock_sync_ccf(sps, phase_bw, rrc_taps, nfilts, (nfilts/2), 1.5, 2)
-        self.digital_pfb_clock_sync_xxx_0 = digital.pfb_clock_sync_ccf(sps, phase_bw, rrc_taps, nfilts, (nfilts/2), 1.5, 2)
-        self.digital_map_bb_0_1_0 = digital.map_bb([0,1,2,3])
-        self.digital_map_bb_0_1 = digital.map_bb([0,1,2,3])
-        self.digital_linear_equalizer_0_0_0 = digital.linear_equalizer(32, 4, variable_adaptive_algorithm_0, True, [ ], 'corr_est')
-        self.digital_linear_equalizer_0_0 = digital.linear_equalizer(32, 4, variable_adaptive_algorithm_0, True, [ ], 'corr_est')
-        self.digital_diff_decoder_bb_0_1_0 = digital.diff_decoder_bb(4, digital.DIFF_DIFFERENTIAL)
-        self.digital_diff_decoder_bb_0_1 = digital.diff_decoder_bb(4, digital.DIFF_DIFFERENTIAL)
-        self.digital_crc_check_0_0 = digital.crc_check(32, 0x4C11DB7, 0xFFFFFFFF, 0xFFFFFFFF, True, True, False, False, 0)
-        self.digital_crc_check_0 = digital.crc_check(32, 0x4C11DB7, 0xFFFFFFFF, 0xFFFFFFFF, True, True, False, False, 0)
-        self.digital_crc_append_0_0 = digital.crc_append(32, 0x4C11DB7, 0xFFFFFFFF, 0xFFFFFFFF, True, True, False, 0)
-        self.digital_crc_append_0 = digital.crc_append(32, 0x4C11DB7, 0xFFFFFFFF, 0xFFFFFFFF, True, True, False, 0)
-        self.digital_costas_loop_cc_0_0 = digital.costas_loop_cc(phase_bw, arity, False)
-        self.digital_costas_loop_cc_0 = digital.costas_loop_cc(phase_bw, arity, False)
-        self.digital_correlate_access_code_xx_ts_0_0 = digital.correlate_access_code_bb_ts("11100001010110101110100010010011",
-          thresh, 'packet_len')
-        self.digital_correlate_access_code_xx_ts_0 = digital.correlate_access_code_bb_ts("11100001010110101110100010010011",
-          thresh, 'packet_len')
-        self.digital_constellation_modulator_0_0_0 = digital.generic_mod(
-            constellation=qpsk,
-            differential=True,
-            samples_per_symbol=sps,
-            pre_diff_code=True,
-            excess_bw=excess_bw,
-            verbose=False,
-            log=False,
-            truncate=False)
-        self.digital_constellation_modulator_0_0 = digital.generic_mod(
-            constellation=qpsk,
-            differential=True,
-            samples_per_symbol=sps,
-            pre_diff_code=True,
-            excess_bw=excess_bw,
-            verbose=False,
-            log=False,
-            truncate=False)
-        self.digital_constellation_decoder_cb_0_0 = digital.constellation_decoder_cb(qpsk)
-        self.digital_constellation_decoder_cb_0 = digital.constellation_decoder_cb(qpsk)
-        self.channels_channel_model_0_0 = channels.channel_model(
-            noise_voltage=0.0,
-            frequency_offset=0.0,
-            epsilon=1.0,
-            taps=[1.0],
-            noise_seed=0,
-            block_tags=False)
-        self.channels_channel_model_0 = channels.channel_model(
-            noise_voltage=0.0,
-            frequency_offset=0.0,
-            epsilon=1.0,
-            taps=[1.0],
-            noise_seed=0,
-            block_tags=False)
-        self.blocks_unpack_k_bits_bb_0_0 = blocks.unpack_k_bits_bb(2)
-        self.blocks_unpack_k_bits_bb_0 = blocks.unpack_k_bits_bb(2)
-        self.blocks_throttle2_0_0 = blocks.throttle( gr.sizeof_gr_complex*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
-        self.blocks_throttle2_0 = blocks.throttle( gr.sizeof_gr_complex*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
-        self.blocks_tagged_stream_mux_0_0 = blocks.tagged_stream_mux(gr.sizeof_char*1, '', 0)
-        self.blocks_tagged_stream_mux_0 = blocks.tagged_stream_mux(gr.sizeof_char*1, '', 0)
-        self.blocks_repack_bits_bb_1_0_0_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
-        self.blocks_repack_bits_bb_1_0_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
+        self.blocks_message_debug_0 = blocks.message_debug(True, gr.log_levels.info)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.digital_crc_append_0, 'out'), (self.digital_protocol_formatter_async_0, 'in'))
-        self.msg_connect((self.digital_crc_append_0_0, 'out'), (self.digital_protocol_formatter_async_0_0, 'in'))
-        self.msg_connect((self.digital_crc_check_0, 'ok'), (self.epy_block_0_0, 'Pkt_in'))
-        self.msg_connect((self.digital_crc_check_0_0, 'ok'), (self.epy_block_0, 'Pkt_in'))
-        self.msg_connect((self.digital_protocol_formatter_async_0, 'header'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
-        self.msg_connect((self.digital_protocol_formatter_async_0, 'payload'), (self.pdu_pdu_to_tagged_stream_1, 'pdus'))
-        self.msg_connect((self.digital_protocol_formatter_async_0_0, 'header'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
-        self.msg_connect((self.digital_protocol_formatter_async_0_0, 'payload'), (self.pdu_pdu_to_tagged_stream_1_0, 'pdus'))
-        self.msg_connect((self.epy_block_0, 'Pkt_out'), (self.digital_crc_append_0, 'in'))
-        self.msg_connect((self.epy_block_0_0, 'Pkt_out'), (self.digital_crc_append_0_0, 'in'))
-        self.msg_connect((self.epy_block_1, 'out'), (self.epy_block_0, 'Msg_in'))
-        self.msg_connect((self.epy_block_1_0, 'out'), (self.epy_block_0_0, 'Msg_in'))
-        self.msg_connect((self.pdu_tagged_stream_to_pdu_0, 'pdus'), (self.digital_crc_check_0, 'in'))
-        self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.digital_crc_check_0_0, 'in'))
-        self.connect((self.blocks_repack_bits_bb_1_0_0, 0), (self.pdu_tagged_stream_to_pdu_0, 0))
-        self.connect((self.blocks_repack_bits_bb_1_0_0_0, 0), (self.pdu_tagged_stream_to_pdu_0_0, 0))
-        self.connect((self.blocks_tagged_stream_mux_0, 0), (self.digital_constellation_modulator_0_0, 0))
-        self.connect((self.blocks_tagged_stream_mux_0_0, 0), (self.digital_constellation_modulator_0_0_0, 0))
-        self.connect((self.blocks_throttle2_0, 0), (self.channels_channel_model_0, 0))
-        self.connect((self.blocks_throttle2_0_0, 0), (self.channels_channel_model_0_0, 0))
-        self.connect((self.blocks_unpack_k_bits_bb_0, 0), (self.digital_correlate_access_code_xx_ts_0, 0))
-        self.connect((self.blocks_unpack_k_bits_bb_0_0, 0), (self.digital_correlate_access_code_xx_ts_0_0, 0))
-        self.connect((self.channels_channel_model_0, 0), (self.digital_pfb_clock_sync_xxx_0, 0))
-        self.connect((self.channels_channel_model_0_0, 0), (self.digital_pfb_clock_sync_xxx_0_0, 0))
-        self.connect((self.digital_constellation_decoder_cb_0, 0), (self.digital_diff_decoder_bb_0_1, 0))
-        self.connect((self.digital_constellation_decoder_cb_0_0, 0), (self.digital_diff_decoder_bb_0_1_0, 0))
-        self.connect((self.digital_constellation_modulator_0_0, 0), (self.blocks_throttle2_0, 0))
-        self.connect((self.digital_constellation_modulator_0_0_0, 0), (self.blocks_throttle2_0_0, 0))
-        self.connect((self.digital_correlate_access_code_xx_ts_0, 0), (self.blocks_repack_bits_bb_1_0_0, 0))
-        self.connect((self.digital_correlate_access_code_xx_ts_0_0, 0), (self.blocks_repack_bits_bb_1_0_0_0, 0))
-        self.connect((self.digital_costas_loop_cc_0, 0), (self.digital_constellation_decoder_cb_0, 0))
-        self.connect((self.digital_costas_loop_cc_0_0, 0), (self.digital_constellation_decoder_cb_0_0, 0))
-        self.connect((self.digital_diff_decoder_bb_0_1, 0), (self.digital_map_bb_0_1, 0))
-        self.connect((self.digital_diff_decoder_bb_0_1_0, 0), (self.digital_map_bb_0_1_0, 0))
-        self.connect((self.digital_linear_equalizer_0_0, 0), (self.digital_costas_loop_cc_0, 0))
-        self.connect((self.digital_linear_equalizer_0_0_0, 0), (self.digital_costas_loop_cc_0_0, 0))
-        self.connect((self.digital_map_bb_0_1, 0), (self.blocks_unpack_k_bits_bb_0, 0))
-        self.connect((self.digital_map_bb_0_1_0, 0), (self.blocks_unpack_k_bits_bb_0_0, 0))
-        self.connect((self.digital_pfb_clock_sync_xxx_0, 0), (self.digital_linear_equalizer_0_0, 0))
-        self.connect((self.digital_pfb_clock_sync_xxx_0_0, 0), (self.digital_linear_equalizer_0_0_0, 0))
-        self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.blocks_tagged_stream_mux_0, 0))
-        self.connect((self.pdu_pdu_to_tagged_stream_0_0, 0), (self.blocks_tagged_stream_mux_0_0, 0))
-        self.connect((self.pdu_pdu_to_tagged_stream_1, 0), (self.blocks_tagged_stream_mux_0, 1))
-        self.connect((self.pdu_pdu_to_tagged_stream_1_0, 0), (self.blocks_tagged_stream_mux_0_0, 1))
+        self.msg_connect((self.epy_block_0, 'Pkt_out'), (self.epy_block_0_0, 'Pkt_in'))
+        self.msg_connect((self.epy_block_0_0, 'Msg_out'), (self.blocks_message_debug_0, 'print_pdu'))
+        self.msg_connect((self.epy_block_0_0, 'Pkt_out'), (self.epy_block_0, 'Pkt_in'))
+        self.msg_connect((self.epy_block_0_1_0, 'out'), (self.epy_block_0, 'Msg_in'))
 
 
     def closeEvent(self, event):
@@ -271,8 +160,6 @@ class channel(gr.top_block, Qt.QWidget):
 
     def set_qpsk(self, qpsk):
         self.qpsk = qpsk
-        self.digital_constellation_decoder_cb_0.set_constellation(self.qpsk)
-        self.digital_constellation_decoder_cb_0_0.set_constellation(self.qpsk)
 
     def get_nfilts(self):
         return self.nfilts
@@ -317,26 +204,18 @@ class channel(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.blocks_throttle2_0.set_sample_rate(self.samp_rate)
-        self.blocks_throttle2_0_0.set_sample_rate(self.samp_rate)
 
     def get_rrc_taps(self):
         return self.rrc_taps
 
     def set_rrc_taps(self, rrc_taps):
         self.rrc_taps = rrc_taps
-        self.digital_pfb_clock_sync_xxx_0.update_taps(self.rrc_taps)
-        self.digital_pfb_clock_sync_xxx_0_0.update_taps(self.rrc_taps)
 
     def get_phase_bw(self):
         return self.phase_bw
 
     def set_phase_bw(self, phase_bw):
         self.phase_bw = phase_bw
-        self.digital_costas_loop_cc_0.set_loop_bandwidth(self.phase_bw)
-        self.digital_pfb_clock_sync_xxx_0.set_loop_bandwidth(self.phase_bw)
-        self.digital_pfb_clock_sync_xxx_0_0.set_loop_bandwidth(self.phase_bw)
-        self.digital_costas_loop_cc_0_0.set_loop_bandwidth(self.phase_bw)
 
     def get_noise_volt(self):
         return self.noise_volt

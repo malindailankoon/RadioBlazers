@@ -262,7 +262,22 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1824, 1136.0]
+    coordinate: [1816, 1188.0]
+    rotation: 0
+    state: enabled
+- name: blocks_message_debug_0
+  id: blocks_message_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    en_uvec: 'True'
+    log_level: info
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1024, 1704.0]
     rotation: 0
     state: enabled
 - name: blocks_repack_bits_bb_1_0_0
@@ -284,7 +299,7 @@ blocks:
     bus_structure: null
     coordinate: [3256, 1496.0]
     rotation: 180
-    state: true
+    state: disabled
 - name: blocks_repack_bits_bb_1_0_0_0
   id: blocks_repack_bits_bb
   parameters:
@@ -304,14 +319,14 @@ blocks:
     bus_structure: null
     coordinate: [3144, 2920.0]
     rotation: 180
-    state: true
+    state: disabled
 - name: blocks_tagged_stream_mux_0
   id: blocks_tagged_stream_mux
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    lengthtagname: ''
+    lengthtagname: packet_len
     maxoutbuf: '0'
     minoutbuf: '0'
     ninputs: '2'
@@ -324,14 +339,14 @@ blocks:
     bus_structure: null
     coordinate: [2032, 516.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_tagged_stream_mux_0_0
   id: blocks_tagged_stream_mux
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    lengthtagname: ''
+    lengthtagname: packet_len
     maxoutbuf: '0'
     minoutbuf: '0'
     ninputs: '2'
@@ -344,7 +359,7 @@ blocks:
     bus_structure: null
     coordinate: [2016, 1964.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_throttle2_0
   id: blocks_throttle2
   parameters:
@@ -363,9 +378,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2592, 504.0]
+    coordinate: [2624, 508.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_throttle2_0_0
   id: blocks_throttle2
   parameters:
@@ -386,7 +401,7 @@ blocks:
     bus_structure: null
     coordinate: [2632, 1952.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_unpack_k_bits_bb_0
   id: blocks_unpack_k_bits_bb
   parameters:
@@ -402,7 +417,7 @@ blocks:
     bus_structure: null
     coordinate: [3192, 1132.0]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: blocks_unpack_k_bits_bb_0_0
   id: blocks_unpack_k_bits_bb
   parameters:
@@ -418,7 +433,7 @@ blocks:
     bus_structure: null
     coordinate: [3080, 2556.0]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: channels_channel_model_0
   id: channels_channel_model
   parameters:
@@ -439,7 +454,7 @@ blocks:
     bus_structure: null
     coordinate: [2848, 456.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: channels_channel_model_0_0
   id: channels_channel_model
   parameters:
@@ -460,7 +475,7 @@ blocks:
     bus_structure: null
     coordinate: [2888, 1896.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: controls
   id: qtgui_tab_widget
   parameters:
@@ -511,7 +526,7 @@ blocks:
     bus_structure: null
     coordinate: [2464, 996.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_constellation_decoder_cb_0_0
   id: digital_constellation_decoder_cb
   parameters:
@@ -528,7 +543,7 @@ blocks:
     bus_structure: null
     coordinate: [2344, 2412.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_constellation_modulator_0_0
   id: digital_constellation_modulator
   parameters:
@@ -548,9 +563,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2272, 480.0]
+    coordinate: [2320, 492.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_constellation_modulator_0_0_0
   id: digital_constellation_modulator
   parameters:
@@ -572,11 +587,11 @@ blocks:
     bus_structure: null
     coordinate: [2288, 1928.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_correlate_access_code_xx_ts_0
   id: digital_correlate_access_code_xx_ts
   parameters:
-    access_code: '"11100001010110101110100010010011"'
+    access_code: access_code
     affinity: ''
     alias: ''
     comment: ''
@@ -591,11 +606,11 @@ blocks:
     bus_structure: null
     coordinate: [3120, 1236.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: digital_correlate_access_code_xx_ts_0_0
   id: digital_correlate_access_code_xx_ts
   parameters:
-    access_code: '"11100001010110101110100010010011"'
+    access_code: access_code
     affinity: ''
     alias: ''
     comment: ''
@@ -610,7 +625,7 @@ blocks:
     bus_structure: null
     coordinate: [3000, 2660.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: digital_costas_loop_cc_0
   id: digital_costas_loop_cc
   parameters:
@@ -628,7 +643,7 @@ blocks:
     bus_structure: null
     coordinate: [2144, 996.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_costas_loop_cc_0_0
   id: digital_costas_loop_cc
   parameters:
@@ -646,7 +661,7 @@ blocks:
     bus_structure: null
     coordinate: [2024, 2412.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_crc_append_0
   id: digital_crc_append
   parameters:
@@ -669,7 +684,7 @@ blocks:
     bus_structure: null
     coordinate: [992, 500.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_crc_append_0_0
   id: digital_crc_append
   parameters:
@@ -690,9 +705,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [992, 1948.0]
+    coordinate: [992, 1952.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_crc_check_0
   id: digital_crc_check
   parameters:
@@ -716,7 +731,7 @@ blocks:
     bus_structure: null
     coordinate: [2520, 1500.0]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: digital_crc_check_0_0
   id: digital_crc_check
   parameters:
@@ -740,7 +755,7 @@ blocks:
     bus_structure: null
     coordinate: [2408, 2924.0]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: digital_diff_decoder_bb_0_1
   id: digital_diff_decoder_bb
   parameters:
@@ -757,7 +772,7 @@ blocks:
     bus_structure: null
     coordinate: [2784, 984.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_diff_decoder_bb_0_1_0
   id: digital_diff_decoder_bb
   parameters:
@@ -774,7 +789,7 @@ blocks:
     bus_structure: null
     coordinate: [2664, 2408.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_linear_equalizer_0_0
   id: digital_linear_equalizer
   parameters:
@@ -795,7 +810,7 @@ blocks:
     bus_structure: null
     coordinate: [1776, 1036.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_linear_equalizer_0_0_0
   id: digital_linear_equalizer
   parameters:
@@ -816,7 +831,7 @@ blocks:
     bus_structure: null
     coordinate: [1656, 2460.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_map_bb_0_1
   id: digital_map_bb
   parameters:
@@ -832,7 +847,7 @@ blocks:
     bus_structure: null
     coordinate: [3064, 988.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_map_bb_0_1_0
   id: digital_map_bb
   parameters:
@@ -848,7 +863,7 @@ blocks:
     bus_structure: null
     coordinate: [2952, 2412.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_pfb_clock_sync_xxx_0
   id: digital_pfb_clock_sync_xxx
   parameters:
@@ -871,7 +886,7 @@ blocks:
     bus_structure: null
     coordinate: [1360, 1024.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_pfb_clock_sync_xxx_0_0
   id: digital_pfb_clock_sync_xxx
   parameters:
@@ -894,7 +909,7 @@ blocks:
     bus_structure: null
     coordinate: [1160, 2240.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_protocol_formatter_async_0
   id: digital_protocol_formatter_async
   parameters:
@@ -910,7 +925,7 @@ blocks:
     bus_structure: null
     coordinate: [1296, 500.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_protocol_formatter_async_0_0
   id: digital_protocol_formatter_async
   parameters:
@@ -924,9 +939,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1280, 1948.0]
+    coordinate: [1280, 1944.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_0
   id: epy_block
   parameters:
@@ -954,15 +969,15 @@ blocks:
       \ = NumberOfRetransmissions\n        self.propegation_time = PropegationTime\n\
       \        self.transmission_time = TransmissionTime\n        self.UiFeedbackPort\
       \ = UiFeedbackPort\n        self.UiMsgOutPort = UiMsgOutPort\n        \n\n\n\
-      \        # ui sockets\n        self.context = zmq.Context.instance()\n\n   \
-      \     self.feedback_push_sock = self.context.socket(zmq.PUSH)\n        try:\n\
-      \            self.feedback_push_sock.bind(self.UiFeedbackPort)\n        except\
-      \ Exception as e:\n            print(f\"custom_error: cant connect to socket:\
-      \ {e}\")\n\n        self.msg_to_ui_sock = self.context.socket(zmq.PUSH)\n  \
-      \      try:\n            self.msg_to_ui_sock.bind(self.UiMsgOutPort)\n     \
-      \   except Exception as e:\n            print(f\"custom_error: cant connect\
-      \ to socket: {e}\")\n        \n\n        \n        \n        # types\n     \
-      \   self.pkt_data = '00'\n        self.pkt_ack = '11'\n\n        # my address\n\
+      \        # # ui sockets\n        # self.context = zmq.Context.instance()\n\n\
+      \        # self.feedback_push_sock = self.context.socket(zmq.PUSH)\n       \
+      \ # try:\n        #     self.feedback_push_sock.bind(self.UiFeedbackPort)\n\
+      \        # except Exception as e:\n        #     print(f\"custom_error: cant\
+      \ connect to socket: {e}\")\n\n        # self.msg_to_ui_sock = self.context.socket(zmq.PUSH)\n\
+      \        # try:\n        #     self.msg_to_ui_sock.bind(self.UiMsgOutPort)\n\
+      \        # except Exception as e:\n        #     print(f\"custom_error: cant\
+      \ connect to socket: {e}\")\n        \n\n        \n        \n        # types\n\
+      \        self.pkt_data = '00'\n        self.pkt_ack = '11'\n\n        # my address\n\
       \        self.my_address = '00'\n\n        # user node addresses\n        self.addrs\
       \ = {\"User 1\": '01', \"User 2\": '10', \"User 3\": '11'}\n        self.users\
       \ = {'01': 'user1', '10': 'user2', '11': 'user3'}\n\n        # for ack purposes\n\
@@ -970,21 +985,20 @@ blocks:
       \ using this variable, then it reads the received_seq_number\n        self.received_ack_seq_number\
       \ = 0\n        self.current_receiver = '' # use this for debug purposes \n\n\
       \        \n\n        # defining ports\n        self.message_port_register_in(pmt.intern('Msg_in'))\n\
-      \        # self.message_port_register_out(pmt.intern('Msg_out'))\n        #\
-      \ self.message_port_register_out(pmt.intern('feedback'))\n        self.message_port_register_out(pmt.intern('Pkt_out'))\n\
-      \        self.message_port_register_in(pmt.intern('Pkt_in'))\n\n        self.set_msg_handler(pmt.intern('Pkt_in'),\
-      \ self.inbound_pdu_handler)\n        self.set_msg_handler(pmt.intern('Msg_in'),\
-      \ self.inbound_msg_handler)\n\n        \n        # setting up threads\n    \
-      \    self._stop = threading.Event()\n        self.lock = threading.Lock()\n\n\
-      \        self.inbound_pkt_buffer = queue.Queue() # holds byte arrays\n     \
-      \   self.rx_thread = threading.Thread(target=self.rx_handler)\n\n        self.inbound_msg_buffer\
-      \ = queue.Queue()\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
-      \        \n\n        self.rx_thread.start()\n        self.tx_thread.start()\n\
-      \    \n    \n\n    def create_packet(self, tpe, dest_addr, src_addr, seq_no,\
-      \ payload=\"\"):\n        packet_str = tpe + dest_addr + src_addr + seq_no +\
-      \ payload\n        return packet_str\n    \n    def transmit(self, pkt_string):\n\
-      \        try:\n            int_arr = bit_string_to_byte_list(pkt_string)\n \
-      \           vec = pmt.init_u8vector(len(int_arr), int_arr)\n            pdu\
+      \        self.message_port_register_out(pmt.intern('Msg_out'))\n        # self.message_port_register_out(pmt.intern('feedback'))\n\
+      \        self.message_port_register_out(pmt.intern('Pkt_out'))\n        self.message_port_register_in(pmt.intern('Pkt_in'))\n\
+      \n        self.set_msg_handler(pmt.intern('Pkt_in'), self.inbound_pdu_handler)\n\
+      \        self.set_msg_handler(pmt.intern('Msg_in'), self.inbound_msg_handler)\n\
+      \n        \n        # setting up threads\n        self._stop = threading.Event()\n\
+      \        self.lock = threading.Lock()\n\n        self.inbound_pkt_buffer = queue.Queue()\
+      \ # holds byte arrays\n        self.rx_thread = threading.Thread(target=self.rx_handler)\n\
+      \n        self.inbound_msg_buffer = queue.Queue()\n        self.tx_thread =\
+      \ threading.Thread(target=self.tx_handler)\n        \n\n        self.rx_thread.start()\n\
+      \        self.tx_thread.start()\n    \n    \n\n    def create_packet(self, tpe,\
+      \ dest_addr, src_addr, seq_no, payload=\"\"):\n        packet_str = tpe + dest_addr\
+      \ + src_addr + seq_no + payload\n        return packet_str\n    \n    def transmit(self,\
+      \ pkt_string):\n        try:\n            int_arr = bit_string_to_byte_list(pkt_string)\n\
+      \            vec = pmt.init_u8vector(len(int_arr), int_arr)\n            pdu\
       \ = pmt.cons(pmt.PMT_NIL, vec)\n\n            self.message_port_pub(pmt.intern('Pkt_out'),\
       \ pdu)\n        except Exception as e:\n            print(f\"Custom_error: Error\
       \ transmitting packet: {e}\")\n\n\n    def rx_handler(self):\n        while\
@@ -1004,10 +1018,9 @@ blocks:
       \                  payload_text = bitstring_to_text(pkt_payload)\n         \
       \           \n                    text = pkt_src_addr + \":\" + payload_text\n\
       \n                    # creating the pdu to send to UI\n                   \
-      \ # text_b = text.encode(\"utf-8\")\n                    # pdu = pmt.cons(pmt.PMT_NIL,\
-      \ pmt.init_u8vector(len(text_b), bytearray(text_b)))\n                    #\
-      \ self.message_port_pub(pmt.intern('Msg_out'), pdu)\n\n                    #\
-      \ send message to ui\n                    self.msg_to_ui_sock.send_string(text)\n\
+      \ text_b = text.encode(\"utf-8\")\n                    pdu = pmt.cons(pmt.PMT_NIL,\
+      \ pmt.init_u8vector(len(text_b), bytearray(text_b)))\n                    self.message_port_pub(pmt.intern('Msg_out'),\
+      \ pdu)\n\n                    # send message to ui\n                    # self.msg_to_ui_sock.send_string(text)\n\
       \n\n                else:\n                    # the packet is not meant for\
       \ me\n                    continue\n            elif (pkt_type == self.pkt_ack):\
       \ # the pkt received is a ack packet\n                if (pkt_dest_addr == self.my_address):\n\
@@ -1038,10 +1051,10 @@ blocks:
       \ != dest_addr):\n                                raise ValueError(\"malinda's\
       \ custom error: the base got an unintended ack packet!\")\n                \
       \            \n                            # send feedback to ui\n         \
-      \                   self.feedback_push_sock.send_string(\"True\")\n        \
-      \                    success = True\n                            continue\n\
+      \                   # self.feedback_push_sock.send_string(\"True\")\n      \
+      \                      success = True\n                            continue\n\
       \                    \n                    K += 1\n                    if (K\
-      \ > self.number_of_retransmissions):\n                        self.feedback_push_sock.send_string(\"\
+      \ > self.number_of_retransmissions):\n                        # self.feedback_push_sock.send_string(\"\
       False\")\n                        abort = True\n                        continue\n\
       \n                    R = random.getrandbits(K)\n\n                    Tb =\
       \ R * self.propegation_time\n                    time.sleep(Tb)\n          \
@@ -1067,9 +1080,10 @@ blocks:
   states:
     _io_cache: ('Base_Station_Processor', 'blk', [('UiMsgOutPort', "'tcp://127.0.0.1:5556'"),
       ('UiFeedbackPort', "'tcp://127.0.0.1:5557'"), ('NumberOfRetransmissions', '10'),
-      ('PropegationTime', '0.5'), ('TransmissionTime', '0.2')], [('Pkt_in', 'message',
-      1), ('Msg_in', 'message', 1)], [('Pkt_out', 'message', 1)], 'arguments to this
-      function show up as parameters in GRC', ['UiFeedbackPort', 'UiMsgOutPort'])
+      ('PropegationTime', '0.5'), ('TransmissionTime', '0.2')], [('Msg_in', 'message',
+      1), ('Pkt_in', 'message', 1)], [('Pkt_out', 'message', 1), ('Msg_out', 'message',
+      1)], 'arguments to this function show up as parameters in GRC', ['UiFeedbackPort',
+      'UiMsgOutPort'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1101,23 +1115,24 @@ blocks:
       \ \n            in_sig=[],\n            out_sig=[]\n        )\n\n        self.UiMsgOutPort\
       \ = UiMsgOutPort\n        self.UiFeedbackPort = UiFeedbackPort\n        self.NumberOfRetransmissions\
       \ = NumberOfRetransmissions\n        self.PropegationTime = PropegationTime\n\
-      \        self.TransmissionTime = TransmissionTime\n\n\n        # ui sockets\n\
-      \        self.context = zmq.Context.instance()\n\n        self.feedback_push_sock\
-      \ = self.context.socket(zmq.PUSH)\n        try:\n            self.feedback_push_sock.bind(self.UiFeedbackPort)\n\
-      \        except Exception as e:\n            print(f\"custom_error: cant connect\
-      \ to socket: {e}\")\n        \n\n        self.msg_to_ui_sock = self.context.socket(zmq.PUSH)\n\
-      \        try:\n            self.msg_to_ui_sock.bind(self.UiMsgOutPort)\n   \
-      \     except Exception as e:\n            print(f\"custom_error: cant connect\
-      \ to socket: {e}\")\n        \n\n        # types\n        self.pkt_data = '00'\n\
-      \        self.pkt_ack = '11'\n\n        # my address\n        self.my_address\
+      \        self.TransmissionTime = TransmissionTime\n\n\n        # # ui sockets\n\
+      \        # self.context = zmq.Context.instance()\n\n        # self.feedback_push_sock\
+      \ = self.context.socket(zmq.PUSH)\n        # try:\n        #     self.feedback_push_sock.connect(self.UiFeedbackPort)\n\
+      \        # except Exception as e:\n        #     print(f\"custom_error: cant\
+      \ connect to socket: {e}\")\n        \n\n        # self.msg_to_ui_sock = self.context.socket(zmq.PUSH)\n\
+      \        # try:\n        #     self.msg_to_ui_sock.connect(self.UiMsgOutPort)\n\
+      \        # except Exception as e:\n        #     print(f\"custom_error: cant\
+      \ connect to socket: {e}\")\n        \n\n        # types\n        self.pkt_data\
+      \ = '00'\n        self.pkt_ack = '11'\n\n        # my address\n        self.my_address\
       \ = '01'\n\n        # base address\n        self.base_address = '00'\n\n\n \
       \       # for ack purposes\n        self.ack_received = False # the TX will\
       \ know that an ack was received using this variable, then it reads the received_seq_number\n\
       \        self.received_ack_seq_number = 0\n        self.current_receiver = ''\
       \ # use this for debug purposes \n\n\n        # defining ports\n        self.message_port_register_in(pmt.intern('Msg_in'))\n\
       \        self.message_port_register_out(pmt.intern('Pkt_out'))\n        self.message_port_register_in(pmt.intern('Pkt_in'))\n\
-      \n        self.set_msg_handler(pmt.intern('Pkt_in'), self.inbound_pdu_handler)\n\
-      \        self.set_msg_handler(pmt.intern('Msg_in'), self.inbound_msg_handler)\n\
+      \        self.message_port_register_out(pmt.intern('Msg_out'))\n\n\n       \
+      \ self.set_msg_handler(pmt.intern('Pkt_in'), self.inbound_pdu_handler)\n   \
+      \     self.set_msg_handler(pmt.intern('Msg_in'), self.inbound_msg_handler)\n\
       \n\n        # setting up threads\n        self._stop = threading.Event()\n \
       \       self.lock = threading.Lock()\n\n        self.inbound_pkt_buffer = queue.Queue()\
       \ # holds byte arrays\n        self.rx_thread = threading.Thread(target=self.rx_handler)\n\
@@ -1147,15 +1162,15 @@ blocks:
       \                  payload_text = bitstring_to_text(pkt_payload)\n         \
       \           \n                    # text = self.users[pkt_src_addr] + payload_text\n\
       \                    text = payload_text\n\n                    # creating the\
-      \ pdu to send to UI\n                    # text_b = text.encode(\"utf-8\")\n\
-      \                    # pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(text_b),\
-      \ bytearray(text_b)))\n                    # self.message_port_pub(pmt.intern('Msg_out'),\
-      \ pdu)\n\n                    # send message to ui\n                    self.msg_to_ui_sock.send_string(text)\n\
+      \ pdu to send to UI\n                    text_b = text.encode(\"utf-8\")\n \
+      \                   pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(text_b),\
+      \ bytearray(text_b)))\n                    self.message_port_pub(pmt.intern('Msg_out'),\
+      \ pdu)\n\n                    # send message to ui\n                    # self.msg_to_ui_sock.send_string(text)\n\
       \n\n                else:\n                    # the packet is not meant for\
       \ me\n                    continue\n            elif (pkt_type == self.pkt_ack):\
       \ # the pkt received is a ack packet\n                if (pkt_dest_addr == self.my_address):\n\
       \                    self.current_receiver = pkt_src_addr\n                \
-      \    self.received_ack_seq_number = pkt_seq_num\n                    self.ack_received\
+      \    self.received_ack_seq_number = seq_num_int\n                    self.ack_received\
       \ = True\n                    if (pkt_payload != ''):\n                    \
       \    raise ValueError(f\"malinda's custom error: an acknowledgement packet cannot\
       \ have a payload\")\n                else:\n                    # the packet\
@@ -1180,13 +1195,13 @@ blocks:
       \             if (self.current_receiver != self.base_address):\n           \
       \                     raise ValueError(\"malinda's custom error: the base got\
       \ an unintended ack packet!\")\n                            \n             \
-      \               # send feedback to ui\n                            self.feedback_push_sock.send_string(\"\
+      \               # send feedback to ui\n                            # self.feedback_push_sock.send_string(\"\
       True\")\n                            success = True\n                      \
       \      continue\n                    \n                    K += 1\n        \
       \            if (K > self.number_of_retransmissions):\n                    \
-      \    self.feedback_push_sock.send_string(\"False\")\n                      \
-      \  abort = True\n                        continue\n\n                    R =\
-      \ random.getrandbits(K)\n\n                    Tb = R * self.propegation_time\n\
+      \    # self.feedback_push_sock.send_string(\"False\")\n                    \
+      \    abort = True\n                        continue\n\n                    R\
+      \ = random.getrandbits(K)\n\n                    Tb = R * self.propegation_time\n\
       \                    time.sleep(Tb)\n                    continue\n\n      \
       \      except Exception as e:\n                print(f\"[custom_handler TX handler\
       \ error: {e}\")\n            \n                \n    def inbound_msg_handler(self,\
@@ -1209,137 +1224,145 @@ blocks:
   states:
     _io_cache: ('User_side_Processor', 'blk', [('UiMsgOutPort', "'tcp://127.0.0.1:6556'"),
       ('UiFeedbackPort', "'tcp://127.0.0.1:6557'"), ('NumberOfRetransmissions', '10'),
-      ('PropegationTime', '0.5'), ('TransmissionTime', '0.2')], [('Pkt_in', 'message',
-      1), ('Msg_in', 'message', 1)], [('Pkt_out', 'message', 1)], '', ['NumberOfRetransmissions',
-      'PropegationTime', 'TransmissionTime', 'UiFeedbackPort', 'UiMsgOutPort'])
+      ('PropegationTime', '0.5'), ('TransmissionTime', '0.2')], [('Msg_in', 'message',
+      1), ('Pkt_in', 'message', 1)], [('Msg_out', 'message', 1), ('Pkt_out', 'message',
+      1)], '', ['NumberOfRetransmissions', 'PropegationTime', 'TransmissionTime',
+      'UiFeedbackPort', 'UiMsgOutPort'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [616, 1908.0]
+    coordinate: [616, 1896.0]
     rotation: 0
     state: enabled
-- name: epy_block_1
+- name: epy_block_0_1_0
   id: epy_block
   parameters:
-    _source_code: "import threading\nimport zmq\nimport pmt\nfrom gnuradio import\
-      \ gr\nimport json\n\nclass blk(gr.basic_block):\n    \"\"\"\n    ZMQ PULL ->\
-      \ GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings\
-      \ from external senders without PMT serialization.\n    \"\"\"\n\n    def __init__(self,\
-      \ endpoint='tcp://127.0.0.1:5555', bind=False, rcv_timeout_ms=100):\n      \
-      \  gr.basic_block.__init__(self, name=\"pyzmq_pull\", in_sig=[], out_sig=[])\n\
-      \n        # Params (editable in GRC via block args if you expose them)\n   \
-      \     self.endpoint = endpoint\n        self.bind = bool(bind)\n        self.rcv_timeout_ms\
-      \ = int(rcv_timeout_ms)\n\n        # Message out port\n        self.message_port_register_out(pmt.intern(\"\
-      out\"))\n\n        # ZMQ state\n        self._ctx = None\n        self._sock\
-      \ = None\n        self._thread = None\n        self._running = threading.Event()\n\
-      \n    # Start/stop are the right places to spin threads/sockets in GNU Radio\n\
-      \    def start(self):\n        self._ctx = zmq.Context.instance()\n        self._sock\
-      \ = self._ctx.socket(zmq.PULL)\n\n        # Tame shutdown and avoid hangs\n\
-      \        self._sock.setsockopt(zmq.LINGER, 0)\n        self._sock.setsockopt(zmq.RCVTIMEO,\
-      \ self.rcv_timeout_ms)\n        # Optional HWM if you want tighter buffering:\n\
-      \        # self._sock.setsockopt(zmq.RCVHWM, 100)\n\n        if self.bind:\n\
-      \            # Bind (listener)\n            self._sock.bind(self.endpoint) \
-      \          # e.g., \"tcp://*:5555\"\n        else:\n            # Connect (dialer)\n\
-      \            self._sock.connect(self.endpoint)        # e.g., \"tcp://127.0.0.1:5555\"\
-      \n\n        self._running.set()\n        self._thread = threading.Thread(target=self._rx_loop,\
-      \ daemon=True)\n        self._thread.start()\n        return super().start()\n\
-      \n    def stop(self):\n        self._running.clear()\n        try:\n       \
-      \     if self._thread:\n                self._thread.join(timeout=1.0)\n   \
-      \     except Exception:\n            pass\n        try:\n            if self._sock:\n\
-      \                self._sock.close(0)\n        except Exception:\n          \
-      \  pass\n        # Don\u2019t terminate the shared context; other blocks may\
-      \ use it\n        self._ctx = None\n        self._sock = None\n        return\
-      \ super().stop()\n\n    def _rx_loop(self):\n        while self._running.is_set():\n\
-      \            try:\n                # Receive one ZMQ frame (bytes). Works with\
-      \ send(), send_string(), send_json() etc.\n                frame = self._sock.recv()\
-      \  # bytes; RCVTIMEO makes this return after timeout\n            except zmq.Again:\n\
-      \                continue  # timeout, loop again\n            except Exception\
-      \ as e:\n                print(\"[pyzmq_pull] recv error:\", e)\n          \
-      \      break\n\n            if not frame:\n                continue\n      \
-      \      \n            frame = list(frame)\n            print(frame)\n       \
-      \     u8 = pmt.init_u8vector(len(frame), frame)\n            pdu = pmt.cons(pmt.PMT_NIL,\
-      \ u8)\n            self.message_port_pub(pmt.intern(\"out\"), pdu)\n"
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\nfrom gnuradio\
+      \ import gr\nfrom PyQt5 import QtWidgets, QtCore, QtGui\nimport sys\nimport\
+      \ pmt\nimport time\nfrom datetime import datetime  # for timestamps\n\nclass\
+      \ WallpaperScrollArea(QtWidgets.QScrollArea):\n    def __init__(self, bg_image=\"\
+      \", parent=None):\n        super().__init__(parent)\n        self.setWidgetResizable(True)\n\
+      \        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       self.bg_pixmap = QtGui.QPixmap(bg_image) if bg_image else None\n\n \
+      \   def paintEvent(self, event):\n        if self.bg_pixmap:\n            painter\
+      \ = QtGui.QPainter(self.viewport())\n            painter.drawPixmap(self.viewport().rect(),\
+      \ self.bg_pixmap)\n        super().paintEvent(event)\n\n\nclass messenger_gui(gr.basic_block):\n\
+      \    \"\"\"\n    WhatsApp-style Messenger GUI with dynamic bubble resizing,\n\
+      \    horizontal scroll for long messages, timestamp update on delivery,\n  \
+      \  and failure indication if retry limit is exceeded.\n    \"\"\"\n\n    def\
+      \ __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n       \
+      \     self,\n            name=\"Messenger GUI\",\n            in_sig=None,\n\
+      \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))\n        self.message_port_register_in(pmt.intern(\"feedback\"))\n \
+      \       self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      \n        # Qt Application\n        self.app = QtWidgets.QApplication.instance()\n\
+      \        if self.app is None:\n            self.app = QtWidgets.QApplication(sys.argv)\n\
+      \n        self.qt_widget = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\
+      Messenger GUI\")\n        self.qt_widget.resize(600, 500)\n\n        main_layout\
+      \ = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(0, 0, 0,\
+      \ 0)\n        main_layout.setSpacing(0)\n        self.qt_widget.setLayout(main_layout)\n\
+      \n        # Scroll area with background\n        self.scroll_area = WallpaperScrollArea(bg_image=bg_image)\n\
+      \        self.scroll_area.setStyleSheet(\"border: none;\")\n        self.scroll_area.setWidgetResizable(True)\n\
+      \        main_layout.addWidget(self.scroll_area, stretch=1)\n\n        # Chat\
+      \ container\n        self.chat_container = QtWidgets.QWidget()\n        self.chat_layout\
+      \ = QtWidgets.QVBoxLayout()\n        self.chat_layout.setAlignment(QtCore.Qt.AlignTop)\n\
+      \        self.chat_layout.setSpacing(10)\n        self.chat_container.setLayout(self.chat_layout)\n\
+      \        self.chat_container.setStyleSheet(\"background: transparent;\")\n \
+      \       self.scroll_area.setWidget(self.chat_container)\n\n        # Input area\n\
+      \        input_layout = QtWidgets.QHBoxLayout()\n        self.input_box = QtWidgets.QLineEdit()\n\
+      \        self.input_box.setPlaceholderText(\"Type a message...\")\n        self.input_box.setStyleSheet(\"\
+      \"\"\n            QLineEdit {\n                border-radius: 15px;\n      \
+      \          padding: 12px;\n                background-color: rgba(255,255,255,230);\n\
+      \                font-size: 32px;\n            }\n        \"\"\")\n        self.send_button\
+      \ = QtWidgets.QPushButton(\"Send\")\n        self.send_button.setStyleSheet(\"\
+      \"\"\n            QPushButton {\n                background-color: #4CAF50;\n\
+      \                color: white;\n                border-radius: 15px;\n     \
+      \           padding: 12px 24px;\n                font-weight: bold;\n      \
+      \          font-size: 32px;\n            }\n            QPushButton:hover {\n\
+      \                background-color: #45a049;\n            }\n        \"\"\")\n\
+      \        input_layout.addWidget(self.input_box)\n        input_layout.addWidget(self.send_button)\n\
+      \        main_layout.addLayout(input_layout)\n\n        # Connect signals\n\
+      \        self.send_button.clicked.connect(self.send_message)\n        self.input_box.returnPressed.connect(self.send_message)\n\
+      \n        self._last_message_timestamp = None\n        self.qt_widget.show()\n\
+      \n    def send_message(self):\n        text = self.input_box.text().strip()\n\
+      \        if not text:\n            return\n\n        # Send message via GNU\
+      \ Radio port\n        # self.message_port_pub(pmt.intern(\"out\"), pmt.string_to_symbol(text))\n\
+      \n        # encode the text as UTF-8 bytes\n        text_b = text.encode('utf-8')\n\
+      \        # create PMT u8vector from the bytes\n        vec = pmt.init_u8vector(len(text_b),\
+      \ bytearray(text_b))\n        # create PDU pair (meta, data). Use PMT_NIL if\
+      \ no metadata is needed.\n        pdu = pmt.cons(pmt.PMT_NIL, vec)\n       \
+      \ # publish the PDU on the \"out\" port\n        self.message_port_pub(pmt.intern(\"\
+      out\"), pdu)\n\n\n        # Scrollable bubble container\n        scroll = QtWidgets.QScrollArea()\n\
+      \        scroll.setWidgetResizable(True)\n        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setStyleSheet(\"border: none; background: transparent;\")\n\n\
+      \        # Message bubble\n        bubble = QtWidgets.QLabel(text)\n       \
+      \ bubble.setWordWrap(False)  # Disable wrapping\n        bubble.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: qlineargradient(x1:0,\
+      \ y1:0, x2:1, y2:1,\n                    stop:0 #4CAF50, stop:1 #66BB6A);\n\
+      \                color: white;\n                border-radius: 15px;\n     \
+      \           padding: 10px 15px;\n                font-size: 32px;\n        \
+      \    }\n        \"\"\")\n\n        # Shadow effect\n        effect = QtWidgets.QGraphicsDropShadowEffect()\n\
+      \        effect.setBlurRadius(6)\n        effect.setXOffset(2)\n        effect.setYOffset(2)\n\
+      \        effect.setColor(QtGui.QColor(0, 0, 0, 100))\n        bubble.setGraphicsEffect(effect)\n\
+      \n        scroll.setWidget(bubble)\n        scroll.setMinimumWidth(200)\n  \
+      \      scroll.setMaximumWidth(550)  # Max visible width of bubble\n        bubble.adjustSize()\n\
+      \        scroll.adjustSize()\n\n        # Timestamp label as small blue pill\
+      \ initially\n        timestamp = QtWidgets.QLabel(\"Sending...\")\n        timestamp.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: #2196F3;  /* blue\
+      \ background */\n                color: white;\n                font-size: 18px;\n\
+      \                border-radius: 8px;\n                padding: 2px 6px;\n  \
+      \          }\n        \"\"\")\n        timestamp.setAlignment(QtCore.Qt.AlignRight)\n\
+      \        timestamp.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Container for bubble + timestamp\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(2)\n        vbox.addWidget(scroll)\n   \
+      \     vbox.addWidget(timestamp, alignment=QtCore.Qt.AlignRight)\n        container.setLayout(vbox)\n\
+      \        container.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Add to chat layout\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignRight)\n\n        # Force proper size recalculation\n\
+      \        bubble.adjustSize()\n        scroll.adjustSize()\n        container.adjustSize()\n\
+      \        self.chat_container.adjustSize()\n        QtWidgets.QApplication.processEvents()\
+      \  # Force layout update\n\n        # Scroll to bottom\n        QtCore.QTimer.singleShot(50,\
+      \ lambda: self.scroll_area.verticalScrollBar().setValue(\n            self.scroll_area.verticalScrollBar().maximum()\n\
+      \        ))\n\n        self.input_box.clear()\n        self._last_message_timestamp\
+      \ = timestamp\n\n    def _process_feedback(self, msg):\n        try:\n     \
+      \       if pmt.is_symbol(msg):\n                feedback = pmt.symbol_to_string(msg)\n\
+      \n                if feedback == \"END_ACK_RECEIVED\" and self._last_message_timestamp:\n\
+      \                    # Successful delivery: show current time in blue pill\n\
+      \                    self._last_message_timestamp.setText(datetime.now().strftime(\"\
+      %H:%M\"))\n                    self._last_message_timestamp.setStyleSheet(\"\
+      \"\"\n                        QLabel {\n                            background-color:\
+      \ #2196F3;  /* blue background */\n                            color: white;\n\
+      \                            font-size: 18px;\n                            border-radius:\
+      \ 8px;\n                            padding: 2px 6px;\n                    \
+      \    }\n                    \"\"\")\n\n                elif feedback == \"RETRY_LIMIT_EXCEEDED\"\
+      \ and self._last_message_timestamp:\n                    # Failed delivery:\
+      \ red pill\n                    self._last_message_timestamp.setText(\"Failed\"\
+      )\n                    self._last_message_timestamp.setStyleSheet(\"\"\"\n \
+      \                       QLabel {\n                            background-color:\
+      \ #F44336;  /* red background */\n                            color: white;\n\
+      \                            font-size: 18px;\n                            border-radius:\
+      \ 8px;\n                            padding: 2px 6px;\n                    \
+      \    }\n                    \"\"\")\n\n        except Exception as e:\n    \
+      \        print(f\"[messenger_gui] Error processing feedback: {e}\")\n\n"
     affinity: ''
     alias: ''
-    bind: 'True'
+    bg_image: '''/home/vboxuser/Downloads/tx.jpg'''
     comment: ''
-    endpoint: '''tcp://127.0.0.1:5555'''
     maxoutbuf: '0'
     minoutbuf: '0'
-    rcv_timeout_ms: '100'
   states:
-    _io_cache: ('pyzmq_pull', 'blk', [('endpoint', "'tcp://127.0.0.1:5555'"), ('bind',
-      'False'), ('rcv_timeout_ms', '100')], [], [('out', 'message', 1)], '\n    ZMQ
-      PULL -> GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings
-      from external senders without PMT serialization.\n    ', ['bind', 'endpoint',
-      'rcv_timeout_ms'])
+    _io_cache: ('Messenger GUI', 'messenger_gui', [('bg_image', "''")], [('feedback',
+      'message', 1)], [('out', 'message', 1)], '\n    WhatsApp-style Messenger GUI
+      with dynamic bubble resizing,\n    horizontal scroll for long messages, timestamp
+      update on delivery,\n    and failure indication if retry limit is exceeded.\n    ',
+      [])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [520, 916.0]
-    rotation: 0
-    state: enabled
-- name: epy_block_1_0
-  id: epy_block
-  parameters:
-    _source_code: "import threading\nimport zmq\nimport pmt\nfrom gnuradio import\
-      \ gr\nimport json\n\nclass blk(gr.basic_block):\n    \"\"\"\n    ZMQ PULL ->\
-      \ GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings\
-      \ from external senders without PMT serialization.\n    \"\"\"\n\n    def __init__(self,\
-      \ endpoint='tcp://127.0.0.1:6665', bind=False, rcv_timeout_ms=100):\n      \
-      \  gr.basic_block.__init__(self, name=\"pyzmq_pull\", in_sig=[], out_sig=[])\n\
-      \n        # Params (editable in GRC via block args if you expose them)\n   \
-      \     self.endpoint = endpoint\n        self.bind = bool(bind)\n        self.rcv_timeout_ms\
-      \ = int(rcv_timeout_ms)\n\n        # Message out port\n        self.message_port_register_out(pmt.intern(\"\
-      out\"))\n\n        # ZMQ state\n        self._ctx = None\n        self._sock\
-      \ = None\n        self._thread = None\n        self._running = threading.Event()\n\
-      \n    # Start/stop are the right places to spin threads/sockets in GNU Radio\n\
-      \    def start(self):\n        self._ctx = zmq.Context.instance()\n        self._sock\
-      \ = self._ctx.socket(zmq.PULL)\n\n        # Tame shutdown and avoid hangs\n\
-      \        self._sock.setsockopt(zmq.LINGER, 0)\n        self._sock.setsockopt(zmq.RCVTIMEO,\
-      \ self.rcv_timeout_ms)\n        # Optional HWM if you want tighter buffering:\n\
-      \        # self._sock.setsockopt(zmq.RCVHWM, 100)\n\n        if self.bind:\n\
-      \            # Bind (listener)\n            self._sock.bind(self.endpoint) \
-      \          # e.g., \"tcp://*:5555\"\n        else:\n            # Connect (dialer)\n\
-      \            self._sock.connect(self.endpoint)        # e.g., \"tcp://127.0.0.1:5555\"\
-      \n\n        self._running.set()\n        self._thread = threading.Thread(target=self._rx_loop,\
-      \ daemon=True)\n        self._thread.start()\n        return super().start()\n\
-      \n    def stop(self):\n        self._running.clear()\n        try:\n       \
-      \     if self._thread:\n                self._thread.join(timeout=1.0)\n   \
-      \     except Exception:\n            pass\n        try:\n            if self._sock:\n\
-      \                self._sock.close(0)\n        except Exception:\n          \
-      \  pass\n        # Don\u2019t terminate the shared context; other blocks may\
-      \ use it\n        self._ctx = None\n        self._sock = None\n        return\
-      \ super().stop()\n\n    def _rx_loop(self):\n        while self._running.is_set():\n\
-      \            try:\n                # Receive one ZMQ frame (bytes). Works with\
-      \ send(), send_string(), send_json() etc.\n                frame = self._sock.recv()\
-      \  # bytes; RCVTIMEO makes this return after timeout\n            except zmq.Again:\n\
-      \                continue  # timeout, loop again\n            except Exception\
-      \ as e:\n                print(\"[pyzmq_pull] recv error:\", e)\n          \
-      \      break\n\n            if not frame:\n                continue\n      \
-      \      \n            # message = frame.decode(\"utf-8\")\n            frame\
-      \ = list(frame)\n            print(frame)\n            u8 = pmt.init_u8vector(len(frame),\
-      \ frame)\n            pdu = pmt.cons(pmt.PMT_NIL, u8)\n            self.message_port_pub(pmt.intern(\"\
-      out\"), pdu)\n"
-    affinity: ''
-    alias: ''
-    bind: 'True'
-    comment: ''
-    endpoint: '''tcp://127.0.0.1:6665'''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    rcv_timeout_ms: '100'
-  states:
-    _io_cache: ('pyzmq_pull', 'blk', [('endpoint', "'tcp://127.0.0.1:6665'"), ('bind',
-      'False'), ('rcv_timeout_ms', '100')], [], [('out', 'message', 1)], '\n    ZMQ
-      PULL -> GNU Radio PDU (meta=PMT_NIL, data=u8vector)\n    Accepts raw bytes/strings
-      from external senders without PMT serialization.\n    ', ['bind', 'endpoint',
-      'rcv_timeout_ms'])
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [176, 1948.0]
-    rotation: 0
+    coordinate: [568, 240.0]
+    rotation: 180
     state: enabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
@@ -1357,7 +1380,7 @@ blocks:
     bus_structure: null
     coordinate: [1696, 484.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_0_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1374,7 +1397,7 @@ blocks:
     bus_structure: null
     coordinate: [1664, 1932.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_1
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1391,7 +1414,7 @@ blocks:
     bus_structure: null
     coordinate: [1664, 548.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_1_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1408,7 +1431,7 @@ blocks:
     bus_structure: null
     coordinate: [1648, 1996.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: pdu_tagged_stream_to_pdu_0
   id: pdu_tagged_stream_to_pdu
   parameters:
@@ -1425,7 +1448,7 @@ blocks:
     bus_structure: null
     coordinate: [2864, 1500.0]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: pdu_tagged_stream_to_pdu_0_0
   id: pdu_tagged_stream_to_pdu
   parameters:
@@ -1442,7 +1465,7 @@ blocks:
     bus_structure: null
     coordinate: [2744, 2924.0]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: virtual_sink_0
   id: virtual_sink
   parameters:
@@ -1455,7 +1478,7 @@ blocks:
     bus_structure: null
     coordinate: [3176, 516.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_sink_1
   id: virtual_sink
   parameters:
@@ -1468,7 +1491,7 @@ blocks:
     bus_structure: null
     coordinate: [3224, 1956.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_source_0
   id: virtual_source
   parameters:
@@ -1481,7 +1504,7 @@ blocks:
     bus_structure: null
     coordinate: [1080, 1092.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_source_1
   id: virtual_source
   parameters:
@@ -1494,7 +1517,7 @@ blocks:
     bus_structure: null
     coordinate: [856, 2308.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: zeromq_pub_sink_0_0
   id: zeromq_pub_sink
   parameters:
@@ -1624,9 +1647,11 @@ connections:
 - [digital_protocol_formatter_async_0_0, header, pdu_pdu_to_tagged_stream_0_0, pdus]
 - [digital_protocol_formatter_async_0_0, payload, pdu_pdu_to_tagged_stream_1_0, pdus]
 - [epy_block_0, Pkt_out, digital_crc_append_0, in]
+- [epy_block_0, Pkt_out, epy_block_0_0, Pkt_in]
+- [epy_block_0_0, Msg_out, blocks_message_debug_0, print_pdu]
 - [epy_block_0_0, Pkt_out, digital_crc_append_0_0, in]
-- [epy_block_1, out, epy_block_0, Msg_in]
-- [epy_block_1_0, out, epy_block_0_0, Msg_in]
+- [epy_block_0_0, Pkt_out, epy_block_0, Pkt_in]
+- [epy_block_0_1_0, out, epy_block_0, Msg_in]
 - [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0_0, '0']
 - [pdu_pdu_to_tagged_stream_1, '0', blocks_tagged_stream_mux_0, '1']

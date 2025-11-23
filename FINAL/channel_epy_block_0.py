@@ -50,20 +50,20 @@ class blk(gr.basic_block):
         
 
 
-        # ui sockets
-        self.context = zmq.Context.instance()
+        # # ui sockets
+        # self.context = zmq.Context.instance()
 
-        self.feedback_push_sock = self.context.socket(zmq.PUSH)
-        try:
-            self.feedback_push_sock.bind(self.UiFeedbackPort)
-        except Exception as e:
-            print(f"custom_error: cant connect to socket: {e}")
+        # self.feedback_push_sock = self.context.socket(zmq.PUSH)
+        # try:
+        #     self.feedback_push_sock.bind(self.UiFeedbackPort)
+        # except Exception as e:
+        #     print(f"custom_error: cant connect to socket: {e}")
 
-        self.msg_to_ui_sock = self.context.socket(zmq.PUSH)
-        try:
-            self.msg_to_ui_sock.bind(self.UiMsgOutPort)
-        except Exception as e:
-            print(f"custom_error: cant connect to socket: {e}")
+        # self.msg_to_ui_sock = self.context.socket(zmq.PUSH)
+        # try:
+        #     self.msg_to_ui_sock.bind(self.UiMsgOutPort)
+        # except Exception as e:
+        #     print(f"custom_error: cant connect to socket: {e}")
         
 
         
@@ -88,7 +88,7 @@ class blk(gr.basic_block):
 
         # defining ports
         self.message_port_register_in(pmt.intern('Msg_in'))
-        # self.message_port_register_out(pmt.intern('Msg_out'))
+        self.message_port_register_out(pmt.intern('Msg_out'))
         # self.message_port_register_out(pmt.intern('feedback'))
         self.message_port_register_out(pmt.intern('Pkt_out'))
         self.message_port_register_in(pmt.intern('Pkt_in'))
@@ -161,12 +161,12 @@ class blk(gr.basic_block):
                     text = pkt_src_addr + ":" + payload_text
 
                     # creating the pdu to send to UI
-                    # text_b = text.encode("utf-8")
-                    # pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(text_b), bytearray(text_b)))
-                    # self.message_port_pub(pmt.intern('Msg_out'), pdu)
+                    text_b = text.encode("utf-8")
+                    pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(text_b), bytearray(text_b)))
+                    self.message_port_pub(pmt.intern('Msg_out'), pdu)
 
                     # send message to ui
-                    self.msg_to_ui_sock.send_string(text)
+                    # self.msg_to_ui_sock.send_string(text)
 
 
                 else:
@@ -221,13 +221,13 @@ class blk(gr.basic_block):
                                 raise ValueError("malinda's custom error: the base got an unintended ack packet!")
                             
                             # send feedback to ui
-                            self.feedback_push_sock.send_string("True")
+                            # self.feedback_push_sock.send_string("True")
                             success = True
                             continue
                     
                     K += 1
                     if (K > self.number_of_retransmissions):
-                        self.feedback_push_sock.send_string("False")
+                        # self.feedback_push_sock.send_string("False")
                         abort = True
                         continue
 
