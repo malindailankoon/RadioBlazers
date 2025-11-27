@@ -84,6 +84,7 @@ class blk(gr.sync_block):
         self.message_port_register_in(pmt.intern('pdu_in'))
         self.message_port_register_out(pmt.intern('msg_out'))
         self.message_port_register_out(pmt.intern('pdu_out'))
+        self.message_port_register_out(pmt.intern('feedback'))
         
         # Set message handlers
         self.set_msg_handler(pmt.intern('msg_in'), self.handle_msg_in)
@@ -313,6 +314,9 @@ class blk(gr.sync_block):
                                 ack_received = True
                                 self.stats['acks_received'] += 1
                                 print(f"[Node {self.node_id}] TX: ACK received for seq={seq_num}")
+                                output = "TRUE"
+                                msg = pmt.intern(output)
+                                self.message_port_pub(pmt.intern('feedback'), msg)
                                 break
                         except queue.Empty:
                             pass
@@ -324,6 +328,9 @@ class blk(gr.sync_block):
                 
                 if not ack_received:
                     print(f"[Node {self.node_id}] TX: Failed to deliver packet seq={seq_num} after {self.max_retries} attempts")
+                    output = "FALSE"
+                    msg = pmt.intern(output)
+                    self.message_port_pub(pmt.intern('feedback'), msg)
                     
             except Exception as e:
                 print(f"[Node {self.node_id}] TX handler error: {e}")

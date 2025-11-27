@@ -28,8 +28,8 @@ from gnuradio import gr, pdu
 import threading
 import threading1_epy_block_0 as epy_block_0  # embedded python block
 import threading1_epy_block_0_0 as epy_block_0_0  # embedded python block
-import threading1_epy_block_0_1_0 as epy_block_0_1_0  # embedded python block
-import threading1_epy_block_0_1_0_0 as epy_block_0_1_0_0  # embedded python block
+import threading1_epy_block_0_1 as epy_block_0_1  # embedded python block
+import threading1_epy_block_0_2 as epy_block_0_2  # embedded python block
 
 
 
@@ -106,12 +106,10 @@ class threading1(gr.top_block, Qt.QWidget):
         self.pdu_pdu_to_tagged_stream_0_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.epy_block_0_1_0_0 = epy_block_0_1_0_0.messenger_gui(bg_image='/home/vboxuser/Downloads/tx.jpg')
-        self.epy_block_0_1_0_0.set_block_alias("User 2 GUI")
-        self.epy_block_0_1_0 = epy_block_0_1_0.messenger_gui(bg_image='/home/vboxuser/Downloads/tx.jpg')
-        self.epy_block_0_1_0.set_block_alias("User 1 GUI")
-        self.epy_block_0_0 = epy_block_0_0.blk(node_id=2, aloha_prob=1, timeout=1, max_retries=3)
-        self.epy_block_0 = epy_block_0.blk(node_id=1, aloha_prob=1, timeout=1, max_retries=3)
+        self.epy_block_0_2 = epy_block_0_2.messenger_gui(bg_image=r"C:\Users\Oshan\Desktop\message.jpg")
+        self.epy_block_0_1 = epy_block_0_1.messenger_gui(bg_image=r"C:\Users\Oshan\Desktop\message.jpg")
+        self.epy_block_0_0 = epy_block_0_0.blk(node_id=2, aloha_prob=0.6, timeout=0.2, max_retries=3)
+        self.epy_block_0 = epy_block_0.blk(node_id=1, aloha_prob=0.6, timeout=0.2, max_retries=3)
         self.digital_protocol_formatter_async_0_0 = digital.protocol_formatter_async(hdr_format)
         self.digital_protocol_formatter_async_0 = digital.protocol_formatter_async(hdr_format)
         self.digital_pfb_clock_sync_xxx_0_0 = digital.pfb_clock_sync_ccf(sps, phase_bw, rrc_taps, nfilts, (nfilts/2), 1.5, 2)
@@ -170,6 +168,7 @@ class threading1(gr.top_block, Qt.QWidget):
         self.blocks_tagged_stream_mux_0 = blocks.tagged_stream_mux(gr.sizeof_char*1, 'packet_len', 0)
         self.blocks_repack_bits_bb_1_0_0_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
         self.blocks_repack_bits_bb_1_0_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
+        self.blocks_message_debug_1 = blocks.message_debug(True, gr.log_levels.info)
         self.blocks_message_debug_0_0 = blocks.message_debug(True, gr.log_levels.info)
         self.blocks_message_debug_0 = blocks.message_debug(True, gr.log_levels.info)
 
@@ -182,11 +181,16 @@ class threading1(gr.top_block, Qt.QWidget):
         self.msg_connect((self.digital_protocol_formatter_async_0_0, 'header'), (self.pdu_pdu_to_tagged_stream_0_0_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_1, 'pdus'))
         self.msg_connect((self.epy_block_0, 'msg_out'), (self.blocks_message_debug_0_0, 'print'))
+        self.msg_connect((self.epy_block_0, 'feedback'), (self.blocks_message_debug_1, 'print'))
         self.msg_connect((self.epy_block_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
+        self.msg_connect((self.epy_block_0, 'feedback'), (self.epy_block_0_1, 'feedback'))
+        self.msg_connect((self.epy_block_0, 'msg_out'), (self.epy_block_0_1, 'in_msg'))
         self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.blocks_message_debug_0, 'print'))
         self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0_0, 'in'))
-        self.msg_connect((self.epy_block_0_1_0, 'out'), (self.epy_block_0, 'msg_in'))
-        self.msg_connect((self.epy_block_0_1_0_0, 'out'), (self.epy_block_0_0, 'msg_in'))
+        self.msg_connect((self.epy_block_0_0, 'feedback'), (self.epy_block_0_2, 'feedback'))
+        self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.epy_block_0_2, 'in_msg'))
+        self.msg_connect((self.epy_block_0_1, 'out'), (self.epy_block_0, 'msg_in'))
+        self.msg_connect((self.epy_block_0_2, 'out'), (self.epy_block_0_0, 'msg_in'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_0_0, 'pdu_in'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0_0, 'pdus'), (self.epy_block_0, 'pdu_in'))
         self.connect((self.blocks_repack_bits_bb_1_0_0, 0), (self.pdu_tagged_stream_to_pdu_0_0, 0))
