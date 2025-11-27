@@ -57,6 +57,30 @@ blocks:
     coordinate: [712, 12.0]
     rotation: 0
     state: enabled
+- name: freq1
+  id: variable
+  parameters:
+    comment: ''
+    value: 1.2e9
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1520, 12.0]
+    rotation: 0
+    state: enabled
+- name: freq2
+  id: variable
+  parameters:
+    comment: ''
+    value: 5.8e9
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1608, 12.0]
+    rotation: 0
+    state: enabled
 - name: freq_offset
   id: variable_qtgui_range
   parameters:
@@ -277,7 +301,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [792, 1440.0]
+    coordinate: [944, 1464.0]
     rotation: 0
     state: disabled
 - name: blocks_message_debug_0_0
@@ -292,7 +316,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [768, 744.0]
+    coordinate: [936, 816.0]
     rotation: 0
     state: enabled
 - name: blocks_message_strobe_0
@@ -409,48 +433,6 @@ blocks:
     coordinate: [1432, 1312.0]
     rotation: 0
     state: disabled
-- name: blocks_throttle2_0_0_0
-  id: blocks_throttle2
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    limit: auto
-    maximum: '0.1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: usrp_rate
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1968, 620.0]
-    rotation: 0
-    state: true
-- name: blocks_throttle2_0_0_0_0
-  id: blocks_throttle2
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    limit: auto
-    maximum: '0.1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: usrp_rate
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2008, 1308.0]
-    rotation: 0
-    state: disabled
 - name: blocks_unpack_k_bits_bb_0
   id: blocks_unpack_k_bits_bb
   parameters:
@@ -483,48 +465,6 @@ blocks:
     coordinate: [1352, 368.0]
     rotation: 180
     state: enabled
-- name: channels_channel_model_0
-  id: channels_channel_model
-  parameters:
-    affinity: ''
-    alias: ''
-    block_tags: 'True'
-    comment: ''
-    epsilon: time_offset
-    freq_offset: freq_offset
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    noise_voltage: noise_volt
-    seed: '0'
-    taps: taps
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2192, 592.0]
-    rotation: 0
-    state: enabled
-- name: channels_channel_model_0_0
-  id: channels_channel_model
-  parameters:
-    affinity: ''
-    alias: ''
-    block_tags: 'True'
-    comment: ''
-    epsilon: time_offset
-    freq_offset: freq_offset
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    noise_voltage: noise_volt
-    seed: '0'
-    taps: taps
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2232, 1280.0]
-    rotation: 0
-    state: disabled
 - name: digital_constellation_decoder_cb_0_1
   id: digital_constellation_decoder_cb
   parameters:
@@ -727,8 +667,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2728, 560.0]
-    rotation: 0
+    coordinate: [2608, 408.0]
+    rotation: 180
     state: enabled
 - name: digital_linear_equalizer_0_0
   id: digital_linear_equalizer
@@ -748,8 +688,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2776, 1248.0]
-    rotation: 0
+    coordinate: [2656, 1088.0]
+    rotation: 180
     state: disabled
 - name: digital_map_bb_0_1
   id: digital_map_bb
@@ -803,8 +743,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2416, 576.0]
-    rotation: 0
+    coordinate: [2904, 424.0]
+    rotation: 180
     state: enabled
 - name: digital_pfb_clock_sync_xxx_0_0
   id: digital_pfb_clock_sync_xxx
@@ -826,8 +766,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2472, 1264.0]
-    rotation: 0
+    coordinate: [2960, 1104.0]
+    rotation: 180
     state: disabled
 - name: digital_protocol_formatter_async_0
   id: digital_protocol_formatter_async
@@ -897,8 +837,8 @@ blocks:
       \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
       \ self.lock = threading.Lock()\n        \n        # Message ports\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
       \        self.message_port_register_in(pmt.intern('pdu_in'))\n        self.message_port_register_out(pmt.intern('msg_out'))\n\
-      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        \n \
-      \       # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
+      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        self.message_port_register_out(pmt.intern('feedback'))\n\
+      \        \n        # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
       \ self.handle_msg_in)\n        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n\
       \        \n        # Start threads\n        self.tx_thread.start()\n       \
       \ self.rx_thread.start()\n        \n        print(f\"[Node {self.node_id}] Initialized\
@@ -1018,46 +958,51 @@ blocks:
       \                            if ack['key'] == ack_key:\n                   \
       \             ack_received = True\n                                self.stats['acks_received']\
       \ += 1\n                                print(f\"[Node {self.node_id}] TX: ACK\
-      \ received for seq={seq_num}\")\n                                break\n   \
-      \                     except queue.Empty:\n                            pass\n\
-      \                    \n                    if not ack_received:\n          \
-      \              retries += 1\n                        if retries < self.max_retries:\n\
-      \                            print(f\"[Node {self.node_id}] TX: Timeout, retry\
-      \ {retries}/{self.max_retries}\")\n                \n                if not\
-      \ ack_received:\n                    print(f\"[Node {self.node_id}] TX: Failed\
-      \ to deliver packet seq={seq_num} after {self.max_retries} attempts\")\n   \
-      \                 \n            except Exception as e:\n                print(f\"\
-      [Node {self.node_id}] TX handler error: {e}\")\n    \n    def rx_handler(self):\n\
-      \        \"\"\"Thread for handling packet reception\"\"\"\n        while self.running:\n\
-      \            try:\n                # Get received data\n                try:\n\
-      \                    rx_data = self.rx_queue.get(timeout=0.1)\n            \
-      \    except queue.Empty:\n                    continue\n                \n \
-      \               # Add to buffer\n                self.rx_buffer += rx_data\n\
-      \                \n                # Try to parse packets from buffer\n    \
-      \            while len(self.rx_buffer) > 0:\n                    pkt = self.parse_packet(self.rx_buffer)\n\
-      \                    \n                    if pkt is None:\n               \
-      \         # No valid packet found, remove first byte and try again\n       \
-      \                 if len(self.rx_buffer) > 1:\n                            self.rx_buffer\
-      \ = self.rx_buffer[1:]\n                        else:\n                    \
-      \        self.rx_buffer = bytes()\n                        continue\n      \
-      \              \n                    # Remove processed packet from buffer\n\
-      \                    self.rx_buffer = self.rx_buffer[pkt['consumed']:]\n   \
-      \                 \n                    # Check if packet is for this node or\
-      \ broadcast\n                    if pkt['dst'] != self.node_id and pkt['dst']\
-      \ != 0xFF:\n                        print(f\"[Node {self.node_id}] RX: Packet\
-      \ not for us (dst={pkt['dst']})\")\n                        continue\n     \
-      \               \n                    # Handle based on packet type\n      \
-      \              if pkt['type'] == self.PKT_DATA:\n                        self.stats['packets_received']\
-      \ += 1\n                        print(f\"[Node {self.node_id}] RX: Data packet\
-      \ from node {pkt['src']}, seq={pkt['seq']}\")\n                        \n  \
-      \                      # Check for duplicate\n                        is_duplicate\
-      \ = False\n                        if pkt['src'] in self.seq_num_rx:\n     \
-      \                       if self.seq_num_rx[pkt['src']] == pkt['seq']:\n    \
-      \                            print(f\"[Node {self.node_id}] RX: Duplicate packet\
-      \ detected\")\n                                is_duplicate = True\n       \
-      \                 \n                        self.seq_num_rx[pkt['src']] = pkt['seq']\n\
-      \                        \n                        # Send ACK\n            \
-      \            ack_packet = self.create_packet(\n                            pkt['src'],\n\
+      \ received for seq={seq_num}\")\n                                output = \"\
+      TRUE\"\n                                msg = pmt.intern(output)\n         \
+      \                       self.message_port_pub(pmt.intern('feedback'), msg)\n\
+      \                                break\n                        except queue.Empty:\n\
+      \                            pass\n                    \n                  \
+      \  if not ack_received:\n                        retries += 1\n            \
+      \            if retries < self.max_retries:\n                            print(f\"\
+      [Node {self.node_id}] TX: Timeout, retry {retries}/{self.max_retries}\")\n \
+      \               \n                if not ack_received:\n                   \
+      \ print(f\"[Node {self.node_id}] TX: Failed to deliver packet seq={seq_num}\
+      \ after {self.max_retries} attempts\")\n                    output = \"FALSE\"\
+      \n                    msg = pmt.intern(output)\n                    self.message_port_pub(pmt.intern('feedback'),\
+      \ msg)\n                    \n            except Exception as e:\n         \
+      \       print(f\"[Node {self.node_id}] TX handler error: {e}\")\n    \n    def\
+      \ rx_handler(self):\n        \"\"\"Thread for handling packet reception\"\"\"\
+      \n        while self.running:\n            try:\n                # Get received\
+      \ data\n                try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \         \n                # Add to buffer\n                self.rx_buffer\
+      \ += rx_data\n                \n                # Try to parse packets from\
+      \ buffer\n                while len(self.rx_buffer) > 0:\n                 \
+      \   pkt = self.parse_packet(self.rx_buffer)\n                    \n        \
+      \            if pkt is None:\n                        # No valid packet found,\
+      \ remove first byte and try again\n                        if len(self.rx_buffer)\
+      \ > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n  \
+      \                      else:\n                            self.rx_buffer = bytes()\n\
+      \                        continue\n                    \n                  \
+      \  # Remove processed packet from buffer\n                    self.rx_buffer\
+      \ = self.rx_buffer[pkt['consumed']:]\n                    \n               \
+      \     # Check if packet is for this node or broadcast\n                    if\
+      \ pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n                     \
+      \   print(f\"[Node {self.node_id}] RX: Packet not for us (dst={pkt['dst']})\"\
+      )\n                        continue\n                    \n                \
+      \    # Handle based on packet type\n                    if pkt['type'] == self.PKT_DATA:\n\
+      \                        self.stats['packets_received'] += 1\n             \
+      \           print(f\"[Node {self.node_id}] RX: Data packet from node {pkt['src']},\
+      \ seq={pkt['seq']}\")\n                        \n                        # Check\
+      \ for duplicate\n                        is_duplicate = False\n            \
+      \            if pkt['src'] in self.seq_num_rx:\n                           \
+      \ if self.seq_num_rx[pkt['src']] == pkt['seq']:\n                          \
+      \      print(f\"[Node {self.node_id}] RX: Duplicate packet detected\")\n   \
+      \                             is_duplicate = True\n                        \n\
+      \                        self.seq_num_rx[pkt['src']] = pkt['seq']\n        \
+      \                \n                        # Send ACK\n                    \
+      \    ack_packet = self.create_packet(\n                            pkt['src'],\n\
       \                            pkt['seq'],\n                            self.PKT_ACK\n\
       \                        )\n                        print(f\"[Node {self.node_id}]\
       \ RX: Sending ACK for seq={pkt['seq']}\")\n                        self.transmit_packet(ack_packet)\n\
@@ -1103,19 +1048,20 @@ blocks:
       \        return True\n"
     affinity: ''
     alias: ''
-    aloha_prob: '1'
+    aloha_prob: '0.6'
     comment: User 1
     max_retries: '3'
     maxoutbuf: '0'
     minoutbuf: '0'
     node_id: '1'
-    timeout: '1'
+    timeout: '0.2'
   states:
     _io_cache: ('Mesh Packet Comm', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
       ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1), ('msg_in',
-      'message', 1)], [('pdu_out', 'message', 1), ('msg_out', 'message', 1)], '\n    Mesh
-      Network Packet Communication Block\n    Handles packet transmission/reception
-      with Stop-and-Wait ARQ\n    ', ['aloha_prob', 'max_retries', 'node_id', 'timeout'])
+      'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
+      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1158,8 +1104,8 @@ blocks:
       \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
       \ self.lock = threading.Lock()\n        \n        # Message ports\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
       \        self.message_port_register_in(pmt.intern('pdu_in'))\n        self.message_port_register_out(pmt.intern('msg_out'))\n\
-      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        \n \
-      \       # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
+      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        self.message_port_register_out(pmt.intern('feedback'))\n\
+      \        \n        # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
       \ self.handle_msg_in)\n        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n\
       \        \n        # Start threads\n        self.tx_thread.start()\n       \
       \ self.rx_thread.start()\n        \n        print(f\"[Node {self.node_id}] Initialized\
@@ -1279,46 +1225,51 @@ blocks:
       \                            if ack['key'] == ack_key:\n                   \
       \             ack_received = True\n                                self.stats['acks_received']\
       \ += 1\n                                print(f\"[Node {self.node_id}] TX: ACK\
-      \ received for seq={seq_num}\")\n                                break\n   \
-      \                     except queue.Empty:\n                            pass\n\
-      \                    \n                    if not ack_received:\n          \
-      \              retries += 1\n                        if retries < self.max_retries:\n\
-      \                            print(f\"[Node {self.node_id}] TX: Timeout, retry\
-      \ {retries}/{self.max_retries}\")\n                \n                if not\
-      \ ack_received:\n                    print(f\"[Node {self.node_id}] TX: Failed\
-      \ to deliver packet seq={seq_num} after {self.max_retries} attempts\")\n   \
-      \                 \n            except Exception as e:\n                print(f\"\
-      [Node {self.node_id}] TX handler error: {e}\")\n    \n    def rx_handler(self):\n\
-      \        \"\"\"Thread for handling packet reception\"\"\"\n        while self.running:\n\
-      \            try:\n                # Get received data\n                try:\n\
-      \                    rx_data = self.rx_queue.get(timeout=0.1)\n            \
-      \    except queue.Empty:\n                    continue\n                \n \
-      \               # Add to buffer\n                self.rx_buffer += rx_data\n\
-      \                \n                # Try to parse packets from buffer\n    \
-      \            while len(self.rx_buffer) > 0:\n                    pkt = self.parse_packet(self.rx_buffer)\n\
-      \                    \n                    if pkt is None:\n               \
-      \         # No valid packet found, remove first byte and try again\n       \
-      \                 if len(self.rx_buffer) > 1:\n                            self.rx_buffer\
-      \ = self.rx_buffer[1:]\n                        else:\n                    \
-      \        self.rx_buffer = bytes()\n                        continue\n      \
-      \              \n                    # Remove processed packet from buffer\n\
-      \                    self.rx_buffer = self.rx_buffer[pkt['consumed']:]\n   \
-      \                 \n                    # Check if packet is for this node or\
-      \ broadcast\n                    if pkt['dst'] != self.node_id and pkt['dst']\
-      \ != 0xFF:\n                        print(f\"[Node {self.node_id}] RX: Packet\
-      \ not for us (dst={pkt['dst']})\")\n                        continue\n     \
-      \               \n                    # Handle based on packet type\n      \
-      \              if pkt['type'] == self.PKT_DATA:\n                        self.stats['packets_received']\
-      \ += 1\n                        print(f\"[Node {self.node_id}] RX: Data packet\
-      \ from node {pkt['src']}, seq={pkt['seq']}\")\n                        \n  \
-      \                      # Check for duplicate\n                        is_duplicate\
-      \ = False\n                        if pkt['src'] in self.seq_num_rx:\n     \
-      \                       if self.seq_num_rx[pkt['src']] == pkt['seq']:\n    \
-      \                            print(f\"[Node {self.node_id}] RX: Duplicate packet\
-      \ detected\")\n                                is_duplicate = True\n       \
-      \                 \n                        self.seq_num_rx[pkt['src']] = pkt['seq']\n\
-      \                        \n                        # Send ACK\n            \
-      \            ack_packet = self.create_packet(\n                            pkt['src'],\n\
+      \ received for seq={seq_num}\")\n                                output = \"\
+      TRUE\"\n                                msg = pmt.intern(output)\n         \
+      \                       self.message_port_pub(pmt.intern('feedback'), msg)\n\
+      \                                break\n                        except queue.Empty:\n\
+      \                            pass\n                    \n                  \
+      \  if not ack_received:\n                        retries += 1\n            \
+      \            if retries < self.max_retries:\n                            print(f\"\
+      [Node {self.node_id}] TX: Timeout, retry {retries}/{self.max_retries}\")\n \
+      \               \n                if not ack_received:\n                   \
+      \ print(f\"[Node {self.node_id}] TX: Failed to deliver packet seq={seq_num}\
+      \ after {self.max_retries} attempts\")\n                    output = \"FALSE\"\
+      \n                    msg = pmt.intern(output)\n                    self.message_port_pub(pmt.intern('feedback'),\
+      \ msg)\n                    \n            except Exception as e:\n         \
+      \       print(f\"[Node {self.node_id}] TX handler error: {e}\")\n    \n    def\
+      \ rx_handler(self):\n        \"\"\"Thread for handling packet reception\"\"\"\
+      \n        while self.running:\n            try:\n                # Get received\
+      \ data\n                try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \         \n                # Add to buffer\n                self.rx_buffer\
+      \ += rx_data\n                \n                # Try to parse packets from\
+      \ buffer\n                while len(self.rx_buffer) > 0:\n                 \
+      \   pkt = self.parse_packet(self.rx_buffer)\n                    \n        \
+      \            if pkt is None:\n                        # No valid packet found,\
+      \ remove first byte and try again\n                        if len(self.rx_buffer)\
+      \ > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n  \
+      \                      else:\n                            self.rx_buffer = bytes()\n\
+      \                        continue\n                    \n                  \
+      \  # Remove processed packet from buffer\n                    self.rx_buffer\
+      \ = self.rx_buffer[pkt['consumed']:]\n                    \n               \
+      \     # Check if packet is for this node or broadcast\n                    if\
+      \ pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n                     \
+      \   print(f\"[Node {self.node_id}] RX: Packet not for us (dst={pkt['dst']})\"\
+      )\n                        continue\n                    \n                \
+      \    # Handle based on packet type\n                    if pkt['type'] == self.PKT_DATA:\n\
+      \                        self.stats['packets_received'] += 1\n             \
+      \           print(f\"[Node {self.node_id}] RX: Data packet from node {pkt['src']},\
+      \ seq={pkt['seq']}\")\n                        \n                        # Check\
+      \ for duplicate\n                        is_duplicate = False\n            \
+      \            if pkt['src'] in self.seq_num_rx:\n                           \
+      \ if self.seq_num_rx[pkt['src']] == pkt['seq']:\n                          \
+      \      print(f\"[Node {self.node_id}] RX: Duplicate packet detected\")\n   \
+      \                             is_duplicate = True\n                        \n\
+      \                        self.seq_num_rx[pkt['src']] = pkt['seq']\n        \
+      \                \n                        # Send ACK\n                    \
+      \    ack_packet = self.create_packet(\n                            pkt['src'],\n\
       \                            pkt['seq'],\n                            self.PKT_ACK\n\
       \                        )\n                        print(f\"[Node {self.node_id}]\
       \ RX: Sending ACK for seq={pkt['seq']}\")\n                        self.transmit_packet(ack_packet)\n\
@@ -1364,25 +1315,227 @@ blocks:
       \        return True\n"
     affinity: ''
     alias: ''
-    aloha_prob: '1'
+    aloha_prob: '0.6'
     comment: User 2
     max_retries: '3'
     maxoutbuf: '0'
     minoutbuf: '0'
     node_id: '2'
-    timeout: '1'
+    timeout: '0.2'
   states:
     _io_cache: ('Mesh Packet Comm', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
       ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1), ('msg_in',
-      'message', 1)], [('pdu_out', 'message', 1), ('msg_out', 'message', 1)], '\n    Mesh
-      Network Packet Communication Block\n    Handles packet transmission/reception
-      with Stop-and-Wait ARQ\n    ', ['aloha_prob', 'max_retries', 'node_id', 'timeout'])
+      'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
+      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [472, 1316.0]
     rotation: 0
     state: disabled
+- name: epy_block_0_1
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\nfrom gnuradio\
+      \ import gr\nfrom PyQt5 import QtWidgets, QtCore, QtGui\nimport sys\nimport\
+      \ pmt\nfrom datetime import datetime\n\nclass WallpaperScrollArea(QtWidgets.QScrollArea):\n\
+      \    def __init__(self, bg_image=\"\", parent=None):\n        super().__init__(parent)\n\
+      \        self.setWidgetResizable(True)\n        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n\
+      \        self.bg_pixmap = QtGui.QPixmap(bg_image) if bg_image else None\n\n\
+      \    def paintEvent(self, event):\n        if self.bg_pixmap:\n            painter\
+      \ = QtGui.QPainter(self.viewport())\n            painter.drawPixmap(self.viewport().rect(),\
+      \ self.bg_pixmap)\n        super().paintEvent(event)\n\n\nclass _GuiPoster(QtCore.QObject):\n\
+      \    \"\"\"Helper QObject to post strings into the Qt thread safely.\"\"\"\n\
+      \    sig = QtCore.pyqtSignal(str)  # emits text payload\n\n    def __init__(self):\n\
+      \        super().__init__()\n\n\nclass messenger_gui(gr.basic_block):\n    \"\
+      \"\"\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing\
+      \ messages: published on message port \"out\" with address prepended as \"addr:body\"\
+      \n    - Feedback port \"feedback\": updates delivery timestamp / failed status\n\
+      \    - Incoming messages: received on port \"in_msg\" (same format \"addr:body\"\
+      ) and displayed\n      on the left in a different color.\n    \"\"\"\n\n   \
+      \ def __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n   \
+      \         self,\n            name=\"Messenger GUI\",\n            in_sig=None,\n\
+      \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))    # outgoing messages\n        self.message_port_register_in(pmt.intern(\"\
+      feedback\"))# delivery feedback\n        self.message_port_register_in(pmt.intern(\"\
+      in_msg\"))  # incoming messages from remote/devices\n\n        # Bind handlers\n\
+      \        self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      \        self.set_msg_handler(pmt.intern(\"in_msg\"), self._receive_message)\n\
+      \n        # Poster used to safely move messages to GUI thread\n        self._poster\
+      \ = _GuiPoster()\n        self._poster.sig.connect(self._display_incoming) \
+      \ # connect to GUI-thread handler\n\n        # Qt Application\n        self.app\
+      \ = QtWidgets.QApplication.instance()\n        if self.app is None:\n      \
+      \      self.app = QtWidgets.QApplication(sys.argv)\n\n        # Main window\n\
+      \        self.qt_widget = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\
+      Messenger GUI\")\n        self.qt_widget.resize(640, 560)\n\n        main_layout\
+      \ = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(8, 8, 8,\
+      \ 8)\n        main_layout.setSpacing(6)\n        self.qt_widget.setLayout(main_layout)\n\
+      \n        # Address selection bar\n        addr_layout = QtWidgets.QHBoxLayout()\n\
+      \        addr_label = QtWidgets.QLabel(\"To:\")\n        addr_label.setStyleSheet(\"\
+      font-size: 18px; font-weight: bold;\")\n        addr_layout.addWidget(addr_label)\n\
+      \n        self.addr_box = QtWidgets.QComboBox()\n        self.addr_box.addItems([str(i)\
+      \ for i in range(1, 11)])  # 1..10 default\n        self.addr_box.setFixedWidth(100)\n\
+      \        self.addr_box.setStyleSheet(\"font-size: 16px; padding: 4px;\")\n \
+      \       addr_layout.addWidget(self.addr_box)\n        addr_layout.addStretch()\n\
+      \n        main_layout.addLayout(addr_layout)\n\n        # Scroll area with background\n\
+      \        self.scroll_area = WallpaperScrollArea(bg_image=bg_image)\n       \
+      \ self.scroll_area.setStyleSheet(\"border: none;\")\n        self.scroll_area.setWidgetResizable(True)\n\
+      \        main_layout.addWidget(self.scroll_area, stretch=1)\n\n        # Chat\
+      \ container (vertical list of message widgets)\n        self.chat_container\
+      \ = QtWidgets.QWidget()\n        self.chat_layout = QtWidgets.QVBoxLayout()\n\
+      \        self.chat_layout.setAlignment(QtCore.Qt.AlignTop)\n        self.chat_layout.setSpacing(10)\n\
+      \        self.chat_container.setLayout(self.chat_layout)\n        self.chat_container.setStyleSheet(\"\
+      background: transparent;\")\n        self.scroll_area.setWidget(self.chat_container)\n\
+      \n        # Input area (text entry + send)\n        input_layout = QtWidgets.QHBoxLayout()\n\
+      \        self.input_box = QtWidgets.QLineEdit()\n        self.input_box.setPlaceholderText(\"\
+      Type a message...\")\n        self.input_box.setMinimumHeight(40)\n        self.input_box.setStyleSheet(\"\
+      \"\"\n            QLineEdit {\n                border-radius: 12px;\n      \
+      \          padding: 8px;\n                background-color: rgba(255,255,255,0.95);\n\
+      \                font-size: 16px;\n            }\n        \"\"\")\n        self.send_button\
+      \ = QtWidgets.QPushButton(\"Send\")\n        self.send_button.setMinimumHeight(40)\n\
+      \        self.send_button.setStyleSheet(\"\"\"\n            QPushButton {\n\
+      \                background-color: #4CAF50;\n                color: white;\n\
+      \                border-radius: 10px;\n                padding: 8px 16px;\n\
+      \                font-weight: bold;\n                font-size: 16px;\n    \
+      \        }\n            QPushButton:hover { background-color: #45a049; }\n \
+      \       \"\"\")\n        input_layout.addWidget(self.input_box, stretch=1)\n\
+      \        input_layout.addWidget(self.send_button, stretch=0)\n        main_layout.addLayout(input_layout)\n\
+      \n        # Connect GUI signals\n        self.send_button.clicked.connect(self.send_message)\n\
+      \        self.input_box.returnPressed.connect(self.send_message)\n\n       \
+      \ # Track last sent message timestamp widget (simple approach)\n        # If\
+      \ you want per-message tracking, change to a list/map of widgets per message\
+      \ id.\n        self._last_message_timestamp = None\n\n        # show window\n\
+      \        self.qt_widget.show()\n\n    def send_message(self):\n        \"\"\"\
+      Called from GUI thread when user presses Send or Enter.\"\"\"\n        text\
+      \ = self.input_box.text().strip()\n        if not text:\n            return\n\
+      \n        addr = self.addr_box.currentText().strip()\n        full_msg = f\"\
+      {addr}:{text}\"\n\n        # Publish as PMT symbol/string on 'out' port\n  \
+      \      try:\n            self.message_port_pub(pmt.intern(\"out\"), pmt.intern(full_msg))\n\
+      \        except Exception:\n            # fallback to generic intern\n     \
+      \       self.message_port_pub(pmt.intern(\"out\"), pmt.intern(full_msg))\n\n\
+      \        # Build outgoing bubble (right side)\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(4)\n\n        # Scrollable area for long\
+      \ messages\n        scroll = QtWidgets.QScrollArea()\n        scroll.setWidgetResizable(True)\n\
+      \        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setFrameShape(QtWidgets.QFrame.NoFrame)\n        scroll.setStyleSheet(\"\
+      background: transparent; border: none;\")\n\n        bubble = QtWidgets.QLabel(text)\
+      \  # show only body (user-friendly)\n        bubble.setWordWrap(False)\n   \
+      \     bubble.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)\n    \
+      \    bubble.setStyleSheet(\"\"\"\n            QLabel {\n                background-color:\
+      \ qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 #4CAF50, stop:1 #66BB6A);\n  \
+      \              color: white;\n                border-radius: 12px;\n       \
+      \         padding: 8px 12px;\n                font-size: 14px;\n           \
+      \ }\n        \"\"\")\n        # shadow\n        effect = QtWidgets.QGraphicsDropShadowEffect()\n\
+      \        effect.setBlurRadius(6)\n        effect.setXOffset(2)\n        effect.setYOffset(2)\n\
+      \        effect.setColor(QtGui.QColor(0, 0, 0, 80))\n        bubble.setGraphicsEffect(effect)\n\
+      \n        scroll.setWidget(bubble)\n        scroll.setMinimumWidth(160)\n  \
+      \      scroll.setMaximumWidth(520)\n\n        # Timestamp pill (initially 'Sending...')\n\
+      \        timestamp = QtWidgets.QLabel(\"Sending...\")\n        timestamp.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: #2196F3;\n   \
+      \             color: white;\n                font-size: 11px;\n            \
+      \    border-radius: 8px;\n                padding: 2px 6px;\n            }\n\
+      \        \"\"\")\n        timestamp.setAlignment(QtCore.Qt.AlignRight)\n   \
+      \     timestamp.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        vbox.addWidget(scroll, alignment=QtCore.Qt.AlignRight)\n        vbox.addWidget(timestamp,\
+      \ alignment=QtCore.Qt.AlignRight)\n        container.setLayout(vbox)\n     \
+      \   container.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Add to chat layout (right aligned)\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignRight)\n\n        # Force layout update and scroll\
+      \ to bottom\n        bubble.adjustSize()\n        scroll.adjustSize()\n    \
+      \    container.adjustSize()\n        self.chat_container.adjustSize()\n    \
+      \    QtWidgets.QApplication.processEvents()\n        QtCore.QTimer.singleShot(20,\
+      \ lambda: self.scroll_area.verticalScrollBar().setValue(\n            self.scroll_area.verticalScrollBar().maximum()\n\
+      \        ))\n\n        # Clear input and store timestamp widget for feedback\
+      \ updates\n        self.input_box.clear()\n        self._last_message_timestamp\
+      \ = timestamp\n\n    def _process_feedback(self, msg_pmt):\n        \"\"\"\n\
+      \        Handler for 'feedback' port. Expected feedback values:\n          -\
+      \ \"TRUE\" => show delivery time\n          - \"FALSE\" => show 'Failed'\n \
+      \       \"\"\"\n        try:\n            if pmt.is_symbol(msg_pmt) or pmt.is_string(msg_pmt):\n\
+      \                fb = pmt.symbol_to_string(msg_pmt)\n            else:\n   \
+      \             py = pmt.to_python(msg_pmt)\n                fb = str(py)\n  \
+      \      except Exception:\n            fb = \"<unreadable feedback>\"\n\n   \
+      \     print(fb)\n        # Update last timestamp widget if available (simple\
+      \ single-last approach)\n        if self._last_message_timestamp:\n        \
+      \    if fb == \"TRUE\":\n                self._last_message_timestamp.setText(datetime.now().strftime(\"\
+      %H:%M:%S\"))\n                self._last_message_timestamp.setStyleSheet(\"\"\
+      \"\n                    QLabel {\n                        background-color:\
+      \ #2196F3;\n                        color: white;\n                        font-size:\
+      \ 11px;\n                        border-radius: 8px;\n                     \
+      \   padding: 2px 6px;\n                    }\n                \"\"\")\n    \
+      \        elif fb == \"FALSE\":\n                self._last_message_timestamp.setText(\"\
+      Failed\")\n                self._last_message_timestamp.setStyleSheet(\"\"\"\
+      \n                    QLabel {\n                        background-color: #F44336;\n\
+      \                        color: white;\n                        font-size: 11px;\n\
+      \                        border-radius: 8px;\n                        padding:\
+      \ 2px 6px;\n                    }\n                \"\"\")\n\n    def _receive_message(self,\
+      \ msg_pmt):\n        \"\"\"\n        Handler for 'in_msg' port. Extracts string\
+      \ and posts it to GUI thread\n        via _poster.sig so _display_incoming runs\
+      \ in Qt thread.\n        \"\"\"\n        try:\n            if pmt.is_symbol(msg_pmt)\
+      \ or pmt.is_string(msg_pmt):\n                s = pmt.symbol_to_string(msg_pmt)\n\
+      \            else:\n                py = pmt.to_python(msg_pmt)\n          \
+      \      s = str(py)\n        except Exception:\n            s = \"<unreadable\
+      \ message>\"\n\n        # Post to GUI-thread handler\n        try:\n       \
+      \     self._poster.sig.emit(s)\n        except Exception:\n            # If\
+      \ signal emit fails for any reason, try direct call in case we're already in\
+      \ Qt thread\n            try:\n                self._display_incoming(s)\n \
+      \           except Exception:\n                print(\"[messenger_gui] failed\
+      \ to deliver incoming message to GUI:\", s)\n\n    def _display_incoming(self,\
+      \ full_msg):\n        \"\"\"\n        Build incoming bubble (left aligned).\
+      \ full_msg expected in \"addr:body\" format.\n        \"\"\"\n        # try\
+      \ to split \"addr:body\"\n        if \":\" in full_msg:\n            addr, body\
+      \ = full_msg.split(\":\", 1)\n            display_text = f\"{body}\"\n     \
+      \       header_text = f\"{addr}\"\n        else:\n            display_text =\
+      \ full_msg\n            header_text = \"\"\n\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(4)\n\n        scroll = QtWidgets.QScrollArea()\n\
+      \        scroll.setWidgetResizable(True)\n        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setFrameShape(QtWidgets.QFrame.NoFrame)\n        scroll.setStyleSheet(\"\
+      background: transparent; border: none;\")\n\n        bubble = QtWidgets.QLabel(display_text)\n\
+      \        bubble.setWordWrap(False)\n        bubble.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)\n\
+      \        bubble.setStyleSheet(\"\"\"\n            QLabel {\n               \
+      \ background-color: qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 #E1F5FE, stop:1\
+      \ #B3E5FC);\n                color: #0B2545;\n                border-radius:\
+      \ 12px;\n                padding: 8px 12px;\n                font-size: 14px;\n\
+      \            }\n        \"\"\")\n\n        # small header with sender address\
+      \ (optional)\n        if header_text:\n            header = QtWidgets.QLabel(header_text)\n\
+      \            header.setStyleSheet(\"font-size: 11px; color: #1565C0;\")\n  \
+      \          header.setAlignment(QtCore.Qt.AlignLeft)\n            vbox.addWidget(header,\
+      \ alignment=QtCore.Qt.AlignLeft)\n\n        scroll.setWidget(bubble)\n     \
+      \   scroll.setMinimumWidth(160)\n        scroll.setMaximumWidth(520)\n\n   \
+      \     vbox.addWidget(scroll, alignment=QtCore.Qt.AlignLeft)\n\n        # incoming\
+      \ messages do not have delivery timestamp pill (feedback relates to outgoing)\n\
+      \        container.setLayout(vbox)\n        container.setSizePolicy(QtWidgets.QSizePolicy.Expanding,\
+      \ QtWidgets.QSizePolicy.Fixed)\n\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignLeft)\n\n        # Update layout and scroll to bottom\n\
+      \        bubble.adjustSize()\n        scroll.adjustSize()\n        container.adjustSize()\n\
+      \        self.chat_container.adjustSize()\n        QtWidgets.QApplication.processEvents()\n\
+      \        QtCore.QTimer.singleShot(20, lambda: self.scroll_area.verticalScrollBar().setValue(\n\
+      \            self.scroll_area.verticalScrollBar().maximum()\n        ))\n"
+    affinity: ''
+    alias: ''
+    bg_image: r"C:\Users\Oshan\Desktop\message.jpg"
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''in_msg'',
+      ''message'', 1), (''feedback'', ''message'', 1)], [(''out'', ''message'', 1)],
+      ''\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing
+      messages: published on message port "out" with address prepended as "addr:body"\n    -
+      Feedback port "feedback": updates delivery timestamp / failed status\n    -
+      Incoming messages: received on port "in_msg" (same format "addr:body") and displayed\n      on
+      the left in a different color.\n    '', [])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 920.0]
+    rotation: 180
+    state: enabled
 - name: epy_block_0_1_0
   id: epy_block
   parameters:
@@ -1507,7 +1660,7 @@ blocks:
     bus_structure: null
     coordinate: [120, 776.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_0_1_0_0
   id: epy_block
   parameters:
@@ -1633,6 +1786,207 @@ blocks:
     coordinate: [144, 1472.0]
     rotation: 0
     state: disabled
+- name: epy_block_0_2
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\nfrom gnuradio\
+      \ import gr\nfrom PyQt5 import QtWidgets, QtCore, QtGui\nimport sys\nimport\
+      \ pmt\nfrom datetime import datetime\n\nclass WallpaperScrollArea(QtWidgets.QScrollArea):\n\
+      \    def __init__(self, bg_image=\"\", parent=None):\n        super().__init__(parent)\n\
+      \        self.setWidgetResizable(True)\n        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n\
+      \        self.bg_pixmap = QtGui.QPixmap(bg_image) if bg_image else None\n\n\
+      \    def paintEvent(self, event):\n        if self.bg_pixmap:\n            painter\
+      \ = QtGui.QPainter(self.viewport())\n            painter.drawPixmap(self.viewport().rect(),\
+      \ self.bg_pixmap)\n        super().paintEvent(event)\n\n\nclass _GuiPoster(QtCore.QObject):\n\
+      \    \"\"\"Helper QObject to post strings into the Qt thread safely.\"\"\"\n\
+      \    sig = QtCore.pyqtSignal(str)  # emits text payload\n\n    def __init__(self):\n\
+      \        super().__init__()\n\n\nclass messenger_gui(gr.basic_block):\n    \"\
+      \"\"\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing\
+      \ messages: published on message port \"out\" with address prepended as \"addr:body\"\
+      \n    - Feedback port \"feedback\": updates delivery timestamp / failed status\n\
+      \    - Incoming messages: received on port \"in_msg\" (same format \"addr:body\"\
+      ) and displayed\n      on the left in a different color.\n    \"\"\"\n\n   \
+      \ def __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n   \
+      \         self,\n            name=\"Messenger GUI\",\n            in_sig=None,\n\
+      \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))    # outgoing messages\n        self.message_port_register_in(pmt.intern(\"\
+      feedback\"))# delivery feedback\n        self.message_port_register_in(pmt.intern(\"\
+      in_msg\"))  # incoming messages from remote/devices\n\n        # Bind handlers\n\
+      \        self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      \        self.set_msg_handler(pmt.intern(\"in_msg\"), self._receive_message)\n\
+      \n        # Poster used to safely move messages to GUI thread\n        self._poster\
+      \ = _GuiPoster()\n        self._poster.sig.connect(self._display_incoming) \
+      \ # connect to GUI-thread handler\n\n        # Qt Application\n        self.app\
+      \ = QtWidgets.QApplication.instance()\n        if self.app is None:\n      \
+      \      self.app = QtWidgets.QApplication(sys.argv)\n\n        # Main window\n\
+      \        self.qt_widget = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\
+      Messenger GUI\")\n        self.qt_widget.resize(640, 560)\n\n        main_layout\
+      \ = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(8, 8, 8,\
+      \ 8)\n        main_layout.setSpacing(6)\n        self.qt_widget.setLayout(main_layout)\n\
+      \n        # Address selection bar\n        addr_layout = QtWidgets.QHBoxLayout()\n\
+      \        addr_label = QtWidgets.QLabel(\"To:\")\n        addr_label.setStyleSheet(\"\
+      font-size: 18px; font-weight: bold;\")\n        addr_layout.addWidget(addr_label)\n\
+      \n        self.addr_box = QtWidgets.QComboBox()\n        self.addr_box.addItems([str(i)\
+      \ for i in range(1, 11)])  # 1..10 default\n        self.addr_box.setFixedWidth(100)\n\
+      \        self.addr_box.setStyleSheet(\"font-size: 16px; padding: 4px;\")\n \
+      \       addr_layout.addWidget(self.addr_box)\n        addr_layout.addStretch()\n\
+      \n        main_layout.addLayout(addr_layout)\n\n        # Scroll area with background\n\
+      \        self.scroll_area = WallpaperScrollArea(bg_image=bg_image)\n       \
+      \ self.scroll_area.setStyleSheet(\"border: none;\")\n        self.scroll_area.setWidgetResizable(True)\n\
+      \        main_layout.addWidget(self.scroll_area, stretch=1)\n\n        # Chat\
+      \ container (vertical list of message widgets)\n        self.chat_container\
+      \ = QtWidgets.QWidget()\n        self.chat_layout = QtWidgets.QVBoxLayout()\n\
+      \        self.chat_layout.setAlignment(QtCore.Qt.AlignTop)\n        self.chat_layout.setSpacing(10)\n\
+      \        self.chat_container.setLayout(self.chat_layout)\n        self.chat_container.setStyleSheet(\"\
+      background: transparent;\")\n        self.scroll_area.setWidget(self.chat_container)\n\
+      \n        # Input area (text entry + send)\n        input_layout = QtWidgets.QHBoxLayout()\n\
+      \        self.input_box = QtWidgets.QLineEdit()\n        self.input_box.setPlaceholderText(\"\
+      Type a message...\")\n        self.input_box.setMinimumHeight(40)\n        self.input_box.setStyleSheet(\"\
+      \"\"\n            QLineEdit {\n                border-radius: 12px;\n      \
+      \          padding: 8px;\n                background-color: rgba(255,255,255,0.95);\n\
+      \                font-size: 16px;\n            }\n        \"\"\")\n        self.send_button\
+      \ = QtWidgets.QPushButton(\"Send\")\n        self.send_button.setMinimumHeight(40)\n\
+      \        self.send_button.setStyleSheet(\"\"\"\n            QPushButton {\n\
+      \                background-color: #4CAF50;\n                color: white;\n\
+      \                border-radius: 10px;\n                padding: 8px 16px;\n\
+      \                font-weight: bold;\n                font-size: 16px;\n    \
+      \        }\n            QPushButton:hover { background-color: #45a049; }\n \
+      \       \"\"\")\n        input_layout.addWidget(self.input_box, stretch=1)\n\
+      \        input_layout.addWidget(self.send_button, stretch=0)\n        main_layout.addLayout(input_layout)\n\
+      \n        # Connect GUI signals\n        self.send_button.clicked.connect(self.send_message)\n\
+      \        self.input_box.returnPressed.connect(self.send_message)\n\n       \
+      \ # Track last sent message timestamp widget (simple approach)\n        # If\
+      \ you want per-message tracking, change to a list/map of widgets per message\
+      \ id.\n        self._last_message_timestamp = None\n\n        # show window\n\
+      \        self.qt_widget.show()\n\n    def send_message(self):\n        \"\"\"\
+      Called from GUI thread when user presses Send or Enter.\"\"\"\n        text\
+      \ = self.input_box.text().strip()\n        if not text:\n            return\n\
+      \n        addr = self.addr_box.currentText().strip()\n        full_msg = f\"\
+      {addr}:{text}\"\n\n        # Publish as PMT symbol/string on 'out' port\n  \
+      \      try:\n            self.message_port_pub(pmt.intern(\"out\"), pmt.intern(full_msg))\n\
+      \        except Exception:\n            # fallback to generic intern\n     \
+      \       self.message_port_pub(pmt.intern(\"out\"), pmt.intern(full_msg))\n\n\
+      \        # Build outgoing bubble (right side)\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(4)\n\n        # Scrollable area for long\
+      \ messages\n        scroll = QtWidgets.QScrollArea()\n        scroll.setWidgetResizable(True)\n\
+      \        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setFrameShape(QtWidgets.QFrame.NoFrame)\n        scroll.setStyleSheet(\"\
+      background: transparent; border: none;\")\n\n        bubble = QtWidgets.QLabel(text)\
+      \  # show only body (user-friendly)\n        bubble.setWordWrap(False)\n   \
+      \     bubble.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)\n    \
+      \    bubble.setStyleSheet(\"\"\"\n            QLabel {\n                background-color:\
+      \ qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 #4CAF50, stop:1 #66BB6A);\n  \
+      \              color: white;\n                border-radius: 12px;\n       \
+      \         padding: 8px 12px;\n                font-size: 14px;\n           \
+      \ }\n        \"\"\")\n        # shadow\n        effect = QtWidgets.QGraphicsDropShadowEffect()\n\
+      \        effect.setBlurRadius(6)\n        effect.setXOffset(2)\n        effect.setYOffset(2)\n\
+      \        effect.setColor(QtGui.QColor(0, 0, 0, 80))\n        bubble.setGraphicsEffect(effect)\n\
+      \n        scroll.setWidget(bubble)\n        scroll.setMinimumWidth(160)\n  \
+      \      scroll.setMaximumWidth(520)\n\n        # Timestamp pill (initially 'Sending...')\n\
+      \        timestamp = QtWidgets.QLabel(\"Sending...\")\n        timestamp.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: #2196F3;\n   \
+      \             color: white;\n                font-size: 11px;\n            \
+      \    border-radius: 8px;\n                padding: 2px 6px;\n            }\n\
+      \        \"\"\")\n        timestamp.setAlignment(QtCore.Qt.AlignRight)\n   \
+      \     timestamp.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        vbox.addWidget(scroll, alignment=QtCore.Qt.AlignRight)\n        vbox.addWidget(timestamp,\
+      \ alignment=QtCore.Qt.AlignRight)\n        container.setLayout(vbox)\n     \
+      \   container.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Add to chat layout (right aligned)\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignRight)\n\n        # Force layout update and scroll\
+      \ to bottom\n        bubble.adjustSize()\n        scroll.adjustSize()\n    \
+      \    container.adjustSize()\n        self.chat_container.adjustSize()\n    \
+      \    QtWidgets.QApplication.processEvents()\n        QtCore.QTimer.singleShot(20,\
+      \ lambda: self.scroll_area.verticalScrollBar().setValue(\n            self.scroll_area.verticalScrollBar().maximum()\n\
+      \        ))\n\n        # Clear input and store timestamp widget for feedback\
+      \ updates\n        self.input_box.clear()\n        self._last_message_timestamp\
+      \ = timestamp\n\n    def _process_feedback(self, msg_pmt):\n        \"\"\"\n\
+      \        Handler for 'feedback' port. Expected feedback values:\n          -\
+      \ \"TRUE\" => show delivery time\n          - \"FALSE\" => show 'Failed'\n \
+      \       \"\"\"\n        try:\n            if pmt.is_symbol(msg_pmt) or pmt.is_string(msg_pmt):\n\
+      \                fb = pmt.symbol_to_string(msg_pmt)\n            else:\n   \
+      \             py = pmt.to_python(msg_pmt)\n                fb = str(py)\n  \
+      \      except Exception:\n            fb = \"<unreadable feedback>\"\n\n   \
+      \     print(fb)\n        # Update last timestamp widget if available (simple\
+      \ single-last approach)\n        if self._last_message_timestamp:\n        \
+      \    if fb == \"TRUE\":\n                self._last_message_timestamp.setText(datetime.now().strftime(\"\
+      %H:%M:%S\"))\n                self._last_message_timestamp.setStyleSheet(\"\"\
+      \"\n                    QLabel {\n                        background-color:\
+      \ #2196F3;\n                        color: white;\n                        font-size:\
+      \ 11px;\n                        border-radius: 8px;\n                     \
+      \   padding: 2px 6px;\n                    }\n                \"\"\")\n    \
+      \        elif fb == \"FALSE\":\n                self._last_message_timestamp.setText(\"\
+      Failed\")\n                self._last_message_timestamp.setStyleSheet(\"\"\"\
+      \n                    QLabel {\n                        background-color: #F44336;\n\
+      \                        color: white;\n                        font-size: 11px;\n\
+      \                        border-radius: 8px;\n                        padding:\
+      \ 2px 6px;\n                    }\n                \"\"\")\n\n    def _receive_message(self,\
+      \ msg_pmt):\n        \"\"\"\n        Handler for 'in_msg' port. Extracts string\
+      \ and posts it to GUI thread\n        via _poster.sig so _display_incoming runs\
+      \ in Qt thread.\n        \"\"\"\n        try:\n            if pmt.is_symbol(msg_pmt)\
+      \ or pmt.is_string(msg_pmt):\n                s = pmt.symbol_to_string(msg_pmt)\n\
+      \            else:\n                py = pmt.to_python(msg_pmt)\n          \
+      \      s = str(py)\n        except Exception:\n            s = \"<unreadable\
+      \ message>\"\n\n        # Post to GUI-thread handler\n        try:\n       \
+      \     self._poster.sig.emit(s)\n        except Exception:\n            # If\
+      \ signal emit fails for any reason, try direct call in case we're already in\
+      \ Qt thread\n            try:\n                self._display_incoming(s)\n \
+      \           except Exception:\n                print(\"[messenger_gui] failed\
+      \ to deliver incoming message to GUI:\", s)\n\n    def _display_incoming(self,\
+      \ full_msg):\n        \"\"\"\n        Build incoming bubble (left aligned).\
+      \ full_msg expected in \"addr:body\" format.\n        \"\"\"\n        # try\
+      \ to split \"addr:body\"\n        if \":\" in full_msg:\n            addr, body\
+      \ = full_msg.split(\":\", 1)\n            display_text = f\"{body}\"\n     \
+      \       header_text = f\"{addr}\"\n        else:\n            display_text =\
+      \ full_msg\n            header_text = \"\"\n\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(4)\n\n        scroll = QtWidgets.QScrollArea()\n\
+      \        scroll.setWidgetResizable(True)\n        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setFrameShape(QtWidgets.QFrame.NoFrame)\n        scroll.setStyleSheet(\"\
+      background: transparent; border: none;\")\n\n        bubble = QtWidgets.QLabel(display_text)\n\
+      \        bubble.setWordWrap(False)\n        bubble.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)\n\
+      \        bubble.setStyleSheet(\"\"\"\n            QLabel {\n               \
+      \ background-color: qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 #E1F5FE, stop:1\
+      \ #B3E5FC);\n                color: #0B2545;\n                border-radius:\
+      \ 12px;\n                padding: 8px 12px;\n                font-size: 14px;\n\
+      \            }\n        \"\"\")\n\n        # small header with sender address\
+      \ (optional)\n        if header_text:\n            header = QtWidgets.QLabel(header_text)\n\
+      \            header.setStyleSheet(\"font-size: 11px; color: #1565C0;\")\n  \
+      \          header.setAlignment(QtCore.Qt.AlignLeft)\n            vbox.addWidget(header,\
+      \ alignment=QtCore.Qt.AlignLeft)\n\n        scroll.setWidget(bubble)\n     \
+      \   scroll.setMinimumWidth(160)\n        scroll.setMaximumWidth(520)\n\n   \
+      \     vbox.addWidget(scroll, alignment=QtCore.Qt.AlignLeft)\n\n        # incoming\
+      \ messages do not have delivery timestamp pill (feedback relates to outgoing)\n\
+      \        container.setLayout(vbox)\n        container.setSizePolicy(QtWidgets.QSizePolicy.Expanding,\
+      \ QtWidgets.QSizePolicy.Fixed)\n\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignLeft)\n\n        # Update layout and scroll to bottom\n\
+      \        bubble.adjustSize()\n        scroll.adjustSize()\n        container.adjustSize()\n\
+      \        self.chat_container.adjustSize()\n        QtWidgets.QApplication.processEvents()\n\
+      \        QtCore.QTimer.singleShot(20, lambda: self.scroll_area.verticalScrollBar().setValue(\n\
+      \            self.scroll_area.verticalScrollBar().maximum()\n        ))\n"
+    affinity: ''
+    alias: ''
+    bg_image: r"C:\Users\Oshan\Desktop\message.jpg"
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''in_msg'',
+      ''message'', 1), (''feedback'', ''message'', 1)], [(''out'', ''message'', 1)],
+      ''\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing
+      messages: published on message port "out" with address prepended as "addr:body"\n    -
+      Feedback port "feedback": updates delivery timestamp / failed status\n    -
+      Incoming messages: received on port "in_msg" (same format "addr:body") and displayed\n      on
+      the left in a different color.\n    '', [])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [464, 1536.0]
+    rotation: 180
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1740,9 +2094,9 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    bandwidth: '0.0'
-    center_freq: freq
-    comment: ''
+    bandwidth: 10e3
+    center_freq: freq1
+    comment: User 1 TX
     dev_args: ''
     freq_correction: '0'
     gain: '20.0'
@@ -1752,7 +2106,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3032, 556.0]
+    coordinate: [2000, 636.0]
     rotation: 0
     state: enabled
 - name: soapy_bladerf_sink_0_0
@@ -1761,8 +2115,8 @@ blocks:
     affinity: ''
     alias: ''
     bandwidth: '0.0'
-    center_freq: freq
-    comment: ''
+    center_freq: freq2
+    comment: User 2 TX
     dev_args: ''
     freq_correction: '0'
     gain: '20.0'
@@ -1772,7 +2126,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3080, 1244.0]
+    coordinate: [2040, 1324.0]
     rotation: 0
     state: disabled
 - name: soapy_bladerf_source_0
@@ -1781,8 +2135,8 @@ blocks:
     affinity: ''
     alias: ''
     bandwidth: '0.0'
-    center_freq: freq
-    comment: ''
+    center_freq: freq2
+    comment: User 1 RX
     dev_args: ''
     freq_correction: '0'
     gain: '20.0'
@@ -1794,7 +2148,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2600, 388.0]
+    coordinate: [3184, 468.0]
     rotation: 180
     state: enabled
 - name: soapy_bladerf_source_0_0
@@ -1802,9 +2156,9 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    bandwidth: '0.0'
-    center_freq: freq
-    comment: ''
+    bandwidth: 10e3
+    center_freq: freq1
+    comment: User 2 RX
     dev_args: ''
     freq_correction: '0'
     gain: '20.0'
@@ -1816,7 +2170,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2648, 1068.0]
+    coordinate: [3256, 1148.0]
     rotation: 180
     state: disabled
 
@@ -1827,24 +2181,20 @@ connections:
 - [blocks_repack_bits_bb_1_0_0_0, '0', pdu_tagged_stream_to_pdu_0_0_0, '0']
 - [blocks_tagged_stream_mux_0, '0', digital_constellation_modulator_0_0, '0']
 - [blocks_tagged_stream_mux_0_0, '0', digital_constellation_modulator_0_0_0, '0']
-- [blocks_throttle2_0_0_0, '0', channels_channel_model_0, '0']
-- [blocks_throttle2_0_0_0_0, '0', channels_channel_model_0_0, '0']
 - [blocks_unpack_k_bits_bb_0, '0', digital_correlate_access_code_xx_ts_0, '0']
 - [blocks_unpack_k_bits_bb_0_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
-- [channels_channel_model_0, '0', digital_pfb_clock_sync_xxx_0, '0']
-- [channels_channel_model_0_0, '0', digital_pfb_clock_sync_xxx_0_0, '0']
 - [digital_constellation_decoder_cb_0_1, '0', digital_diff_decoder_bb_0_1, '0']
 - [digital_constellation_decoder_cb_0_1_0, '0', digital_diff_decoder_bb_0_1_0, '0']
-- [digital_constellation_modulator_0_0, '0', blocks_throttle2_0_0_0, '0']
-- [digital_constellation_modulator_0_0_0, '0', blocks_throttle2_0_0_0_0, '0']
+- [digital_constellation_modulator_0_0, '0', soapy_bladerf_sink_0, '0']
+- [digital_constellation_modulator_0_0_0, '0', soapy_bladerf_sink_0_0, '0']
 - [digital_correlate_access_code_xx_ts_0, '0', blocks_repack_bits_bb_1_0_0, '0']
 - [digital_correlate_access_code_xx_ts_0_0, '0', blocks_repack_bits_bb_1_0_0_0, '0']
 - [digital_costas_loop_cc_0_1, '0', digital_constellation_decoder_cb_0_1, '0']
 - [digital_costas_loop_cc_0_1_0, '0', digital_constellation_decoder_cb_0_1_0, '0']
 - [digital_diff_decoder_bb_0_1, '0', digital_map_bb_0_1, '0']
 - [digital_diff_decoder_bb_0_1_0, '0', digital_map_bb_0_1_0, '0']
-- [digital_linear_equalizer_0, '0', soapy_bladerf_sink_0, '0']
-- [digital_linear_equalizer_0_0, '0', soapy_bladerf_sink_0_0, '0']
+- [digital_linear_equalizer_0, '0', digital_costas_loop_cc_0_1_0, '0']
+- [digital_linear_equalizer_0_0, '0', digital_costas_loop_cc_0_1, '0']
 - [digital_map_bb_0_1, '0', blocks_unpack_k_bits_bb_0, '0']
 - [digital_map_bb_0_1_0, '0', blocks_unpack_k_bits_bb_0_0, '0']
 - [digital_pfb_clock_sync_xxx_0, '0', digital_linear_equalizer_0, '0']
@@ -1853,20 +2203,26 @@ connections:
 - [digital_protocol_formatter_async_0, payload, pdu_pdu_to_tagged_stream_0_0, pdus]
 - [digital_protocol_formatter_async_0_0, header, pdu_pdu_to_tagged_stream_0_0_0, pdus]
 - [digital_protocol_formatter_async_0_0, payload, pdu_pdu_to_tagged_stream_0_1, pdus]
+- [epy_block_0, feedback, epy_block_0_1, feedback]
 - [epy_block_0, msg_out, blocks_message_debug_0_0, print]
+- [epy_block_0, msg_out, epy_block_0_1, in_msg]
 - [epy_block_0, pdu_out, digital_protocol_formatter_async_0, in]
+- [epy_block_0_0, feedback, epy_block_0_2, feedback]
 - [epy_block_0_0, msg_out, blocks_message_debug_0, print]
+- [epy_block_0_0, msg_out, epy_block_0_2, in_msg]
 - [epy_block_0_0, pdu_out, digital_protocol_formatter_async_0_0, in]
+- [epy_block_0_1, out, epy_block_0, msg_in]
 - [epy_block_0_1_0, out, epy_block_0, msg_in]
 - [epy_block_0_1_0_0, out, epy_block_0_0, msg_in]
+- [epy_block_0_2, out, epy_block_0_0, msg_in]
 - [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0_0, '0']
 - [pdu_pdu_to_tagged_stream_0_1, '0', blocks_tagged_stream_mux_0_0, '1']
 - [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_0_0, pdu_in]
 - [pdu_tagged_stream_to_pdu_0_0_0, pdus, epy_block_0, pdu_in]
-- [soapy_bladerf_source_0, '0', digital_costas_loop_cc_0_1_0, '0']
-- [soapy_bladerf_source_0_0, '0', digital_costas_loop_cc_0_1, '0']
+- [soapy_bladerf_source_0, '0', digital_pfb_clock_sync_xxx_0, '0']
+- [soapy_bladerf_source_0_0, '0', digital_pfb_clock_sync_xxx_0_0, '0']
 
 metadata:
   file_format: 1
