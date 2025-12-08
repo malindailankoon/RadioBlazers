@@ -1,0 +1,1872 @@
+options:
+  parameters:
+    author: BellLabz
+    catch_exceptions: 'True'
+    category: Custom
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: cdp project
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: cdp
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: cdp
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3360, 500.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: arity
+  id: variable
+  parameters:
+    comment: ''
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2832, 208.0]
+    rotation: 0
+    state: enabled
+- name: eq_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'controls@1: 0,1,1,1'
+    label: 'Equalizer: rate'
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.0'
+    step: '0.001'
+    stop: '0.1'
+    value: '0.01'
+    widget: slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3088, 336.0]
+    rotation: 0
+    state: enabled
+- name: excess_bw
+  id: variable
+  parameters:
+    comment: Set Bandwidth
+    value: '.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2688, 128.0]
+    rotation: 0
+    state: enabled
+- name: hdr_format
+  id: variable_header_format_default
+  parameters:
+    access_code: '11100001010110101110100010010011'
+    bps: '1'
+    comment: ''
+    threshold: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2880, 336.0]
+    rotation: 0
+    state: enabled
+- name: k
+  id: variable
+  parameters:
+    comment: ''
+    value: '7'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2608, 128.0]
+    rotation: 0
+    state: enabled
+- name: nfilts
+  id: variable
+  parameters:
+    comment: ''
+    value: '32'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2752, 208.0]
+    rotation: 0
+    state: enabled
+- name: phase_bw
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'controls@1: 0,2,1,1'
+    label: 'Phase: Bandwidth'
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.0'
+    step: '0.01'
+    stop: '1.0'
+    value: 6.28/100.0
+    widget: slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3288, 160.0]
+    rotation: 0
+    state: enabled
+- name: polys
+  id: variable
+  parameters:
+    comment: ''
+    value: '[109, 79]'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2792, 288.0]
+    rotation: 0
+    state: enabled
+- name: qpsk
+  id: variable_constellation_rect
+  parameters:
+    comment: ''
+    const_points: '[0.707+0.707j, -0.707+0.707j, -0.707-0.707j, 0.707-0.707j]'
+    imag_sect: '2'
+    precision: '8'
+    real_sect: '2'
+    rot_sym: '4'
+    soft_dec_lut: None
+    sym_map: '[0, 1, 2, 3]'
+    w_imag_sect: '1'
+    w_real_sect: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3088, 144.0]
+    rotation: 0
+    state: enabled
+- name: rrc_taps
+  id: variable
+  parameters:
+    comment: ''
+    value: firdes.root_raised_cosine(nfilts, nfilts, 1.0/float(sps), 0.35, 11*sps*nfilts)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2896, 128.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 600e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2792, 128.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate_blade
+  id: variable
+  parameters:
+    comment: ''
+    value: 600e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2608, 208.0]
+    rotation: 0
+    state: enabled
+- name: spr
+  id: variable
+  parameters:
+    comment: ''
+    value: '750000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2896, 288.0]
+    rotation: 0
+    state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: Samples Per Symbol
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2912, 208.0]
+    rotation: 0
+    state: enabled
+- name: variable_adaptive_algorithm_0
+  id: variable_adaptive_algorithm
+  parameters:
+    comment: ''
+    cons: qpsk
+    delta: '10.0'
+    ffactor: '0.99'
+    modulus: '4'
+    step_size: '.0001'
+    type: cma
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2688, 336.0]
+    rotation: 0
+    state: enabled
+- name: MTU
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: MTU
+    short_id: ''
+    type: intx
+    value: '1500'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2992, 176.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '0.8'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1968, 256.0]
+    rotation: 0
+    state: enabled
+- name: blocks_repack_bits_bb_1_0
+  id: blocks_repack_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    align_output: 'False'
+    comment: ''
+    endianness: gr.GR_MSB_FIRST
+    k: '1'
+    l: '8'
+    len_tag_key: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [744, 704.0]
+    rotation: 180
+    state: enabled
+- name: blocks_tagged_stream_mux_0
+  id: blocks_tagged_stream_mux
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    lengthtagname: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ninputs: '2'
+    tag_preserve_head_pos: '0'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1448, 368.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle2_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: '48000'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2224, 512.0]
+    rotation: 0
+    state: disabled
+- name: blocks_unpack_k_bits_bb_0_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: unpack 2 bits per symbol into bits
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1272, 688.0]
+    rotation: 180
+    state: enabled
+- name: channels_channel_model_0
+  id: channels_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    block_tags: 'False'
+    comment: ''
+    epsilon: '1.0'
+    freq_offset: '0.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_voltage: '0.1'
+    seed: '0'
+    taps: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2536, 528.0]
+    rotation: 0
+    state: disabled
+- name: controls
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: 0,0,1,2
+    label0: Channel
+    label1: Receiver
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    label2: Tab 2
+    label3: Tab 3
+    label4: Tab 4
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    num_tabs: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2544, 256.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_decoder_cb_0_0
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Decode a constellation's points from \na complex space to index of constellation\
+      \ \nsymbol based on the map of the  object."
+    constellation: qpsk
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1816, 688.0]
+    rotation: 180
+    state: enabled
+- name: digital_constellation_modulator_0
+  id: digital_constellation_modulator
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Modulation block
+    constellation: qpsk
+    differential: 'True'
+    excess_bw: excess_bw
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: sps
+    truncate: 'False'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1672, 432.0]
+    rotation: 0
+    state: enabled
+- name: digital_correlate_access_code_xx_ts_0_0
+  id: digital_correlate_access_code_xx_ts
+  parameters:
+    access_code: '11100001010110101110100010010011'
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tagname: '"packet_len"'
+    threshold: '2'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [968, 680.0]
+    rotation: 180
+    state: enabled
+- name: digital_costas_loop_cc_0_0
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Phase and Fine Frequency Correction
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: arity
+    use_snr: 'False'
+    w: phase_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1800, 816.0]
+    rotation: 0
+    state: enabled
+- name: digital_diff_decoder_bb_0_0
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: "translate the differential coded symbols\n back to their original symbols"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1600, 704.0]
+    rotation: 180
+    state: enabled
+- name: digital_linear_equalizer_0_0_0
+  id: digital_linear_equalizer
+  parameters:
+    adapt_after_training: 'True'
+    affinity: ''
+    alg: variable_adaptive_algorithm_0
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_taps: '15'
+    sps: '4'
+    training_sequence: '[ ]'
+    training_start_tag: corr_est
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1496, 848.0]
+    rotation: 0
+    state: enabled
+- name: digital_map_bb_0_0
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "convert the symbols \nfrom the differential decoder to the \noriginal\
+      \ symbols we transmitted."
+    map: '[0,1,2,3]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1440, 688.0]
+    rotation: 180
+    state: enabled
+- name: digital_protocol_formatter_async_0
+  id: digital_protocol_formatter_async
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    format: hdr_format
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 368.0]
+    rotation: 0
+    state: enabled
+- name: digital_symbol_sync_xx_0_0
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: digital.constellation_bpsk().base()
+    damping: '1.0'
+    loop_bw: phase_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '32'
+    osps: '4'
+    pfb_mf_taps: rrc_taps
+    resamp_type: digital.IR_PFB_MF
+    sps: sps
+    ted_gain: '1.0'
+    ted_type: digital.TED_SIGNAL_TIMES_SLOPE_ML
+    type: cc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1080, 832.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0_1
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\nfrom gnuradio\
+      \ import gr\nfrom PyQt5 import QtWidgets, QtCore, QtGui\nimport sys\nimport\
+      \ pmt\nfrom datetime import datetime\n\nclass WallpaperScrollArea(QtWidgets.QScrollArea):\n\
+      \    def __init__(self, bg_image=\"\", parent=None):\n        super().__init__(parent)\n\
+      \        self.setWidgetResizable(True)\n        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n\
+      \        self.bg_pixmap = QtGui.QPixmap(bg_image) if bg_image else None\n\n\
+      \    def paintEvent(self, event):\n        if self.bg_pixmap:\n            painter\
+      \ = QtGui.QPainter(self.viewport())\n            painter.drawPixmap(self.viewport().rect(),\
+      \ self.bg_pixmap)\n        super().paintEvent(event)\n\n\nclass _GuiPoster(QtCore.QObject):\n\
+      \    \"\"\"Helper QObject to post strings into the Qt thread safely.\"\"\"\n\
+      \    sig = QtCore.pyqtSignal(str)  # emits text payload\n\n    def __init__(self):\n\
+      \        super().__init__()\n\n\nclass messenger_gui(gr.basic_block):\n    \"\
+      \"\"\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing\
+      \ messages: published on message port \"out\" with address prepended as \"addr:body\"\
+      \n    - Feedback port \"feedback\": updates delivery timestamp / failed status\n\
+      \    - Incoming messages: received on port \"in_msg\" (same format \"addr:body\"\
+      ) and displayed\n      on the left in a different color.\n    \"\"\"\n\n   \
+      \ def __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n   \
+      \         self,\n            name=\"Messenger GUI\",\n            in_sig=None,\n\
+      \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))    # outgoing messages\n        self.message_port_register_in(pmt.intern(\"\
+      feedback\"))# delivery feedback\n        self.message_port_register_in(pmt.intern(\"\
+      in_msg\"))  # incoming messages from remote/devices\n\n        # Bind handlers\n\
+      \        self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      \        self.set_msg_handler(pmt.intern(\"in_msg\"), self._receive_message)\n\
+      \n        # Poster used to safely move messages to GUI thread\n        self._poster\
+      \ = _GuiPoster()\n        self._poster.sig.connect(self._display_incoming) \
+      \ # connect to GUI-thread handler\n\n        # Qt Application\n        self.app\
+      \ = QtWidgets.QApplication.instance()\n        if self.app is None:\n      \
+      \      self.app = QtWidgets.QApplication(sys.argv)\n\n        # Main window\n\
+      \        self.qt_widget = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\
+      Messenger GUI User 1\")\n        self.qt_widget.resize(640, 560)\n\n       \
+      \ main_layout = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(8,\
+      \ 8, 8, 8)\n        main_layout.setSpacing(6)\n        self.qt_widget.setLayout(main_layout)\n\
+      \n        # Address selection bar\n        addr_layout = QtWidgets.QHBoxLayout()\n\
+      \        addr_label = QtWidgets.QLabel(\"To:\")\n        addr_label.setStyleSheet(\"\
+      font-size: 18px; font-weight: bold;\")\n        addr_layout.addWidget(addr_label)\n\
+      \n        self.addr_box = QtWidgets.QComboBox()\n        self.addr_box.addItems([str(i)\
+      \ for i in range(1, 11)])  # 1..10 default\n        self.addr_box.setFixedWidth(100)\n\
+      \        self.addr_box.setStyleSheet(\"font-size: 16px; padding: 4px;\")\n \
+      \       addr_layout.addWidget(self.addr_box)\n        addr_layout.addStretch()\n\
+      \n        main_layout.addLayout(addr_layout)\n\n        # Scroll area with background\n\
+      \        self.scroll_area = WallpaperScrollArea(bg_image=bg_image)\n       \
+      \ self.scroll_area.setStyleSheet(\"border: none;\")\n        self.scroll_area.setWidgetResizable(True)\n\
+      \        main_layout.addWidget(self.scroll_area, stretch=1)\n\n        # Chat\
+      \ container (vertical list of message widgets)\n        self.chat_container\
+      \ = QtWidgets.QWidget()\n        self.chat_layout = QtWidgets.QVBoxLayout()\n\
+      \        self.chat_layout.setAlignment(QtCore.Qt.AlignTop)\n        self.chat_layout.setSpacing(10)\n\
+      \        self.chat_container.setLayout(self.chat_layout)\n        self.chat_container.setStyleSheet(\"\
+      background: transparent;\")\n        self.scroll_area.setWidget(self.chat_container)\n\
+      \n        # Input area (text entry + send)\n        input_layout = QtWidgets.QHBoxLayout()\n\
+      \        self.input_box = QtWidgets.QLineEdit()\n        self.input_box.setPlaceholderText(\"\
+      Type a message...\")\n        self.input_box.setMinimumHeight(40)\n        self.input_box.setStyleSheet(\"\
+      \"\"\n            QLineEdit {\n                border-radius: 12px;\n      \
+      \          padding: 8px;\n                background-color: rgba(255,255,255,0.95);\n\
+      \                font-size: 16px;\n            }\n        \"\"\")\n        self.send_button\
+      \ = QtWidgets.QPushButton(\"Send\")\n        self.send_button.setMinimumHeight(40)\n\
+      \        self.send_button.setStyleSheet(\"\"\"\n            QPushButton {\n\
+      \                background-color: #4CAF50;\n                color: white;\n\
+      \                border-radius: 10px;\n                padding: 8px 16px;\n\
+      \                font-weight: bold;\n                font-size: 16px;\n    \
+      \        }\n            QPushButton:hover { background-color: #45a049; }\n \
+      \       \"\"\")\n        input_layout.addWidget(self.input_box, stretch=1)\n\
+      \        input_layout.addWidget(self.send_button, stretch=0)\n        main_layout.addLayout(input_layout)\n\
+      \n        # Connect GUI signals\n        self.send_button.clicked.connect(self.send_message)\n\
+      \        self.input_box.returnPressed.connect(self.send_message)\n\n       \
+      \ # Track last sent message timestamp widget (simple approach)\n        # If\
+      \ you want per-message tracking, change to a list/map of widgets per message\
+      \ id.\n        self._last_message_timestamp = None\n\n        # show window\n\
+      \        self.qt_widget.show()\n\n    def send_message(self):\n        \"\"\"\
+      Called from GUI thread when user presses Send or Enter.\"\"\"\n        text\
+      \ = self.input_box.text().strip()\n        if not text:\n            return\n\
+      \n        addr = self.addr_box.currentText().strip()\n        full_msg = f\"\
+      {addr}:{text}\"\n\n        # Publish as PMT symbol/string on 'out' port\n  \
+      \      try:\n            self.message_port_pub(pmt.intern(\"out\"), pmt.intern(full_msg))\n\
+      \        except Exception:\n            # fallback to generic intern\n     \
+      \       self.message_port_pub(pmt.intern(\"out\"), pmt.intern(full_msg))\n\n\
+      \        # Build outgoing bubble (right side)\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(4)\n\n        # Scrollable area for long\
+      \ messages\n        scroll = QtWidgets.QScrollArea()\n        scroll.setWidgetResizable(True)\n\
+      \        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setFrameShape(QtWidgets.QFrame.NoFrame)\n        scroll.setStyleSheet(\"\
+      background: transparent; border: none;\")\n\n        bubble = QtWidgets.QLabel(text)\
+      \  # show only body (user-friendly)\n        bubble.setWordWrap(False)\n   \
+      \     bubble.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)\n    \
+      \    bubble.setStyleSheet(\"\"\"\n            QLabel {\n                background-color:\
+      \ qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 #4CAF50, stop:1 #66BB6A);\n  \
+      \              color: white;\n                border-radius: 12px;\n       \
+      \         padding: 8px 12px;\n                font-size: 14px;\n           \
+      \ }\n        \"\"\")\n        # shadow\n        effect = QtWidgets.QGraphicsDropShadowEffect()\n\
+      \        effect.setBlurRadius(6)\n        effect.setXOffset(2)\n        effect.setYOffset(2)\n\
+      \        effect.setColor(QtGui.QColor(0, 0, 0, 80))\n        bubble.setGraphicsEffect(effect)\n\
+      \n        scroll.setWidget(bubble)\n        scroll.setMinimumWidth(160)\n  \
+      \      scroll.setMaximumWidth(520)\n\n        # Timestamp pill (initially 'Sending...')\n\
+      \        timestamp = QtWidgets.QLabel(\"Sending...\")\n        timestamp.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                background-color: #2196F3;\n   \
+      \             color: white;\n                font-size: 11px;\n            \
+      \    border-radius: 8px;\n                padding: 2px 6px;\n            }\n\
+      \        \"\"\")\n        timestamp.setAlignment(QtCore.Qt.AlignRight)\n   \
+      \     timestamp.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        vbox.addWidget(scroll, alignment=QtCore.Qt.AlignRight)\n        vbox.addWidget(timestamp,\
+      \ alignment=QtCore.Qt.AlignRight)\n        container.setLayout(vbox)\n     \
+      \   container.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)\n\
+      \n        # Add to chat layout (right aligned)\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignRight)\n\n        # Force layout update and scroll\
+      \ to bottom\n        bubble.adjustSize()\n        scroll.adjustSize()\n    \
+      \    container.adjustSize()\n        self.chat_container.adjustSize()\n    \
+      \    QtWidgets.QApplication.processEvents()\n        QtCore.QTimer.singleShot(20,\
+      \ lambda: self.scroll_area.verticalScrollBar().setValue(\n            self.scroll_area.verticalScrollBar().maximum()\n\
+      \        ))\n\n        # Clear input and store timestamp widget for feedback\
+      \ updates\n        self.input_box.clear()\n        self._last_message_timestamp\
+      \ = timestamp\n\n    def _process_feedback(self, msg_pmt):\n        \"\"\"\n\
+      \        Handler for 'feedback' port. Expected feedback values:\n          -\
+      \ \"TRUE\" => show delivery time\n          - \"FALSE\" => show 'Failed'\n \
+      \       \"\"\"\n        try:\n            if pmt.is_symbol(msg_pmt) or pmt.is_string(msg_pmt):\n\
+      \                fb = pmt.symbol_to_string(msg_pmt)\n            else:\n   \
+      \             py = pmt.to_python(msg_pmt)\n                fb = str(py)\n  \
+      \      except Exception:\n            fb = \"<unreadable feedback>\"\n\n   \
+      \     print(fb)\n        # Update last timestamp widget if available (simple\
+      \ single-last approach)\n        if self._last_message_timestamp:\n        \
+      \    if fb == \"TRUE\":\n                self._last_message_timestamp.setText(datetime.now().strftime(\"\
+      %H:%M:%S\"))\n                self._last_message_timestamp.setStyleSheet(\"\"\
+      \"\n                    QLabel {\n                        background-color:\
+      \ #2196F3;\n                        color: white;\n                        font-size:\
+      \ 11px;\n                        border-radius: 8px;\n                     \
+      \   padding: 2px 6px;\n                    }\n                \"\"\")\n    \
+      \        elif fb == \"FALSE\":\n                self._last_message_timestamp.setText(\"\
+      Failed\")\n                self._last_message_timestamp.setStyleSheet(\"\"\"\
+      \n                    QLabel {\n                        background-color: #F44336;\n\
+      \                        color: white;\n                        font-size: 11px;\n\
+      \                        border-radius: 8px;\n                        padding:\
+      \ 2px 6px;\n                    }\n                \"\"\")\n\n    def _receive_message(self,\
+      \ msg_pmt):\n        \"\"\"\n        Handler for 'in_msg' port. Extracts string\
+      \ and posts it to GUI thread\n        via _poster.sig so _display_incoming runs\
+      \ in Qt thread.\n        \"\"\"\n        try:\n            if pmt.is_symbol(msg_pmt)\
+      \ or pmt.is_string(msg_pmt):\n                s = pmt.symbol_to_string(msg_pmt)\n\
+      \            else:\n                py = pmt.to_python(msg_pmt)\n          \
+      \      s = str(py)\n        except Exception:\n            s = \"<unreadable\
+      \ message>\"\n\n        # Post to GUI-thread handler\n        try:\n       \
+      \     self._poster.sig.emit(s)\n        except Exception:\n            # If\
+      \ signal emit fails for any reason, try direct call in case we're already in\
+      \ Qt thread\n            try:\n                self._display_incoming(s)\n \
+      \           except Exception:\n                print(\"[messenger_gui] failed\
+      \ to deliver incoming message to GUI:\", s)\n\n    def _display_incoming(self,\
+      \ full_msg):\n        \"\"\"\n        Build incoming bubble (left aligned).\
+      \ full_msg expected in \"addr:body\" format.\n        \"\"\"\n        # try\
+      \ to split \"addr:body\"\n        if \":\" in full_msg:\n            addr, body\
+      \ = full_msg.split(\":\", 1)\n            display_text = f\"{body}\"\n     \
+      \       header_text = f\"{addr}\"\n        else:\n            display_text =\
+      \ full_msg\n            header_text = \"\"\n\n        container = QtWidgets.QWidget()\n\
+      \        vbox = QtWidgets.QVBoxLayout()\n        vbox.setContentsMargins(0,\
+      \ 0, 0, 0)\n        vbox.setSpacing(4)\n\n        scroll = QtWidgets.QScrollArea()\n\
+      \        scroll.setWidgetResizable(True)\n        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)\n\
+      \        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       scroll.setFrameShape(QtWidgets.QFrame.NoFrame)\n        scroll.setStyleSheet(\"\
+      background: transparent; border: none;\")\n\n        bubble = QtWidgets.QLabel(display_text)\n\
+      \        bubble.setWordWrap(False)\n        bubble.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)\n\
+      \        bubble.setStyleSheet(\"\"\"\n            QLabel {\n               \
+      \ background-color: qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 #E1F5FE, stop:1\
+      \ #B3E5FC);\n                color: #0B2545;\n                border-radius:\
+      \ 12px;\n                padding: 8px 12px;\n                font-size: 14px;\n\
+      \            }\n        \"\"\")\n\n        # small header with sender address\
+      \ (optional)\n        if header_text:\n            header = QtWidgets.QLabel(header_text)\n\
+      \            header.setStyleSheet(\"font-size: 11px; color: #1565C0;\")\n  \
+      \          header.setAlignment(QtCore.Qt.AlignLeft)\n            vbox.addWidget(header,\
+      \ alignment=QtCore.Qt.AlignLeft)\n\n        scroll.setWidget(bubble)\n     \
+      \   scroll.setMinimumWidth(160)\n        scroll.setMaximumWidth(520)\n\n   \
+      \     vbox.addWidget(scroll, alignment=QtCore.Qt.AlignLeft)\n\n        # incoming\
+      \ messages do not have delivery timestamp pill (feedback relates to outgoing)\n\
+      \        container.setLayout(vbox)\n        container.setSizePolicy(QtWidgets.QSizePolicy.Expanding,\
+      \ QtWidgets.QSizePolicy.Fixed)\n\n        self.chat_layout.addWidget(container,\
+      \ alignment=QtCore.Qt.AlignLeft)\n\n        # Update layout and scroll to bottom\n\
+      \        bubble.adjustSize()\n        scroll.adjustSize()\n        container.adjustSize()\n\
+      \        self.chat_container.adjustSize()\n        QtWidgets.QApplication.processEvents()\n\
+      \        QtCore.QTimer.singleShot(20, lambda: self.scroll_area.verticalScrollBar().setValue(\n\
+      \            self.scroll_area.verticalScrollBar().maximum()\n        ))\n"
+    affinity: ''
+    alias: ''
+    bg_image: r"C:\Users\Oshan\Desktop\message.jpg"
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''in_msg'',
+      ''message'', 1), (''feedback'', ''message'', 1)], [(''out'', ''message'', 1)],
+      ''\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing
+      messages: published on message port "out" with address prepended as "addr:body"\n    -
+      Feedback port "feedback": updates delivery timestamp / failed status\n    -
+      Incoming messages: received on port "in_msg" (same format "addr:body") and displayed\n      on
+      the left in a different color.\n    '', [])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 496.0]
+    rotation: 180
+    state: enabled
+- name: epy_block_1_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Block for GNU Radio - Mesh Network Packet\
+      \ Communication\nImplements packetization, Go-Back-N ARQ, and p-persistent ALOHA\
+      \ medium access\nNo external CRC module required - implements CRC-16 CCITT manually\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport threading\n\
+      import queue\nimport time\nimport random\nimport struct\nimport collections\n\
+      \n\nclass blk(gr.sync_block):\n    \"\"\"\n    Mesh Network Packet Communication\
+      \ Block\n    Handles packet transmission/reception with Go-Back-N ARQ + ALOHA\n\
+      \    \"\"\"\n\n    def __init__(\n        self,\n        node_id = 1,\n    \
+      \    aloha_prob = 0.3,\n        timeout = 1.0,\n        max_retries = 3,\n \
+      \       window_size = 4,\n        aloha_backoff_min = 0.1,\n        aloha_backoff_max\
+      \ = 0.5,\n    ):\n        \"\"\"\n        Arguments:\n            node_id: \
+      \          Unique identifier for this node (1-255)\n            aloha_prob:\
+      \        Transmission probability (p) for p-persistent ALOHA (0.0-1.0)\n   \
+      \         timeout:           ARQ timeout in seconds (timer for base of window)\n\
+      \            max_retries:       Maximum window retransmission attempts before\
+      \ giving up\n            window_size:       Go-Back-N window size (number of\
+      \ outstanding frames)\n            aloha_backoff_min: Minimum backoff before\
+      \ (re)transmission when ALOHA defers\n            aloha_backoff_max: Maximum\
+      \ backoff before (re)transmission when ALOHA defers\n        \"\"\"\n      \
+      \  gr.sync_block.__init__(\n            self,\n            name='Mesh Packet\
+      \ Comm GBN',\n            in_sig=None,\n            out_sig=None\n        )\n\
+      \n        # Node configuration\n        self.node_id = node_id\n        self.aloha_prob\
+      \ = float(aloha_prob)\n        self.timeout = float(timeout)\n        self.max_retries\
+      \ = int(max_retries)\n        self.window_size = int(window_size)\n        self.aloha_backoff_min\
+      \ = float(aloha_backoff_min)\n        self.aloha_backoff_max = float(aloha_backoff_max)\n\
+      \n        # Packet parameters\n        # Preamble: long, random-ish pattern\
+      \ for sync\n        # b = random.getrandbits(8)\n        # self.PREAMBLE = bytes([b]\
+      \ * 32)\n        self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])\n        self.SYNC_WORD\
+      \ = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD = 255\n        self.CRC_SIZE\
+      \ = 2\n\n        # Packet types\n        self.PKT_DATA = 0x01\n        self.PKT_ACK\
+      \ = 0x02\n\n        # CRC-16 CCITT lookup table\n        self.crc_table = self.generate_crc_table()\n\
+      \n        # Queues\n        self.tx_queue = queue.Queue()   # app -> link layer\
+      \ (messages to send)\n        self.rx_queue = queue.Queue()   # PHY -> link\
+      \ layer (raw received bytes)\n        self.ack_queue = queue.Queue()  # RX thread\
+      \ -> TX thread (parsed ACKs)\n\n        # TX state (Go-Back-N)\n        self.seq_num_tx\
+      \ = 0  # next sequence number to use (mod 256)\n        # window: OrderedDict[seq]\
+      \ = {\n        #   'packet': bytes,\n        #   'feedback_sent': bool\n   \
+      \     # }\n        self.tx_window = collections.OrderedDict()\n        self.window_timer_start\
+      \ = None\n        self.window_retries = 0\n\n        # RX state (per-source\
+      \ expected sequence for GBN)\n        # expected_seq_rx[src_id] = next expected\
+      \ seq from that source\n        self.expected_seq_rx = {}\n\n        # RX byte\
+      \ buffer for packet extraction\n        self.rx_buffer = bytes()\n\n       \
+      \ # Statistics\n        self.stats = {\n            'packets_sent': 0,\n   \
+      \         'packets_received': 0,\n            'acks_sent': 0,\n            'acks_received':\
+      \ 0,\n            'retransmissions': 0,\n            'crc_errors': 0,\n    \
+      \        'window_timeouts': 0,\n        }\n\n        # Threading\n        self.running\
+      \ = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
+      \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
+      \ self.tx_thread.daemon = True\n        self.rx_thread.daemon = True\n\n   \
+      \     # Message ports\n        self.port_msg_in = pmt.intern('msg_in')\n   \
+      \     self.port_pdu_in = pmt.intern('pdu_in')\n        self.port_msg_out = pmt.intern('msg_out')\n\
+      \        self.port_pdu_out = pmt.intern('pdu_out')\n        self.port_feedback\
+      \ = pmt.intern('feedback')\n\n        self.message_port_register_in(self.port_msg_in)\n\
+      \        self.message_port_register_in(self.port_pdu_in)\n        self.message_port_register_out(self.port_msg_out)\n\
+      \        self.message_port_register_out(self.port_pdu_out)\n        self.message_port_register_out(self.port_feedback)\n\
+      \n        # Set message handlers\n        self.set_msg_handler(self.port_msg_in,\
+      \ self.handle_msg_in)\n        self.set_msg_handler(self.port_pdu_in, self.handle_pdu_in)\n\
+      \n        # Start threads\n        self.tx_thread.start()\n        self.rx_thread.start()\n\
+      \n        print(f\"[Node {self.node_id}] Initialized (GBN+ALOHA) - Ready for\
+      \ communication\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # CRC helpers\n    # -------------------------------------------------------------------------\n\
+      \    def generate_crc_table(self):\n        \"\"\"Generate CRC-16 CCITT lookup\
+      \ table\"\"\"\n        poly = 0x1021\n        table = []\n        for i in range(256):\n\
+      \            crc = i << 8\n            for _ in range(8):\n                if\
+      \ crc & 0x8000:\n                    crc = ((crc << 1) ^ poly) & 0xFFFF\n  \
+      \              else:\n                    crc = (crc << 1) & 0xFFFF\n      \
+      \      table.append(crc)\n        return table\n\n    def calculate_crc16(self,\
+      \ data):\n        \"\"\"Calculate CRC-16 CCITT for given data\"\"\"\n      \
+      \  crc = 0xFFFF\n        for byte in data:\n            tbl_idx = ((crc >> 8)\
+      \ ^ byte) & 0xFF\n            crc = ((crc << 8) ^ self.crc_table[tbl_idx]) &\
+      \ 0xFFFF\n        return crc\n\n    # -------------------------------------------------------------------------\n\
+      \    # Upper-layer message handling\n    # -------------------------------------------------------------------------\n\
+      \    def handle_msg_in(self, msg):\n        \"\"\"Handle incoming messages from\
+      \ GUI/application\"\"\"\n        try:\n            # Handle string messages\
+      \ directly: \"dst_id:message\"\n            if pmt.is_symbol(msg):\n       \
+      \         text = pmt.symbol_to_string(msg)\n                if ':' in text:\n\
+      \                    dst_str, payload_str = text.split(':', 1)\n           \
+      \         try:\n                        dst_id = int(dst_str)\n            \
+      \            data = payload_str.encode()\n                        self.tx_queue.put({'dst':\
+      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                        print(f\"\
+      [Node {self.node_id}] Queued message to {dst_id}: {payload_str}\")\n       \
+      \             except ValueError:\n                        print(f\"[Node {self.node_id}]\
+      \ Invalid destination ID in text message\")\n\n            # Handle dictionary\
+      \ messages (Python dict via pmt.to_python)\n            elif pmt.is_dict(msg):\n\
+      \                meta = pmt.to_python(msg)\n                if 'dst' in meta\
+      \ and 'data' in meta:\n                    dst_id = meta['dst']\n          \
+      \          data = meta['data'].encode() if isinstance(meta['data'], str) else\
+      \ meta['data']\n                    self.tx_queue.put({'dst': dst_id, 'data':\
+      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
+      \ Queued dict message to {dst_id}\")\n\n            # Handle PDU-style pair:\
+      \ (meta, vec)\n            elif pmt.is_pair(msg):\n                meta = pmt.to_python(pmt.car(msg))\n\
+      \                data = pmt.to_python(pmt.cdr(msg))\n                if isinstance(meta,\
+      \ dict) and 'dst' in meta:\n                    dst_id = meta['dst']\n     \
+      \               if isinstance(data, str):\n                        data = data.encode()\n\
+      \                    elif isinstance(data, list):\n                        data\
+      \ = bytes(data)\n                    self.tx_queue.put({'dst': dst_id, 'data':\
+      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
+      \ Queued PDU message to {dst_id}\")\n\n        except Exception as e:\n    \
+      \        print(f\"[Node {self.node_id}] Error handling msg_in: {e}\")\n\n  \
+      \  def handle_pdu_in(self, pdu):\n        \"\"\"Handle incoming PDUs from demodulator/PHY\"\
+      \"\"\n        try:\n            if not pmt.is_pair(pdu):\n                return\n\
+      \n            meta = pmt.car(pdu)\n            data = pmt.cdr(pdu)\n\n     \
+      \       if pmt.is_u8vector(data):\n                rx_bytes = bytes(pmt.u8vector_elements(data))\n\
+      \                self.rx_queue.put(rx_bytes)\n            elif pmt.is_uniform_vector(data):\n\
+      \                elements = pmt.to_python(data)\n                rx_bytes =\
+      \ bytes([int(x) & 0xFF for x in elements])\n                self.rx_queue.put(rx_bytes)\n\
+      \n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
+      \ Error handling pdu_in: {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # Packet creation & parsing\n    # -------------------------------------------------------------------------\n\
+      \    def create_packet(self, dst_id, seq_num, pkt_type, payload=b''):\n    \
+      \    \"\"\"Create a packet with headers and CRC\"\"\"\n        packet = bytearray()\n\
+      \n        # Preamble + sync\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
+      \n        # Header\n        packet.append(self.node_id)        # Source ID\n\
+      \        packet.append(dst_id & 0xFF)       # Destination ID\n        packet.append(seq_num\
+      \ & 0xFF)      # Sequence number\n        packet.append(pkt_type & 0xFF)   \
+      \  # Packet type\n        packet.append(len(payload) & 0xFF) # Payload length\n\
+      \n        # Payload (truncated to MAX_PAYLOAD)\n        if payload:\n      \
+      \      packet.extend(payload[:self.MAX_PAYLOAD])\n\n        # CRC over header\
+      \ + payload (not including preamble+sync)\n        crc_data = bytes(packet[len(self.PREAMBLE)\
+      \ + len(self.SYNC_WORD):])\n        crc_val = self.calculate_crc16(crc_data)\n\
+      \        packet.extend(struct.pack('>H', crc_val))\n\n        return bytes(packet)\n\
+      \n    def parse_packet(self, data):\n        \"\"\"Parse received packet and\
+      \ validate CRC. Returns dict or None.\"\"\"\n        try:\n            # Find\
+      \ sync word\n            sync_idx = data.find(self.SYNC_WORD)\n            if\
+      \ sync_idx == -1:\n                return None\n\n            start_idx = sync_idx\
+      \ + len(self.SYNC_WORD)\n\n            # Minimum: src(1) + dst(1) + seq(1) +\
+      \ type(1) + len(1) + CRC(2)\n            if len(data) < start_idx + 5 + self.CRC_SIZE:\n\
+      \                return None\n\n            src_id = data[start_idx]\n     \
+      \       dst_id = data[start_idx + 1]\n            seq_num = data[start_idx +\
+      \ 2]\n            pkt_type = data[start_idx + 3]\n            payload_len =\
+      \ data[start_idx + 4]\n\n            total_len = start_idx + 5 + payload_len\
+      \ + self.CRC_SIZE\n            if len(data) < total_len:\n                return\
+      \ None\n\n            payload = data[start_idx + 5:start_idx + 5 + payload_len]\n\
+      \            rx_crc = struct.unpack('>H', data[total_len - self.CRC_SIZE:total_len])[0]\n\
+      \n            crc_data = data[start_idx:total_len - self.CRC_SIZE]\n       \
+      \     calc_crc = self.calculate_crc16(crc_data)\n\n            if rx_crc !=\
+      \ calc_crc:\n                self.stats['crc_errors'] += 1\n               \
+      \ print(f\"[Node {self.node_id}] CRC mismatch (expected: {calc_crc:04X}, got:\
+      \ {rx_crc:04X})\")\n                return None\n\n            return {\n  \
+      \              'src': src_id,\n                'dst': dst_id,\n            \
+      \    'seq': seq_num,\n                'type': pkt_type,\n                'payload':\
+      \ payload,\n                'consumed': total_len\n            }\n\n       \
+      \ except Exception as e:\n            print(f\"[Node {self.node_id}] Error parsing\
+      \ packet: {e}\")\n            return None\n\n    # -------------------------------------------------------------------------\n\
+      \    # Medium access (ALOHA) + physical transmit\n    # -------------------------------------------------------------------------\n\
+      \    def send_with_aloha(self, packet):\n        \"\"\"\n        Apply simple\
+      \ p-persistent ALOHA:\n        - With probability p = aloha_prob, transmit immediately.\n\
+      \        - With probability (1-p), wait a random backoff then transmit.\n  \
+      \      \"\"\"\n        try:\n            if random.random() > self.aloha_prob:\n\
+      \                backoff = random.uniform(self.aloha_backoff_min, self.aloha_backoff_max)\n\
+      \                print(f\"[Node {self.node_id}] ALOHA backoff {backoff:.2f}s\"\
+      )\n                time.sleep(backoff)\n\n            self.transmit_packet(packet)\n\
+      \n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
+      \ Error in send_with_aloha: {e}\")\n\n    def transmit_packet(self, packet):\n\
+      \        \"\"\"Send packet to physical layer as a PDU\"\"\"\n        try:\n\
+      \            vec = pmt.init_u8vector(len(packet), list(packet))\n          \
+      \  pdu = pmt.cons(pmt.PMT_NIL, vec)\n            self.message_port_pub(self.port_pdu_out,\
+      \ pdu)\n\n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
+      \ Error transmitting packet: {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # Go-Back-N TX thread\n    # -------------------------------------------------------------------------\n\
+      \    def process_acks(self):\n        \"\"\"Process all pending ACKs and slide\
+      \ the GBN window.\"\"\"\n        try:\n            while True:\n           \
+      \     ack = self.ack_queue.get_nowait()\n                ack_seq = ack['seq']\n\
+      \                # In this simple implementation we don't distinguish by src.\n\
+      \                if not self.tx_window:\n                    continue\n\n  \
+      \              if ack_seq not in self.tx_window:\n                    # Could\
+      \ be a cumulative ACK for multiple packets.\n                    # We remove\
+      \ from the left until we pass ack_seq if it appears.\n                    keys\
+      \ = list(self.tx_window.keys())\n                    if ack_seq in keys:\n \
+      \                       idx = keys.index(ack_seq)\n                        to_remove\
+      \ = keys[:idx + 1]\n                    else:\n                        # If\
+      \ ack_seq not present, we assume it's older than current base (duplicate) and\
+      \ ignore.\n                        continue\n                else:\n       \
+      \             # ack_seq is present; treat as cumulative ACK up to this seq.\n\
+      \                    keys = list(self.tx_window.keys())\n                  \
+      \  idx = keys.index(ack_seq)\n                    to_remove = keys[:idx + 1]\n\
+      \n                # Remove all ACKed packets from window (cumulative ACK)\n\
+      \                for s in to_remove:\n                    entry = self.tx_window.pop(s,\
+      \ None)\n                    if entry is not None and not entry.get('feedback_sent',\
+      \ False):\n                        self.send_feedback(True)\n              \
+      \          entry['feedback_sent'] = True\n\n                self.stats['acks_received']\
+      \ += 1\n\n                # Reset timer/retries based on new window state\n\
+      \                if self.tx_window:\n                    self.window_timer_start\
+      \ = time.time()\n                    self.window_retries = 0\n             \
+      \   else:\n                    self.window_timer_start = None\n            \
+      \        self.window_retries = 0\n\n        except queue.Empty:\n          \
+      \  # No more ACKs for now\n            pass\n        except Exception as e:\n\
+      \            print(f\"[Node {self.node_id}] Error processing ACKs: {e}\")\n\n\
+      \    def fill_window_from_queue(self):\n        \"\"\"Pull new messages from\
+      \ tx_queue into the Go-Back-N window if there's space.\"\"\"\n        try:\n\
+      \            while len(self.tx_window) < self.window_size:\n               \
+      \ try:\n                    msg = self.tx_queue.get_nowait()\n             \
+      \   except queue.Empty:\n                    break\n\n                dst =\
+      \ msg['dst']\n                data = msg.get('data', b'')\n                pkt_type\
+      \ = msg.get('type', self.PKT_DATA)\n\n                # Assign sequence number\n\
+      \                seq = self.seq_num_tx\n                self.seq_num_tx = (self.seq_num_tx\
+      \ + 1) % 256\n\n                packet = self.create_packet(dst, seq, pkt_type,\
+      \ data)\n\n                # For broadcast we typically don't do ARQ; transmit\
+      \ once and don't put in window\n                if dst == 0xFF or pkt_type !=\
+      \ self.PKT_DATA:\n                    print(f\"[Node {self.node_id}] TX (no\
+      \ ARQ): seq={seq} dst={dst}\")\n                    self.send_with_aloha(packet)\n\
+      \                    self.stats['packets_sent'] += 1\n                    continue\n\
+      \n                # Reliable (GBN-managed) packet\n                self.tx_window[seq]\
+      \ = {\n                    'packet': packet,\n                    'feedback_sent':\
+      \ False,\n                }\n\n                print(f\"[Node {self.node_id}]\
+      \ TX: Sending DATA seq={seq} dst={dst} (window size={len(self.tx_window)})\"\
+      )\n                self.send_with_aloha(packet)\n                self.stats['packets_sent']\
+      \ += 1\n\n                # If this is the first packet in window, start timer\n\
+      \                if len(self.tx_window) == 1:\n                    self.window_timer_start\
+      \ = time.time()\n                    self.window_retries = 0\n\n        except\
+      \ Exception as e:\n            print(f\"[Node {self.node_id}] Error filling\
+      \ window: {e}\")\n\n    def check_window_timeout(self):\n        \"\"\"Check\
+      \ for Go-Back-N timeout on the base of the window and retransmit if needed.\"\
+      \"\"\n        if not self.tx_window:\n            return\n\n        if self.window_timer_start\
+      \ is None:\n            return\n\n        now = time.time()\n        if now\
+      \ - self.window_timer_start < self.timeout:\n            return\n\n        #\
+      \ Timeout occurred for base of window\n        self.stats['window_timeouts']\
+      \ += 1\n        self.window_retries += 1\n        base_seq = next(iter(self.tx_window.keys()))\n\
+      \        print(f\"[Node {self.node_id}] GBN timeout at seq={base_seq}, retry\
+      \ {self.window_retries}/{self.max_retries}\")\n\n        if self.window_retries\
+      \ > self.max_retries:\n            print(f\"[Node {self.node_id}] GBN: Max retries\
+      \ exceeded, dropping window\")\n            # Mark all outstanding packets as\
+      \ failed\n            for _seq, entry in list(self.tx_window.items()):\n   \
+      \             if not entry.get('feedback_sent', False):\n                  \
+      \  self.send_feedback(False)\n                    entry['feedback_sent'] = True\n\
+      \            self.tx_window.clear()\n            self.window_timer_start = None\n\
+      \            self.window_retries = 0\n            return\n\n        # Go-Back-N:\
+      \ retransmit all packets currently in the window\n        for seq, entry in\
+      \ self.tx_window.items():\n            print(f\"[Node {self.node_id}] GBN retransmit\
+      \ seq={seq}\")\n            self.send_with_aloha(entry['packet'])\n        \
+      \    self.stats['retransmissions'] += 1\n\n        # Restart timer for the base\n\
+      \        self.window_timer_start = time.time()\n\n    def tx_handler(self):\n\
+      \        \"\"\"Thread for handling Go-Back-N transmission + ALOHA medium access.\"\
+      \"\"\n        while self.running:\n            try:\n                # 1) Process\
+      \ all ACKs\n                self.process_acks()\n\n                # 2) Check\
+      \ for timeout on window base\n                self.check_window_timeout()\n\n\
+      \                # 3) Fill window with new packets from tx_queue if space\n\
+      \                self.fill_window_from_queue()\n\n                # Small sleep\
+      \ to avoid busy-wait\n                time.sleep(0.01)\n\n            except\
+      \ Exception as e:\n                print(f\"[Node {self.node_id}] TX handler\
+      \ error: {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # RX thread (packetization + GBN receiver side)\n    # -------------------------------------------------------------------------\n\
+      \    def rx_handler(self):\n        \"\"\"Thread for handling packet reception\
+      \ and GBN RX logic.\"\"\"\n        while self.running:\n            try:\n \
+      \               try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n\n     \
+      \           # Append to RX buffer\n                self.rx_buffer += rx_data\n\
+      \n                # Extract packets from buffer\n                while len(self.rx_buffer)\
+      \ > 0:\n                    pkt = self.parse_packet(self.rx_buffer)\n\n    \
+      \                if pkt is None:\n                        # No valid packet\
+      \ at current alignment; drop one byte and re-try\n                        if\
+      \ len(self.rx_buffer) > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n\
+      \                        else:\n                            self.rx_buffer =\
+      \ bytes()\n                        continue\n\n                    # Remove\
+      \ processed bytes\n                    self.rx_buffer = self.rx_buffer[pkt['consumed']:]\n\
+      \n                    # Addressing: packet must be for us or broadcast\n   \
+      \                 if pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n  \
+      \                      print(f\"[Node {self.node_id}] RX: Packet not for us\
+      \ (dst={pkt['dst']})\")\n                        continue\n\n              \
+      \      if pkt['type'] == self.PKT_DATA:\n                        self.handle_data_packet(pkt)\n\
+      \                    elif pkt['type'] == self.PKT_ACK:\n                   \
+      \     self.handle_ack_packet(pkt)\n\n            except Exception as e:\n  \
+      \              print(f\"[Node {self.node_id}] RX handler error: {e}\")\n\n \
+      \   def handle_data_packet(self, pkt):\n        \"\"\"Handle incoming DATA packet\
+      \ with GBN receiver logic.\"\"\"\n        src = pkt['src']\n        seq = pkt['seq']\n\
+      \        payload = pkt['payload']\n\n        self.stats['packets_received']\
+      \ += 1\n        expected = self.expected_seq_rx.get(src, 0)\n\n        if seq\
+      \ == expected:\n            # In-order packet: accept and advance\n        \
+      \    print(f\"[Node {self.node_id}] RX: In-order DATA from {src}, seq={seq}\
+      \ (expected={expected})\")\n            self.expected_seq_rx[src] = (expected\
+      \ + 1) % 256\n            ack_seq = seq\n            is_new = True\n       \
+      \ else:\n            # Out-of-order or duplicate\n            print(f\"[Node\
+      \ {self.node_id}] RX: Out-of-order/dup DATA from {src}, seq={seq}, expected={expected}\"\
+      )\n            # Last correctly received in-order seq is expected-1 (mod 256)\n\
+      \            if expected == 0:\n                ack_seq = 255\n            else:\n\
+      \                ack_seq = (expected - 1) & 0xFF\n            is_new = False\n\
+      \n        # Send ACK for last in-order seq (GBN cumulative ACK)\n        ack_packet\
+      \ = self.create_packet(src, ack_seq, self.PKT_ACK)\n        print(f\"[Node {self.node_id}]\
+      \ RX: Sending ACK seq={ack_seq} to {src}\")\n        self.send_with_aloha(ack_packet)\n\
+      \        self.stats['acks_sent'] += 1\n\n        # Deliver only new, in-order\
+      \ packets to the application\n        if is_new:\n            self.forward_to_app(src,\
+      \ payload)\n\n    def handle_ack_packet(self, pkt):\n        \"\"\"Handle incoming\
+      \ ACK packet (push to ack_queue for TX thread).\"\"\"\n        src = pkt['src']\n\
+      \        seq = pkt['seq']\n        print(f\"[Node {self.node_id}] RX: ACK from\
+      \ node {src}, seq={seq}\")\n        # Push seq to ack queue; TX thread handles\
+      \ window sliding\n        self.ack_queue.put({'src': src, 'seq': seq})\n\n \
+      \   # -------------------------------------------------------------------------\n\
+      \    # Upper-layer delivery & feedback\n    # -------------------------------------------------------------------------\n\
+      \    def forward_to_app(self, src_id, data):\n        \"\"\"Forward received\
+      \ data to application/GUI.\"\"\"\n        try:\n            message = data.decode('utf-8',\
+      \ errors='ignore')\n            output = f\"[From Node {src_id}]: {message}\"\
+      \n\n            # Simple string out\n            msg = pmt.intern(output)\n\
+      \            self.message_port_pub(self.port_msg_out, msg)\n\n            #\
+      \ (Optional) could also send a dict PDU here if needed\n            print(f\"\
+      [Node {self.node_id}] Message delivered: {output}\")\n\n        except Exception\
+      \ as e:\n            print(f\"[Node {self.node_id}] Error forwarding to app:\
+      \ {e}\")\n\n    def send_feedback(self, success):\n        \"\"\"Send boolean-like\
+      \ feedback (TRUE/FALSE) to feedback port.\"\"\"\n        try:\n            text\
+      \ = \"TRUE\" if success else \"FALSE\"\n            msg = pmt.intern(text)\n\
+      \            self.message_port_pub(self.port_feedback, msg)\n        except\
+      \ Exception as e:\n            print(f\"[Node {self.node_id}] Error sending\
+      \ feedback: {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # GNU Radio boilerplate\n    # -------------------------------------------------------------------------\n\
+      \    def work(self, input_items, output_items):\n        \"\"\"Main work function\
+      \ (not used for message-passing block).\"\"\"\n        return 0\n\n    def stop(self):\n\
+      \        \"\"\"Clean shutdown\"\"\"\n        print(f\"\\n[Node {self.node_id}]\
+      \ Statistics:\")\n        print(f\"  Packets sent:      {self.stats['packets_sent']}\"\
+      )\n        print(f\"  Packets received:  {self.stats['packets_received']}\"\
+      )\n        print(f\"  ACKs sent:         {self.stats['acks_sent']}\")\n    \
+      \    print(f\"  ACKs received:     {self.stats['acks_received']}\")\n      \
+      \  print(f\"  Retransmissions:   {self.stats['retransmissions']}\")\n      \
+      \  print(f\"  CRC errors:        {self.stats['crc_errors']}\")\n        print(f\"\
+      \  Window timeouts:   {self.stats['window_timeouts']}\")\n\n        self.running\
+      \ = False\n        if self.tx_thread.is_alive():\n            self.tx_thread.join()\n\
+      \        if self.rx_thread.is_alive():\n            self.rx_thread.join()\n\
+      \        return True\n"
+    affinity: ''
+    alias: ''
+    aloha_backoff_max: '0.5'
+    aloha_backoff_min: '0.1'
+    aloha_prob: '0.3'
+    comment: ''
+    max_retries: '3'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    node_id: '1'
+    timeout: '1.0'
+    window_size: '4'
+  states:
+    _io_cache: ('Mesh Packet Comm GBN', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
+      ('timeout', '1.0'), ('max_retries', '3'), ('window_size', '4'), ('aloha_backoff_min',
+      '0.1'), ('aloha_backoff_max', '0.5')], [('msg_in', 'message', 1), ('pdu_in',
+      'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
+      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Go-Back-N ARQ + ALOHA\n    ', ['aloha_backoff_max',
+      'aloha_backoff_min', 'aloha_prob', 'max_retries', 'node_id', 'timeout', 'window_size'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 64.0]
+    rotation: 0
+    state: disabled
+- name: epy_block_1_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Block for GNU Radio - Mesh Network Packet\
+      \ Communication\nImplements packetization, Go-Back-N ARQ, and p-persistent ALOHA\
+      \ medium access\nNo external CRC module required - implements CRC-16 CCITT manually\n\
+      \nNow also sends a raw random-byte sync burst before each new GBN window.\n\"\
+      \"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport threading\n\
+      import queue\nimport time\nimport random\nimport struct\nimport collections\n\
+      \n\nclass blk(gr.sync_block):\n    \"\"\"\n    Mesh Network Packet Communication\
+      \ Block\n    Handles packet transmission/reception with Go-Back-N ARQ + ALOHA\n\
+      \    \"\"\"\n\n    def __init__(\n        self,\n        node_id = 1,\n    \
+      \    aloha_prob = 0.3,\n        timeout = 1.0,\n        max_retries = 3,\n \
+      \       window_size = 4,\n        aloha_backoff_min = 0.1,\n        aloha_backoff_max\
+      \ = 0.5,\n        sync_burst_len = 1000,\n    ):\n        \"\"\"\n        Arguments:\n\
+      \            node_id:           Unique identifier for this node (1-255)\n  \
+      \          aloha_prob:        Transmission probability (p) for p-persistent\
+      \ ALOHA (0.0-1.0)\n            timeout:           ARQ timeout in seconds (timer\
+      \ for base of window)\n            max_retries:       Maximum window retransmission\
+      \ attempts before giving up\n            window_size:       Go-Back-N window\
+      \ size (number of outstanding frames)\n            aloha_backoff_min: Minimum\
+      \ backoff before (re)transmission when ALOHA defers\n            aloha_backoff_max:\
+      \ Maximum backoff before (re)transmission when ALOHA defers\n            sync_burst_len:\
+      \    Length (in bytes) of the raw random sync burst sent\n                 \
+      \              immediately before the first DATA packet of each new window\n\
+      \        \"\"\"\n        gr.sync_block.__init__(\n            self,\n      \
+      \      name='Mesh Packet Comm GBN with sync',\n            in_sig=None,\n  \
+      \          out_sig=None\n        )\n\n        # Node configuration\n       \
+      \ self.node_id = node_id\n        self.aloha_prob = float(aloha_prob)\n    \
+      \    self.timeout = float(timeout)\n        self.max_retries = int(max_retries)\n\
+      \        self.window_size = int(window_size)\n        self.aloha_backoff_min\
+      \ = float(aloha_backoff_min)\n        self.aloha_backoff_max = float(aloha_backoff_max)\n\
+      \n        # Sync burst configuration (raw random bytes, no headers)\n      \
+      \  self.sync_burst_len = int(sync_burst_len)\n\n        # Packet parameters\n\
+      \        # Preamble: long, random-ish pattern for sync (currently fixed 0xAA)\n\
+      \        self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])\n        self.SYNC_WORD\
+      \ = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD = 255\n        self.CRC_SIZE\
+      \ = 2\n\n        # Packet types\n        self.PKT_DATA = 0x01\n        self.PKT_ACK\
+      \ = 0x02\n\n        # CRC-16 CCITT lookup table\n        self.crc_table = self.generate_crc_table()\n\
+      \n        # Queues\n        self.tx_queue = queue.Queue()   # app -> link layer\
+      \ (messages to send)\n        self.rx_queue = queue.Queue()   # PHY -> link\
+      \ layer (raw received bytes)\n        self.ack_queue = queue.Queue()  # RX thread\
+      \ -> TX thread (parsed ACKs)\n\n        # TX state (Go-Back-N)\n        self.seq_num_tx\
+      \ = 0  # next sequence number to use (mod 256)\n        # window: OrderedDict[seq]\
+      \ = {\n        #   'packet': bytes,\n        #   'feedback_sent': bool\n   \
+      \     # }\n        self.tx_window = collections.OrderedDict()\n        self.window_timer_start\
+      \ = None\n        self.window_retries = 0\n\n        # RX state (per-source\
+      \ expected sequence for GBN)\n        # expected_seq_rx[src_id] = next expected\
+      \ seq from that source\n        self.expected_seq_rx = {}\n\n        # RX byte\
+      \ buffer for packet extraction\n        self.rx_buffer = bytes()\n\n       \
+      \ # Statistics\n        self.stats = {\n            'packets_sent': 0,\n   \
+      \         'packets_received': 0,\n            'acks_sent': 0,\n            'acks_received':\
+      \ 0,\n            'retransmissions': 0,\n            'crc_errors': 0,\n    \
+      \        'window_timeouts': 0,\n        }\n\n        # Threading\n        self.running\
+      \ = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
+      \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
+      \ self.tx_thread.daemon = True\n        self.rx_thread.daemon = True\n\n   \
+      \     # Message ports\n        self.port_msg_in = pmt.intern('msg_in')\n   \
+      \     self.port_pdu_in = pmt.intern('pdu_in')\n        self.port_msg_out = pmt.intern('msg_out')\n\
+      \        self.port_pdu_out = pmt.intern('pdu_out')\n        self.port_feedback\
+      \ = pmt.intern('feedback')\n\n        self.message_port_register_in(self.port_msg_in)\n\
+      \        self.message_port_register_in(self.port_pdu_in)\n        self.message_port_register_out(self.port_msg_out)\n\
+      \        self.message_port_register_out(self.port_pdu_out)\n        self.message_port_register_out(self.port_feedback)\n\
+      \n        # Set message handlers\n        self.set_msg_handler(self.port_msg_in,\
+      \ self.handle_msg_in)\n        self.set_msg_handler(self.port_pdu_in, self.handle_pdu_in)\n\
+      \n        # Start threads\n        self.tx_thread.start()\n        self.rx_thread.start()\n\
+      \n        print(f\"[Node {self.node_id}] Initialized (GBN+ALOHA) - Ready for\
+      \ communication\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # CRC helpers\n    # -------------------------------------------------------------------------\n\
+      \    def generate_crc_table(self):\n        \"\"\"Generate CRC-16 CCITT lookup\
+      \ table\"\"\"\n        poly = 0x1021\n        table = []\n        for i in range(256):\n\
+      \            crc = i << 8\n            for _ in range(8):\n                if\
+      \ crc & 0x8000:\n                    crc = ((crc << 1) ^ poly) & 0xFFFF\n  \
+      \              else:\n                    crc = (crc << 1) & 0xFFFF\n      \
+      \      table.append(crc)\n        return table\n\n    def calculate_crc16(self,\
+      \ data):\n        \"\"\"Calculate CRC-16 CCITT for given data\"\"\"\n      \
+      \  crc = 0xFFFF\n        for byte in data:\n            tbl_idx = ((crc >> 8)\
+      \ ^ byte) & 0xFF\n            crc = ((crc << 8) ^ self.crc_table[tbl_idx]) &\
+      \ 0xFFFF\n        return crc\n\n    # -------------------------------------------------------------------------\n\
+      \    # Upper-layer message handling\n    # -------------------------------------------------------------------------\n\
+      \    def handle_msg_in(self, msg):\n        \"\"\"Handle incoming messages from\
+      \ GUI/application\"\"\"\n        try:\n            # Handle string messages\
+      \ directly: \"dst_id:message\"\n            if pmt.is_symbol(msg):\n       \
+      \         text = pmt.symbol_to_string(msg)\n                if ':' in text:\n\
+      \                    dst_str, payload_str = text.split(':', 1)\n           \
+      \         try:\n                        dst_id = int(dst_str)\n            \
+      \            data = payload_str.encode()\n                        self.tx_queue.put({'dst':\
+      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                        print(f\"\
+      [Node {self.node_id}] Queued message to {dst_id}: {payload_str}\")\n       \
+      \             except ValueError:\n                        print(f\"[Node {self.node_id}]\
+      \ Invalid destination ID in text message\")\n\n            # Handle dictionary\
+      \ messages (Python dict via pmt.to_python)\n            elif pmt.is_dict(msg):\n\
+      \                meta = pmt.to_python(msg)\n                if 'dst' in meta\
+      \ and 'data' in meta:\n                    dst_id = meta['dst']\n          \
+      \          data = meta['data'].encode() if isinstance(meta['data'], str) else\
+      \ meta['data']\n                    self.tx_queue.put({'dst': dst_id, 'data':\
+      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
+      \ Queued dict message to {dst_id}\")\n\n            # Handle PDU-style pair:\
+      \ (meta, vec)\n            elif pmt.is_pair(msg):\n                meta = pmt.to_python(pmt.car(msg))\n\
+      \                data = pmt.to_python(pmt.cdr(msg))\n                if isinstance(meta,\
+      \ dict) and 'dst' in meta:\n                    dst_id = meta['dst']\n     \
+      \               if isinstance(data, str):\n                        data = data.encode()\n\
+      \                    elif isinstance(data, list):\n                        data\
+      \ = bytes(data)\n                    self.tx_queue.put({'dst': dst_id, 'data':\
+      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
+      \ Queued PDU message to {dst_id}\")\n\n        except Exception as e:\n    \
+      \        print(f\"[Node {self.node_id}] Error handling msg_in: {e}\")\n\n  \
+      \  def handle_pdu_in(self, pdu):\n        \"\"\"Handle incoming PDUs from demodulator/PHY\"\
+      \"\"\n        try:\n            if not pmt.is_pair(pdu):\n                return\n\
+      \n            meta = pmt.car(pdu)\n            data = pmt.cdr(pdu)\n\n     \
+      \       if pmt.is_u8vector(data):\n                rx_bytes = bytes(pmt.u8vector_elements(data))\n\
+      \                self.rx_queue.put(rx_bytes)\n            elif pmt.is_uniform_vector(data):\n\
+      \                elements = pmt.to_python(data)\n                rx_bytes =\
+      \ bytes([int(x) & 0xFF for x in elements])\n                self.rx_queue.put(rx_bytes)\n\
+      \n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
+      \ Error handling pdu_in: {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # Packet creation & parsing\n    # -------------------------------------------------------------------------\n\
+      \    def create_packet(self, dst_id, seq_num, pkt_type, payload=b''):\n    \
+      \    \"\"\"Create a packet with headers and CRC\"\"\"\n        packet = bytearray()\n\
+      \n        # Preamble + sync\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
+      \n        # Header\n        packet.append(self.node_id)        # Source ID\n\
+      \        packet.append(dst_id & 0xFF)       # Destination ID\n        packet.append(seq_num\
+      \ & 0xFF)      # Sequence number\n        packet.append(pkt_type & 0xFF)   \
+      \  # Packet type\n        packet.append(len(payload) & 0xFF) # Payload length\n\
+      \n        # Payload (truncated to MAX_PAYLOAD)\n        if payload:\n      \
+      \      packet.extend(payload[:self.MAX_PAYLOAD])\n\n        # CRC over header\
+      \ + payload (not including preamble+sync)\n        crc_data = bytes(packet[len(self.PREAMBLE)\
+      \ + len(self.SYNC_WORD):])\n        crc_val = self.calculate_crc16(crc_data)\n\
+      \        packet.extend(struct.pack('>H', crc_val))\n\n        return bytes(packet)\n\
+      \n    def parse_packet(self, data):\n        \"\"\"Parse received packet and\
+      \ validate CRC. Returns dict or None.\"\"\"\n        try:\n            # Find\
+      \ sync word\n            sync_idx = data.find(self.SYNC_WORD)\n            if\
+      \ sync_idx == -1:\n                return None\n\n            start_idx = sync_idx\
+      \ + len(self.SYNC_WORD)\n\n            # Minimum: src(1) + dst(1) + seq(1) +\
+      \ type(1) + len(1) + CRC(2)\n            if len(data) < start_idx + 5 + self.CRC_SIZE:\n\
+      \                return None\n\n            src_id = data[start_idx]\n     \
+      \       dst_id = data[start_idx + 1]\n            seq_num = data[start_idx +\
+      \ 2]\n            pkt_type = data[start_idx + 3]\n            payload_len =\
+      \ data[start_idx + 4]\n\n            total_len = start_idx + 5 + payload_len\
+      \ + self.CRC_SIZE\n            if len(data) < total_len:\n                return\
+      \ None\n\n            payload = data[start_idx + 5:start_idx + 5 + payload_len]\n\
+      \            rx_crc = struct.unpack('>H', data[total_len - self.CRC_SIZE:total_len])[0]\n\
+      \n            crc_data = data[start_idx:total_len - self.CRC_SIZE]\n       \
+      \     calc_crc = self.calculate_crc16(crc_data)\n\n            if rx_crc !=\
+      \ calc_crc:\n                self.stats['crc_errors'] += 1\n               \
+      \ print(f\"[Node {self.node_id}] CRC mismatch (expected: {calc_crc:04X}, got:\
+      \ {rx_crc:04X})\")\n                return None\n\n            return {\n  \
+      \              'src': src_id,\n                'dst': dst_id,\n            \
+      \    'seq': seq_num,\n                'type': pkt_type,\n                'payload':\
+      \ payload,\n                'consumed': total_len\n            }\n\n       \
+      \ except Exception as e:\n            print(f\"[Node {self.node_id}] Error parsing\
+      \ packet: {e}\")\n            return None\n\n    # -------------------------------------------------------------------------\n\
+      \    # Medium access (ALOHA) + physical transmit\n    # -------------------------------------------------------------------------\n\
+      \    def send_with_aloha(self, packet):\n        \"\"\"\n        Apply simple\
+      \ p-persistent ALOHA:\n        - With probability p = aloha_prob, transmit immediately.\n\
+      \        - With probability (1-p), wait a random backoff then transmit.\n  \
+      \      'packet' can be a full framed packet or raw bytes (e.g., sync burst).\n\
+      \        \"\"\"\n        try:\n            if random.random() > self.aloha_prob:\n\
+      \                backoff = random.uniform(self.aloha_backoff_min, self.aloha_backoff_max)\n\
+      \                print(f\"[Node {self.node_id}] ALOHA backoff {backoff:.2f}s\"\
+      )\n                time.sleep(backoff)\n\n            self.transmit_packet(packet)\n\
+      \n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
+      \ Error in send_with_aloha: {e}\")\n\n    def transmit_packet(self, packet):\n\
+      \        \"\"\"Send packet (raw bytes) to physical layer as a PDU\"\"\"\n  \
+      \      try:\n            vec = pmt.init_u8vector(len(packet), list(packet))\n\
+      \            pdu = pmt.cons(pmt.PMT_NIL, vec)\n            self.message_port_pub(self.port_pdu_out,\
+      \ pdu)\n\n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
+      \ Error transmitting packet: {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # Sync burst (window preamble, no headers)\n    # -------------------------------------------------------------------------\n\
+      \    def send_sync_burst(self):\n        \"\"\"\n        Send a large random-byte\
+      \ burst (no headers) before a new GBN window.\n        This is intended to help\
+      \ the receiver's synchronizer/AGC/etc.\n        \"\"\"\n        try:\n     \
+      \       if self.sync_burst_len <= 0:\n                return\n            burst\
+      \ = bytes(random.getrandbits(8) for _ in range(self.sync_burst_len))\n     \
+      \       print(f\"[Node {self.node_id}] TX: Sending sync burst ({len(burst)}\
+      \ bytes)\")\n            self.send_with_aloha(burst)\n        except Exception\
+      \ as e:\n            print(f\"[Node {self.node_id}] Error sending sync burst:\
+      \ {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # Go-Back-N TX thread\n    # -------------------------------------------------------------------------\n\
+      \    def process_acks(self):\n        \"\"\"Process all pending ACKs and slide\
+      \ the GBN window.\"\"\"\n        try:\n            while True:\n           \
+      \     ack = self.ack_queue.get_nowait()\n                ack_seq = ack['seq']\n\
+      \                # In this simple implementation we don't distinguish by src.\n\
+      \                if not self.tx_window:\n                    continue\n\n  \
+      \              if ack_seq not in self.tx_window:\n                    # Could\
+      \ be a cumulative ACK for multiple packets.\n                    # We remove\
+      \ from the left until we pass ack_seq if it appears.\n                    keys\
+      \ = list(self.tx_window.keys())\n                    if ack_seq in keys:\n \
+      \                       idx = keys.index(ack_seq)\n                        to_remove\
+      \ = keys[:idx + 1]\n                    else:\n                        # If\
+      \ ack_seq not present, we assume it's older than current base (duplicate) and\
+      \ ignore.\n                        continue\n                else:\n       \
+      \             # ack_seq is present; treat as cumulative ACK up to this seq.\n\
+      \                    keys = list(self.tx_window.keys())\n                  \
+      \  idx = keys.index(ack_seq)\n                    to_remove = keys[:idx + 1]\n\
+      \n                # Remove all ACKed packets from window (cumulative ACK)\n\
+      \                for s in to_remove:\n                    entry = self.tx_window.pop(s,\
+      \ None)\n                    if entry is not None and not entry.get('feedback_sent',\
+      \ False):\n                        self.send_feedback(True)\n              \
+      \          entry['feedback_sent'] = True\n\n                self.stats['acks_received']\
+      \ += 1\n\n                # Reset timer/retries based on new window state\n\
+      \                if self.tx_window:\n                    self.window_timer_start\
+      \ = time.time()\n                    self.window_retries = 0\n             \
+      \   else:\n                    self.window_timer_start = None\n            \
+      \        self.window_retries = 0\n\n        except queue.Empty:\n          \
+      \  # No more ACKs for now\n            pass\n        except Exception as e:\n\
+      \            print(f\"[Node {self.node_id}] Error processing ACKs: {e}\")\n\n\
+      \    def fill_window_from_queue(self):\n        \"\"\"Pull new messages from\
+      \ tx_queue into the Go-Back-N window if there's space.\"\"\"\n        try:\n\
+      \            while len(self.tx_window) < self.window_size:\n               \
+      \ try:\n                    msg = self.tx_queue.get_nowait()\n             \
+      \   except queue.Empty:\n                    break\n\n                dst =\
+      \ msg['dst']\n                data = msg.get('data', b'')\n                pkt_type\
+      \ = msg.get('type', self.PKT_DATA)\n\n                # Assign sequence number\n\
+      \                seq = self.seq_num_tx\n                self.seq_num_tx = (self.seq_num_tx\
+      \ + 1) % 256\n\n                packet = self.create_packet(dst, seq, pkt_type,\
+      \ data)\n\n                # For broadcast we typically don't do ARQ; transmit\
+      \ once and don't put in window\n                if dst == 0xFF or pkt_type !=\
+      \ self.PKT_DATA:\n                    print(f\"[Node {self.node_id}] TX (no\
+      \ ARQ): seq={seq} dst={dst}\")\n                    self.send_with_aloha(packet)\n\
+      \                    self.stats['packets_sent'] += 1\n                    continue\n\
+      \n                # Reliable (GBN-managed) packet\n                is_new_window\
+      \ = (len(self.tx_window) == 0)\n\n                self.tx_window[seq] = {\n\
+      \                    'packet': packet,\n                    'feedback_sent':\
+      \ False,\n                }\n\n                # If this is the first packet\
+      \ of a new window, send a sync burst first\n                if is_new_window:\n\
+      \                    self.send_sync_burst()\n\n                print(f\"[Node\
+      \ {self.node_id}] TX: Sending DATA seq={seq} dst={dst} (window size={len(self.tx_window)})\"\
+      )\n                self.send_with_aloha(packet)\n                self.stats['packets_sent']\
+      \ += 1\n\n                # If this is the first packet in window, start timer\n\
+      \                if len(self.tx_window) == 1:\n                    self.window_timer_start\
+      \ = time.time()\n                    self.window_retries = 0\n\n        except\
+      \ Exception as e:\n            print(f\"[Node {self.node_id}] Error filling\
+      \ window: {e}\")\n\n    def check_window_timeout(self):\n        \"\"\"Check\
+      \ for Go-Back-N timeout on the base of the window and retransmit if needed.\"\
+      \"\"\n        if not self.tx_window:\n            return\n\n        if self.window_timer_start\
+      \ is None:\n            return\n\n        now = time.time()\n        if now\
+      \ - self.window_timer_start < self.timeout:\n            return\n\n        #\
+      \ Timeout occurred for base of window\n        self.stats['window_timeouts']\
+      \ += 1\n        self.window_retries += 1\n        base_seq = next(iter(self.tx_window.keys()))\n\
+      \        print(f\"[Node {self.node_id}] GBN timeout at seq={base_seq}, retry\
+      \ {self.window_retries}/{self.max_retries}\")\n\n        if self.window_retries\
+      \ > self.max_retries:\n            print(f\"[Node {self.node_id}] GBN: Max retries\
+      \ exceeded, dropping window\")\n            # Mark all outstanding packets as\
+      \ failed\n            for _seq, entry in list(self.tx_window.items()):\n   \
+      \             if not entry.get('feedback_sent', False):\n                  \
+      \  self.send_feedback(False)\n                    entry['feedback_sent'] = True\n\
+      \            self.tx_window.clear()\n            self.window_timer_start = None\n\
+      \            self.window_retries = 0\n            return\n\n        # Go-Back-N:\
+      \ retransmit all packets currently in the window\n        for seq, entry in\
+      \ self.tx_window.items():\n            print(f\"[Node {self.node_id}] GBN retransmit\
+      \ seq={seq}\")\n            self.send_with_aloha(entry['packet'])\n        \
+      \    self.stats['retransmissions'] += 1\n\n        # Restart timer for the base\n\
+      \        self.window_timer_start = time.time()\n\n    def tx_handler(self):\n\
+      \        \"\"\"Thread for handling Go-Back-N transmission + ALOHA medium access.\"\
+      \"\"\n        while self.running:\n            try:\n                # 1) Process\
+      \ all ACKs\n                self.process_acks()\n\n                # 2) Check\
+      \ for timeout on window base\n                self.check_window_timeout()\n\n\
+      \                # 3) Fill window with new packets from tx_queue if space\n\
+      \                self.fill_window_from_queue()\n\n                # Small sleep\
+      \ to avoid busy-wait\n                time.sleep(0.01)\n\n            except\
+      \ Exception as e:\n                print(f\"[Node {self.node_id}] TX handler\
+      \ error: {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # RX thread (packetization + GBN receiver side)\n    # -------------------------------------------------------------------------\n\
+      \    def rx_handler(self):\n        \"\"\"Thread for handling packet reception\
+      \ and GBN RX logic.\"\"\"\n        while self.running:\n            try:\n \
+      \               try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n\n     \
+      \           # Append to RX buffer\n                self.rx_buffer += rx_data\n\
+      \n                # Extract packets from buffer\n                while len(self.rx_buffer)\
+      \ > 0:\n                    pkt = self.parse_packet(self.rx_buffer)\n\n    \
+      \                if pkt is None:\n                        # No valid packet\
+      \ at current alignment; drop one byte and re-try\n                        if\
+      \ len(self.rx_buffer) > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n\
+      \                        else:\n                            self.rx_buffer =\
+      \ bytes()\n                        continue\n\n                    # Remove\
+      \ processed bytes\n                    self.rx_buffer = self.rx_buffer[pkt['consumed']:]\n\
+      \n                    # Addressing: packet must be for us or broadcast\n   \
+      \                 if pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n  \
+      \                      print(f\"[Node {self.node_id}] RX: Packet not for us\
+      \ (dst={pkt['dst']})\")\n                        continue\n\n              \
+      \      if pkt['type'] == self.PKT_DATA:\n                        self.handle_data_packet(pkt)\n\
+      \                    elif pkt['type'] == self.PKT_ACK:\n                   \
+      \     self.handle_ack_packet(pkt)\n\n            except Exception as e:\n  \
+      \              print(f\"[Node {self.node_id}] RX handler error: {e}\")\n\n \
+      \   def handle_data_packet(self, pkt):\n        \"\"\"Handle incoming DATA packet\
+      \ with GBN receiver logic.\"\"\"\n        src = pkt['src']\n        seq = pkt['seq']\n\
+      \        payload = pkt['payload']\n\n        self.stats['packets_received']\
+      \ += 1\n        expected = self.expected_seq_rx.get(src, 0)\n\n        if seq\
+      \ == expected:\n            # In-order packet: accept and advance\n        \
+      \    print(f\"[Node {self.node_id}] RX: In-order DATA from {src}, seq={seq}\
+      \ (expected={expected})\")\n            self.expected_seq_rx[src] = (expected\
+      \ + 1) % 256\n            ack_seq = seq\n            is_new = True\n       \
+      \ else:\n            # Out-of-order or duplicate\n            print(f\"[Node\
+      \ {self.node_id}] RX: Out-of-order/dup DATA from {src}, seq={seq}, expected={expected}\"\
+      )\n            # Last correctly received in-order seq is expected-1 (mod 256)\n\
+      \            if expected == 0:\n                ack_seq = 255\n            else:\n\
+      \                ack_seq = (expected - 1) & 0xFF\n            is_new = False\n\
+      \n        # Send ACK for last in-order seq (GBN cumulative ACK)\n        ack_packet\
+      \ = self.create_packet(src, ack_seq, self.PKT_ACK)\n        print(f\"[Node {self.node_id}]\
+      \ RX: Sending ACK seq={ack_seq} to {src}\")\n        self.send_with_aloha(ack_packet)\n\
+      \        self.stats['acks_sent'] += 1\n\n        # Deliver only new, in-order\
+      \ packets to the application\n        if is_new:\n            self.forward_to_app(src,\
+      \ payload)\n\n    def handle_ack_packet(self, pkt):\n        \"\"\"Handle incoming\
+      \ ACK packet (push to ack_queue for TX thread).\"\"\"\n        src = pkt['src']\n\
+      \        seq = pkt['seq']\n        print(f\"[Node {self.node_id}] RX: ACK from\
+      \ node {src}, seq={seq}\")\n        # Push seq to ack queue; TX thread handles\
+      \ window sliding\n        self.ack_queue.put({'src': src, 'seq': seq})\n\n \
+      \   # -------------------------------------------------------------------------\n\
+      \    # Upper-layer delivery & feedback\n    # -------------------------------------------------------------------------\n\
+      \    def forward_to_app(self, src_id, data):\n        \"\"\"Forward received\
+      \ data to application/GUI.\"\"\"\n        try:\n            message = data.decode('utf-8',\
+      \ errors='ignore')\n            output = f\"[From Node {src_id}]: {message}\"\
+      \n\n            # Simple string out\n            msg = pmt.intern(output)\n\
+      \            self.message_port_pub(self.port_msg_out, msg)\n\n            #\
+      \ (Optional) could also send a dict PDU here if needed\n            print(f\"\
+      [Node {self.node_id}] Message delivered: {output}\")\n\n        except Exception\
+      \ as e:\n            print(f\"[Node {self.node_id}] Error forwarding to app:\
+      \ {e}\")\n\n    def send_feedback(self, success):\n        \"\"\"Send boolean-like\
+      \ feedback (TRUE/FALSE) to feedback port.\"\"\"\n        try:\n            text\
+      \ = \"TRUE\" if success else \"FALSE\"\n            msg = pmt.intern(text)\n\
+      \            self.message_port_pub(self.port_feedback, msg)\n        except\
+      \ Exception as e:\n            print(f\"[Node {self.node_id}] Error sending\
+      \ feedback: {e}\")\n\n    # -------------------------------------------------------------------------\n\
+      \    # GNU Radio boilerplate\n    # -------------------------------------------------------------------------\n\
+      \    def work(self, input_items, output_items):\n        \"\"\"Main work function\
+      \ (not used for message-passing block).\"\"\"\n        return 0\n\n    def stop(self):\n\
+      \        \"\"\"Clean shutdown\"\"\"\n        print(f\"\\n[Node {self.node_id}]\
+      \ Statistics:\")\n        print(f\"  Packets sent:      {self.stats['packets_sent']}\"\
+      )\n        print(f\"  Packets received:  {self.stats['packets_received']}\"\
+      )\n        print(f\"  ACKs sent:         {self.stats['acks_sent']}\")\n    \
+      \    print(f\"  ACKs received:     {self.stats['acks_received']}\")\n      \
+      \  print(f\"  Retransmissions:   {self.stats['retransmissions']}\")\n      \
+      \  print(f\"  CRC errors:        {self.stats['crc_errors']}\")\n        print(f\"\
+      \  Window timeouts:   {self.stats['window_timeouts']}\")\n\n        self.running\
+      \ = False\n        if self.tx_thread.is_alive():\n            self.tx_thread.join()\n\
+      \        if self.rx_thread.is_alive():\n            self.rx_thread.join()\n\
+      \        return True\n"
+    affinity: ''
+    alias: ''
+    aloha_backoff_max: '0.5'
+    aloha_backoff_min: '0.1'
+    aloha_prob: '0.3'
+    comment: ''
+    max_retries: '3'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    node_id: '1'
+    sync_burst_len: '1000'
+    timeout: '1.0'
+    window_size: '4'
+  states:
+    _io_cache: ('Mesh Packet Comm GBN with sync', 'blk', [('node_id', '1'), ('aloha_prob',
+      '0.3'), ('timeout', '1.0'), ('max_retries', '3'), ('window_size', '4'), ('aloha_backoff_min',
+      '0.1'), ('aloha_backoff_max', '0.5'), ('sync_burst_len', '1000')], [('msg_in',
+      'message', 1), ('pdu_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out',
+      'message', 1), ('msg_out', 'message', 1)], '\n    Mesh Network Packet Communication
+      Block\n    Handles packet transmission/reception with Go-Back-N ARQ + ALOHA\n    ',
+      ['aloha_backoff_max', 'aloha_backoff_min', 'aloha_prob', 'max_retries', 'node_id',
+      'sync_burst_len', 'timeout', 'window_size'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 268.0]
+    rotation: 0
+    state: enabled
+- name: pdu_pdu_to_tagged_stream_0
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Header
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1200, 304.0]
+    rotation: 0
+    state: true
+- name: pdu_pdu_to_tagged_stream_0_0
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Payload
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1200, 432.0]
+    rotation: 0
+    state: true
+- name: pdu_tagged_stream_to_pdu_0_0
+  id: pdu_tagged_stream_to_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 560.0]
+    rotation: 180
+    state: enabled
+- name: qtgui_const_sink_x_0
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    grid: 'False'
+    gui_hint: ''
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: '""'
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '2'
+    xmin: '-2'
+    ymax: '2'
+    ymin: '-2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 848.0]
+    rotation: 180
+    state: enabled
+- name: qtgui_freq_sink_x_1_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    ctrlpanel: 'False'
+    fc: '0'
+    fftsize: '256'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: RX-SPECTRUM of ACK
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 976.0]
+    rotation: 180
+    state: enabled
+- name: soapy_bladerf_sink_0
+  id: soapy_bladerf_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '10000'
+    center_freq: 1.2e9
+    comment: ''
+    dev_args: ''
+    freq_correction: '0'
+    gain: '50'
+    samp_rate: samp_rate_blade*2
+    type: fc32
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2192, 288.0]
+    rotation: 0
+    state: enabled
+- name: soapy_bladerf_source_0_0
+  id: soapy_bladerf_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '10000'
+    center_freq: 5.8e9
+    comment: ''
+    dev_args: ''
+    freq_correction: '0'
+    gain: '30.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate*2
+    type: fc32
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [616, 928.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: to_user_2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2896, 560.0]
+    rotation: 0
+    state: disabled
+- name: virtual_sink_0_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: channel_tx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1720, 368.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_1
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: ACK
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [568, 688.0]
+    rotation: 180
+    state: enabled
+- name: virtual_source_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: channel_tx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1464, 464.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_2
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: ACK
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [928, 560.0]
+    rotation: 180
+    state: enabled
+
+connections:
+- [blocks_multiply_const_vxx_0, '0', soapy_bladerf_sink_0, '0']
+- [blocks_repack_bits_bb_1_0, '0', virtual_sink_1, '0']
+- [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
+- [blocks_throttle2_0, '0', channels_channel_model_0, '0']
+- [blocks_unpack_k_bits_bb_0_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
+- [channels_channel_model_0, '0', virtual_sink_0, '0']
+- [digital_constellation_decoder_cb_0_0, '0', digital_diff_decoder_bb_0_0, '0']
+- [digital_constellation_modulator_0, '0', blocks_multiply_const_vxx_0, '0']
+- [digital_constellation_modulator_0, '0', blocks_throttle2_0, '0']
+- [digital_correlate_access_code_xx_ts_0_0, '0', blocks_repack_bits_bb_1_0, '0']
+- [digital_costas_loop_cc_0_0, '0', digital_constellation_decoder_cb_0_0, '0']
+- [digital_diff_decoder_bb_0_0, '0', digital_map_bb_0_0, '0']
+- [digital_linear_equalizer_0_0_0, '0', digital_costas_loop_cc_0_0, '0']
+- [digital_map_bb_0_0, '0', blocks_unpack_k_bits_bb_0_0, '0']
+- [digital_protocol_formatter_async_0, header, pdu_pdu_to_tagged_stream_0, pdus]
+- [digital_protocol_formatter_async_0, payload, pdu_pdu_to_tagged_stream_0_0, pdus]
+- [digital_symbol_sync_xx_0_0, '0', digital_linear_equalizer_0_0_0, '0']
+- [epy_block_0_1, out, epy_block_1_0, msg_in]
+- [epy_block_0_1, out, epy_block_1_0_0, msg_in]
+- [epy_block_1_0, feedback, epy_block_0_1, feedback]
+- [epy_block_1_0, msg_out, epy_block_0_1, in_msg]
+- [epy_block_1_0, pdu_out, digital_protocol_formatter_async_0, in]
+- [epy_block_1_0_0, feedback, epy_block_0_1, feedback]
+- [epy_block_1_0_0, msg_out, epy_block_0_1, in_msg]
+- [epy_block_1_0_0, pdu_out, digital_protocol_formatter_async_0, in]
+- [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
+- [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0, '1']
+- [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_1_0, pdu_in]
+- [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_1_0_0, pdu_in]
+- [soapy_bladerf_source_0_0, '0', digital_symbol_sync_xx_0_0, '0']
+- [soapy_bladerf_source_0_0, '0', qtgui_const_sink_x_0, '0']
+- [soapy_bladerf_source_0_0, '0', qtgui_freq_sink_x_1_0, '0']
+- [virtual_source_0, '0', digital_constellation_modulator_0, '0']
+- [virtual_source_2, '0', pdu_tagged_stream_to_pdu_0_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.9.2

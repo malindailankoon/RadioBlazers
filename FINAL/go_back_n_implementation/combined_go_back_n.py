@@ -5,9 +5,8 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # GNU Radio Python Flow Graph
-# Title: cdp
-# Author: BellLabz
-# Description: cdp project
+# Title: Not titled yet
+# Author: malinda
 # GNU Radio version: 3.10.9.2
 
 from PyQt5 import Qt
@@ -27,20 +26,20 @@ from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import gr, pdu
-import cdp_epy_block_0_1 as epy_block_0_1  # embedded python block
-import cdp_epy_block_0_1_0 as epy_block_0_1_0  # embedded python block
-import cdp_epy_block_1_0 as epy_block_1_0  # embedded python block
-import cdp_epy_block_1_0_0 as epy_block_1_0_0  # embedded python block
+import combined_go_back_n_epy_block_0_1 as epy_block_0_1  # embedded python block
+import combined_go_back_n_epy_block_0_1_0 as epy_block_0_1_0  # embedded python block
+import combined_go_back_n_epy_block_1_0_0_0 as epy_block_1_0_0_0  # embedded python block
+import combined_go_back_n_epy_block_1_0_0_1 as epy_block_1_0_0_1  # embedded python block
 import sip
 
 
 
-class cdp(gr.top_block, Qt.QWidget):
+class combined_go_back_n(gr.top_block, Qt.QWidget):
 
     def __init__(self, MTU=1500):
-        gr.top_block.__init__(self, "cdp", catch_exceptions=True)
+        gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("cdp")
+        self.setWindowTitle("Not titled yet")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -58,7 +57,7 @@ class cdp(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "cdp")
+        self.settings = Qt.QSettings("GNU Radio", "combined_go_back_n")
 
         try:
             geometry = self.settings.value("geometry")
@@ -464,8 +463,8 @@ class cdp(gr.top_block, Qt.QWidget):
             self.controls_grid_layout_1.setRowStretch(r, 1)
         for c in range(1, 2):
             self.controls_grid_layout_1.setColumnStretch(c, 1)
-        self.epy_block_1_0_0 = epy_block_1_0_0.blk(node_id=2, aloha_prob=0.3, timeout=1.0, max_retries=3, window_size=4, aloha_backoff_min=0.1, aloha_backoff_max=0.5)
-        self.epy_block_1_0 = epy_block_1_0.blk(node_id=1, aloha_prob=0.3, timeout=1.0, max_retries=3, window_size=4, aloha_backoff_min=0.1, aloha_backoff_max=0.5)
+        self.epy_block_1_0_0_1 = epy_block_1_0_0_1.blk(node_id=2, aloha_prob=0.3, timeout=1.0, max_retries=3, window_size=4, aloha_backoff_min=0.1, aloha_backoff_max=0.5, sync_burst_len=1000)
+        self.epy_block_1_0_0_0 = epy_block_1_0_0_0.blk(node_id=1, aloha_prob=0.3, timeout=1.0, max_retries=3, window_size=4, aloha_backoff_min=0.1, aloha_backoff_max=0.5, sync_burst_len=1000)
         self.epy_block_0_1_0 = epy_block_0_1_0.messenger_gui(bg_image=r"C:\Users\Oshan\Desktop\message.jpg")
         self.epy_block_0_1 = epy_block_0_1.messenger_gui(bg_image=r"C:\Users\Oshan\Desktop\message.jpg")
         self.digital_symbol_sync_xx_0_0_0 = digital.symbol_sync_cc(
@@ -557,16 +556,16 @@ class cdp(gr.top_block, Qt.QWidget):
         self.msg_connect((self.digital_protocol_formatter_async_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_0_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0_0, 'header'), (self.pdu_pdu_to_tagged_stream_0_1, 'pdus'))
-        self.msg_connect((self.epy_block_0_1, 'out'), (self.epy_block_1_0, 'msg_in'))
-        self.msg_connect((self.epy_block_0_1_0, 'out'), (self.epy_block_1_0_0, 'msg_in'))
-        self.msg_connect((self.epy_block_1_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
-        self.msg_connect((self.epy_block_1_0, 'feedback'), (self.epy_block_0_1, 'feedback'))
-        self.msg_connect((self.epy_block_1_0, 'msg_out'), (self.epy_block_0_1, 'in_msg'))
-        self.msg_connect((self.epy_block_1_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0_0, 'in'))
-        self.msg_connect((self.epy_block_1_0_0, 'feedback'), (self.epy_block_0_1_0, 'feedback'))
-        self.msg_connect((self.epy_block_1_0_0, 'msg_out'), (self.epy_block_0_1_0, 'in_msg'))
-        self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_1_0, 'pdu_in'))
-        self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0_0, 'pdus'), (self.epy_block_1_0_0, 'pdu_in'))
+        self.msg_connect((self.epy_block_0_1, 'out'), (self.epy_block_1_0_0_0, 'msg_in'))
+        self.msg_connect((self.epy_block_0_1_0, 'out'), (self.epy_block_1_0_0_1, 'msg_in'))
+        self.msg_connect((self.epy_block_1_0_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
+        self.msg_connect((self.epy_block_1_0_0_0, 'feedback'), (self.epy_block_0_1, 'feedback'))
+        self.msg_connect((self.epy_block_1_0_0_0, 'msg_out'), (self.epy_block_0_1, 'in_msg'))
+        self.msg_connect((self.epy_block_1_0_0_1, 'pdu_out'), (self.digital_protocol_formatter_async_0_0, 'in'))
+        self.msg_connect((self.epy_block_1_0_0_1, 'msg_out'), (self.epy_block_0_1_0, 'in_msg'))
+        self.msg_connect((self.epy_block_1_0_0_1, 'feedback'), (self.epy_block_0_1_0, 'feedback'))
+        self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_1_0_0_0, 'pdu_in'))
+        self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0_0, 'pdus'), (self.epy_block_1_0_0_1, 'pdu_in'))
         self.connect((self.blocks_repack_bits_bb_1_0, 0), (self.pdu_tagged_stream_to_pdu_0_0, 0))
         self.connect((self.blocks_repack_bits_bb_1_0_0, 0), (self.pdu_tagged_stream_to_pdu_0_0_0, 0))
         self.connect((self.blocks_tagged_stream_mux_0, 0), (self.digital_constellation_modulator_0, 0))
@@ -608,7 +607,7 @@ class cdp(gr.top_block, Qt.QWidget):
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "cdp")
+        self.settings = Qt.QSettings("GNU Radio", "combined_go_back_n")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -728,15 +727,14 @@ class cdp(gr.top_block, Qt.QWidget):
 
 
 def argument_parser():
-    description = 'cdp project'
-    parser = ArgumentParser(description=description)
+    parser = ArgumentParser()
     parser.add_argument(
         "--MTU", dest="MTU", type=intx, default=1500,
         help="Set MTU [default=%(default)r]")
     return parser
 
 
-def main(top_block_cls=cdp, options=None):
+def main(top_block_cls=combined_go_back_n, options=None):
     if options is None:
         options = argument_parser().parse_args()
 
