@@ -41,9 +41,7 @@ class blk(gr.sync_block):
         self.max_retries = max_retries
         
         # Packet parameters
-        # self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])
-        b = random.getrandbits(8)
-        self.PREAMBLE = bytes([b] * 32)
+        self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])
         self.SYNC_WORD = bytes([0x2D, 0xD4])
         self.MAX_PAYLOAD = 255
         self.HEADER_SIZE = 8  # preamble(4) + sync(2) + src(1) + dst(1)

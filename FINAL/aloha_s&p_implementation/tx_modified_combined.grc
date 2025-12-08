@@ -678,7 +678,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2864, 1556.0]
+    coordinate: [2864, 1700.0]
     rotation: 0
     state: enabled
 - name: digital_diff_decoder_bb_0_0
@@ -754,7 +754,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2560, 1588.0]
+    coordinate: [2544, 1732.0]
     rotation: 0
     state: enabled
 - name: digital_map_bb_0_0
@@ -874,7 +874,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2144, 1568.0]
+    coordinate: [2128, 1648.0]
     rotation: 0
     state: enabled
 - name: epy_block_0_0
@@ -1141,7 +1141,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [136, 44.0]
+    coordinate: [96, 164.0]
     rotation: 0
     state: disabled
 - name: epy_block_0_0_0
@@ -1408,9 +1408,549 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1496, 940.0]
+    coordinate: [1048, 996.0]
     rotation: 0
     state: disabled
+- name: epy_block_0_0_1
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Block for GNU Radio - Mesh Network Packet\
+      \ Communication\nImplements packetization, Stop-and-Wait ARQ, and ALOHA collision\
+      \ avoidance\nNo external CRC module required - implements CRC-16 CCITT manually\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport threading\n\
+      import queue\nimport time\nimport random\nimport struct\n\nclass blk(gr.sync_block):\n\
+      \    \"\"\"\n    Mesh Network Packet Communication Block\n    Handles packet\
+      \ transmission/reception with Stop-and-Wait ARQ\n    \"\"\"\n    \n    def __init__(self,\
+      \ node_id=1, aloha_prob=0.3, timeout=1.0, max_retries=3):\n        \"\"\"\n\
+      \        Arguments:\n            node_id: Unique identifier for this node (1-255)\n\
+      \            aloha_prob: Transmission probability for ALOHA (0.0-1.0)\n    \
+      \        timeout: ARQ timeout in seconds\n            max_retries: Maximum retransmission\
+      \ attempts\n        \"\"\"\n        gr.sync_block.__init__(\n            self,\n\
+      \            name='Mesh Packet Comm with sync',\n            in_sig=None,\n\
+      \            out_sig=None\n        )\n        \n        # Node configuration\n\
+      \        self.node_id = node_id\n        self.aloha_prob = aloha_prob\n    \
+      \    self.timeout = timeout\n        self.max_retries = max_retries\n      \
+      \  \n        # Packet parameters\n        self.PREAMBLE = bytes([0xAA, 0xAA,\
+      \ 0xAA, 0xAA])\n        # b = random.getrandbits(8)\n        # self.PREAMBLE\
+      \ = bytes([b] * 32)\n        self.SYNC_WORD = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD\
+      \ = 255\n        self.HEADER_SIZE = 8  # preamble(4) + sync(2) + src(1) + dst(1)\n\
+      \        self.CRC_SIZE = 2\n        \n        # Packet types\n        self.PKT_DATA\
+      \ = 0x01\n        self.PKT_ACK = 0x02\n        \n        # CRC-16 CCITT lookup\
+      \ table\n        self.crc_table = self.generate_crc_table()\n        \n    \
+      \    # State management\n        self.tx_queue = queue.Queue()\n        self.rx_queue\
+      \ = queue.Queue()\n        self.ack_queue = queue.Queue()\n        self.pending_ack\
+      \ = {}\n        self.seq_num_tx = 0\n        self.seq_num_rx = {}\n        self.rx_buffer\
+      \ = bytes()\n        \n        # Statistics\n        self.stats = {\n      \
+      \      'packets_sent': 0,\n            'packets_received': 0,\n            'acks_sent':\
+      \ 0,\n            'acks_received': 0,\n            'retransmissions': 0,\n \
+      \           'crc_errors': 0\n        }\n        \n        # Threading\n    \
+      \    self.running = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
+      \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
+      \ self.lock = threading.Lock()\n        \n        # Message ports\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
+      \        self.message_port_register_in(pmt.intern('pdu_in'))\n        self.message_port_register_out(pmt.intern('msg_out'))\n\
+      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        self.message_port_register_out(pmt.intern('feedback'))\n\
+      \        \n        # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
+      \ self.handle_msg_in)\n        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n\
+      \        \n        # Start threads\n        self.tx_thread.start()\n       \
+      \ self.rx_thread.start()\n        \n        print(f\"[Node {self.node_id}] Initialized\
+      \ - Ready for communication\")\n    \n    def generate_crc_table(self):\n  \
+      \      \"\"\"Generate CRC-16 CCITT lookup table\"\"\"\n        poly = 0x1021\n\
+      \        table = []\n        for i in range(256):\n            crc = i << 8\n\
+      \            for j in range(8):\n                if crc & 0x8000:\n        \
+      \            crc = ((crc << 1) ^ poly) & 0xFFFF\n                else:\n   \
+      \                 crc = (crc << 1) & 0xFFFF\n            table.append(crc)\n\
+      \        return table\n    \n    def calculate_crc16(self, data):\n        \"\
+      \"\"Calculate CRC-16 CCITT for given data\"\"\"\n        crc = 0xFFFF\n    \
+      \    for byte in data:\n            tbl_idx = ((crc >> 8) ^ byte) & 0xFF\n \
+      \           crc = ((crc << 8) ^ self.crc_table[tbl_idx]) & 0xFFFF\n        return\
+      \ crc\n    \n    def handle_msg_in(self, msg):\n        \"\"\"Handle incoming\
+      \ messages from GUI/application\"\"\"\n        try:\n            # Handle string\
+      \ messages directly\n            if pmt.is_symbol(msg):\n                # Simple\
+      \ text message format: \"dst_id:message\"\n                text = pmt.symbol_to_string(msg)\n\
+      \                if ':' in text:\n                    parts = text.split(':',\
+      \ 1)\n                    try:\n                        dst_id = int(parts[0])\n\
+      \                        data = parts[1].encode()\n                        self.tx_queue.put({'dst':\
+      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                        print(f\"\
+      [Node {self.node_id}] Queued message to {dst_id}: {parts[1]}\")\n          \
+      \          except ValueError:\n                        print(f\"[Node {self.node_id}]\
+      \ Invalid destination ID\")\n            \n            # Handle dictionary messages\n\
+      \            elif pmt.is_dict(msg):\n                meta = pmt.to_python(msg)\n\
+      \                if 'dst' in meta and 'data' in meta:\n                    dst_id\
+      \ = meta['dst']\n                    data = meta['data'].encode() if isinstance(meta['data'],\
+      \ str) else meta['data']\n                    self.tx_queue.put({'dst': dst_id,\
+      \ 'data': data, 'type': self.PKT_DATA})\n                    print(f\"[Node\
+      \ {self.node_id}] Queued message to {dst_id}\")\n            \n            #\
+      \ Handle pair messages (PDU format)\n            elif pmt.is_pair(msg):\n  \
+      \              meta = pmt.to_python(pmt.car(msg))\n                data = pmt.to_python(pmt.cdr(msg))\n\
+      \                if isinstance(meta, dict) and 'dst' in meta:\n            \
+      \        dst_id = meta['dst']\n                    if isinstance(data, str):\n\
+      \                        data = data.encode()\n                    elif isinstance(data,\
+      \ list):\n                        data = bytes(data)\n                    self.tx_queue.put({'dst':\
+      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                    print(f\"\
+      [Node {self.node_id}] Queued message to {dst_id}\")\n                    \n\
+      \        except Exception as e:\n            print(f\"[Node {self.node_id}]\
+      \ Error handling msg_in: {e}\")\n    \n    def handle_pdu_in(self, pdu):\n \
+      \       \"\"\"Handle incoming PDUs from demodulator\"\"\"\n        try:\n  \
+      \          # Extract PDU data\n            if pmt.is_pair(pdu):\n          \
+      \      meta = pmt.car(pdu)\n                data = pmt.cdr(pdu)\n          \
+      \      \n                # Convert to bytes\n                if pmt.is_u8vector(data):\n\
+      \                    print(\"loop run\")\t\n                    rx_bytes = bytes(pmt.u8vector_elements(data))\t\
+      \n                    self.rx_queue.put(rx_bytes)\n                elif pmt.is_uniform_vector(data):\n\
+      \                    # Handle float32 or other vector types\n              \
+      \      elements = pmt.to_python(data)\n                    # Convert to bytes\
+      \ (assuming 8-bit symbols)\n                    rx_bytes = bytes([int(x) & 0xFF\
+      \ for x in elements])\n                    self.rx_queue.put(rx_bytes)\n   \
+      \                 \n        except Exception as e:\n            print(f\"[Node\
+      \ {self.node_id}] Error handling pdu_in: {e}\")\n    \n    def create_packet(self,\
+      \ dst_id, seq_num, pkt_type, payload=b''):\n        \"\"\"Create a packet with\
+      \ headers and CRC\"\"\"\n        packet = bytearray()\n        \n        # Add\
+      \ preamble and sync word\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
+      \        \n        # Add header\n        packet.append(self.node_id)  # Source\
+      \ ID\n        packet.append(dst_id)         # Destination ID\n        packet.append(seq_num)\
+      \        # Sequence number\n        packet.append(pkt_type)       # Packet type\n\
+      \        packet.append(len(payload))   # Payload length\n        \n        #\
+      \ Add payload\n        if payload:\n            packet.extend(payload[:self.MAX_PAYLOAD])\n\
+      \        \n        # Calculate and add CRC16\n        crc_data = bytes(packet[len(self.PREAMBLE)\
+      \ + len(self.SYNC_WORD):])\n        crc_val = self.calculate_crc16(crc_data)\n\
+      \        packet.extend(struct.pack('>H', crc_val))\n        \n        return\
+      \ bytes(packet)\n    \n    def parse_packet(self, data):\n        \"\"\"Parse\
+      \ received packet and validate CRC\"\"\"\n        try:\n            # Find sync\
+      \ word\n            sync_idx = data.find(self.SYNC_WORD)\n            if sync_idx\
+      \ == -1:\n                return None\n            \n            # Check minimum\
+      \ packet size\n            start_idx = sync_idx + len(self.SYNC_WORD)\n    \
+      \        if len(data) < start_idx + 5 + self.CRC_SIZE:\n                return\
+      \ None\n            \n            # Extract header fields\n            src_id\
+      \ = data[start_idx]\n            dst_id = data[start_idx + 1]\n            seq_num\
+      \ = data[start_idx + 2]\n            pkt_type = data[start_idx + 3]\n      \
+      \      payload_len = data[start_idx + 4]\n            \n            # Check\
+      \ if we have complete packet\n            total_len = start_idx + 5 + payload_len\
+      \ + self.CRC_SIZE\n            if len(data) < total_len:\n                return\
+      \ None\n            \n            # Extract payload and CRC\n            payload\
+      \ = data[start_idx + 5:start_idx + 5 + payload_len]\n            rx_crc = struct.unpack('>H',\
+      \ data[total_len - self.CRC_SIZE:total_len])[0]\n            \n            #\
+      \ Verify CRC\n            crc_data = data[start_idx:total_len - self.CRC_SIZE]\n\
+      \            calc_crc = self.calculate_crc16(crc_data)\n            \n     \
+      \       if rx_crc != calc_crc:\n                self.stats['crc_errors'] +=\
+      \ 1\n                print(f\"[Node {self.node_id}] CRC mismatch (expected:\
+      \ {calc_crc:04X}, got: {rx_crc:04X})\")\n                return None\n     \
+      \       \n            return {\n                'src': src_id,\n           \
+      \     'dst': dst_id,\n                'seq': seq_num,\n                'type':\
+      \ pkt_type,\n                'payload': payload,\n                'consumed':\
+      \ total_len\n            }\n        except Exception as e:\n            print(f\"\
+      [Node {self.node_id}] Error parsing packet: {e}\")\n            return None\n\
+      \    \n    def send_sync_burst(self):\n        burst = bytes(random.getrandbits(8)\
+      \ for _ in range(1000))\n        self.transmit_packet(burst)\n\n    def tx_handler(self):\n\
+      \        \"\"\"Thread for handling packet transmission with ARQ\"\"\"\n    \
+      \    while self.running:\n            try:\n                # Get message from\
+      \ queue (with timeout for thread safety)\n                try:\n           \
+      \         msg = self.tx_queue.get(timeout=0.1)\n                except queue.Empty:\n\
+      \                    continue\n                \n                # ALOHA: Random\
+      \ backoff\n                if random.random() > self.aloha_prob:\n         \
+      \           backoff_time = random.uniform(0.1, 0.5)\n                    print(f\"\
+      [Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\")\n               \
+      \     time.sleep(backoff_time)\n                    # Re-queue the message\n\
+      \                    self.tx_queue.put(msg)\n                    continue\n\
+      \                \n                # Prepare packet\n                with self.lock:\n\
+      \                    seq_num = self.seq_num_tx\n                    self.seq_num_tx\
+      \ = (self.seq_num_tx + 1) % 256\n                \n                packet =\
+      \ self.create_packet(\n                    msg['dst'],\n                   \
+      \ seq_num,\n                    msg['type'],\n                    msg.get('data',\
+      \ b'')\n                )\n                \n                # Stop-and-Wait\
+      \ ARQ\n                retries = 0\n                ack_received = False\n\n\
+      \                self.send_sync_burst()\n                \n                while\
+      \ retries < self.max_retries and not ack_received:\n                    # Transmit\
+      \ packet\n                    print(f\"[Node {self.node_id}] TX: Sending packet\
+      \ seq={seq_num} to node {msg['dst']} (attempt {retries + 1})\")\n          \
+      \          self.transmit_packet(packet)\n                    self.stats['packets_sent']\
+      \ += 1\n                    \n                    if retries > 0:\n        \
+      \                self.stats['retransmissions'] += 1\n                    \n\
+      \                    # Wait for ACK\n                    ack_key = f\"{msg['dst']}_{seq_num}\"\
+      \n                    timeout_time = time.time() + self.timeout\n          \
+      \          \n                    while time.time() < timeout_time:\n       \
+      \                 try:\n                            ack = self.ack_queue.get(timeout=0.1)\n\
+      \                            if ack['key'] == ack_key:\n                   \
+      \             ack_received = True\n                                self.stats['acks_received']\
+      \ += 1\n                                print(f\"[Node {self.node_id}] TX: ACK\
+      \ received for seq={seq_num}\")\n                                output = \"\
+      TRUE\"\n                                msg = pmt.intern(output)\n         \
+      \                       self.message_port_pub(pmt.intern('feedback'), msg)\n\
+      \                                break\n                        except queue.Empty:\n\
+      \                            pass\n                    \n                  \
+      \  if not ack_received:\n                        retries += 1\n            \
+      \            if retries < self.max_retries:\n                            print(f\"\
+      [Node {self.node_id}] TX: Timeout, retry {retries}/{self.max_retries}\")\n \
+      \               \n                if not ack_received:\n                   \
+      \ print(f\"[Node {self.node_id}] TX: Failed to deliver packet seq={seq_num}\
+      \ after {self.max_retries} attempts\")\n                    output = \"FALSE\"\
+      \n                    msg = pmt.intern(output)\n                    self.message_port_pub(pmt.intern('feedback'),\
+      \ msg)\n                    \n            except Exception as e:\n         \
+      \       print(f\"[Node {self.node_id}] TX handler error: {e}\")\n    \n    def\
+      \ rx_handler(self):\n        \"\"\"Thread for handling packet reception\"\"\"\
+      \n        while self.running:\n            try:\n                # Get received\
+      \ data\n                try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \         \n                # Add to buffer\n                self.rx_buffer\
+      \ += rx_data\n                \n                # Try to parse packets from\
+      \ buffer\n                while len(self.rx_buffer) > 0:\n                 \
+      \   pkt = self.parse_packet(self.rx_buffer)\n                    \n        \
+      \            if pkt is None:\n                        # No valid packet found,\
+      \ remove first byte and try again\n                        if len(self.rx_buffer)\
+      \ > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n  \
+      \                      else:\n                            self.rx_buffer = bytes()\n\
+      \                        continue\n                    \n                  \
+      \  # Remove processed packet from buffer\n                    self.rx_buffer\
+      \ = self.rx_buffer[pkt['consumed']:]\n                    \n               \
+      \     # Check if packet is for this node or broadcast\n                    if\
+      \ pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n                     \
+      \   print(f\"[Node {self.node_id}] RX: Packet not for us (dst={pkt['dst']})\"\
+      )\n                        continue\n                    \n                \
+      \    # Handle based on packet type\n                    if pkt['type'] == self.PKT_DATA:\n\
+      \                        self.stats['packets_received'] += 1\n             \
+      \           print(f\"[Node {self.node_id}] RX: Data packet from node {pkt['src']},\
+      \ seq={pkt['seq']}\")\n                        \n                        # Check\
+      \ for duplicate\n                        is_duplicate = False\n            \
+      \            if pkt['src'] in self.seq_num_rx:\n                           \
+      \ if self.seq_num_rx[pkt['src']] == pkt['seq']:\n                          \
+      \      print(f\"[Node {self.node_id}] RX: Duplicate packet detected\")\n   \
+      \                             is_duplicate = True\n                        \n\
+      \                        self.seq_num_rx[pkt['src']] = pkt['seq']\n        \
+      \                \n                        # Send ACK\n                    \
+      \    ack_packet = self.create_packet(\n                            pkt['src'],\n\
+      \                            pkt['seq'],\n                            self.PKT_ACK\n\
+      \                        )\n                        print(f\"[Node {self.node_id}]\
+      \ RX: Sending ACK for seq={pkt['seq']}\")\n                        self.transmit_packet(ack_packet)\n\
+      \                        self.stats['acks_sent'] += 1\n                    \
+      \    \n                        # Forward to application if not duplicate\n \
+      \                       if not is_duplicate:\n                            self.forward_to_app(pkt['src'],\
+      \ pkt['payload'])\n                        \n                    elif pkt['type']\
+      \ == self.PKT_ACK:\n                        print(f\"[Node {self.node_id}] RX:\
+      \ ACK packet from node {pkt['src']}, seq={pkt['seq']}\")\n                 \
+      \       # Process ACK\n                        ack_key = f\"{pkt['src']}_{pkt['seq']}\"\
+      \n                        self.ack_queue.put({'key': ack_key})\n           \
+      \             \n            except Exception as e:\n                print(f\"\
+      [Node {self.node_id}] RX handler error: {e}\")\n    \n    def transmit_packet(self,\
+      \ packet):\n        \"\"\"Send packet to physical layer\"\"\"\n        try:\n\
+      \            # Convert to PDU format\n            vec = pmt.init_u8vector(len(packet),\
+      \ list(packet))\n            pdu = pmt.cons(pmt.PMT_NIL, vec)\n            \n\
+      \            # Send to modulator\n            self.message_port_pub(pmt.intern('pdu_out'),\
+      \ pdu)\n            \n        except Exception as e:\n            print(f\"\
+      [Node {self.node_id}] Error transmitting packet: {e}\")\n    \n    def forward_to_app(self,\
+      \ src_id, data):\n        \"\"\"Forward received data to application/GUI\"\"\
+      \"\n        try:\n            # Decode message\n            message = data.decode('utf-8',\
+      \ errors='ignore')\n            \n            # Create formatted output string\n\
+      \            output = f\"[From Node {src_id}]: {message}\"\n            \n \
+      \           # Send as simple string message\n            msg = pmt.intern(output)\n\
+      \            self.message_port_pub(pmt.intern('msg_out'), msg)\n           \
+      \ \n            # Also send as dictionary for more complex processing\n    \
+      \        meta = pmt.make_dict()\n            meta = pmt.dict_add(meta, pmt.intern(\"\
+      src\"), pmt.from_long(src_id))\n            meta = pmt.dict_add(meta, pmt.intern(\"\
+      data\"), pmt.intern(message))\n            \n            print(f\"[Node {self.node_id}]\
+      \ Message delivered: {output}\")\n            \n        except Exception as\
+      \ e:\n            print(f\"[Node {self.node_id}] Error forwarding to app: {e}\"\
+      )\n    \n    def work(self, input_items, output_items):\n        \"\"\"Main\
+      \ work function (not used for message passing blocks)\"\"\"\n        return\
+      \ 0\n    \n    def stop(self):\n        \"\"\"Clean shutdown\"\"\"\n       \
+      \ print(f\"\\n[Node {self.node_id}] Statistics:\")\n        print(f\"  Packets\
+      \ sent: {self.stats['packets_sent']}\")\n        print(f\"  Packets received:\
+      \ {self.stats['packets_received']}\")\n        print(f\"  ACKs sent: {self.stats['acks_sent']}\"\
+      )\n        print(f\"  ACKs received: {self.stats['acks_received']}\")\n    \
+      \    print(f\"  Retransmissions: {self.stats['retransmissions']}\")\n      \
+      \  print(f\"  CRC errors: {self.stats['crc_errors']}\")\n        \n        self.running\
+      \ = False\n        if self.tx_thread.is_alive():\n            self.tx_thread.join()\n\
+      \        if self.rx_thread.is_alive():\n            self.rx_thread.join()\n\
+      \        return True\n"
+    affinity: ''
+    alias: ''
+    aloha_prob: '0.6'
+    comment: User 1
+    max_retries: '100'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    node_id: '2'
+    timeout: '0.2'
+  states:
+    _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
+      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('msg_in', 'message', 1),
+      ('pdu_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
+      1), ('msg_out', 'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1592, 1052.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0_0_2
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Block for GNU Radio - Mesh Network Packet\
+      \ Communication\nImplements packetization, Stop-and-Wait ARQ, and ALOHA collision\
+      \ avoidance\nNo external CRC module required - implements CRC-16 CCITT manually\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport threading\n\
+      import queue\nimport time\nimport random\nimport struct\n\nclass blk(gr.sync_block):\n\
+      \    \"\"\"\n    Mesh Network Packet Communication Block\n    Handles packet\
+      \ transmission/reception with Stop-and-Wait ARQ\n    \"\"\"\n    \n    def __init__(self,\
+      \ node_id=1, aloha_prob=0.3, timeout=1.0, max_retries=3):\n        \"\"\"\n\
+      \        Arguments:\n            node_id: Unique identifier for this node (1-255)\n\
+      \            aloha_prob: Transmission probability for ALOHA (0.0-1.0)\n    \
+      \        timeout: ARQ timeout in seconds\n            max_retries: Maximum retransmission\
+      \ attempts\n        \"\"\"\n        gr.sync_block.__init__(\n            self,\n\
+      \            name='Mesh Packet Comm with sync',\n            in_sig=None,\n\
+      \            out_sig=None\n        )\n        \n        # Node configuration\n\
+      \        self.node_id = node_id\n        self.aloha_prob = aloha_prob\n    \
+      \    self.timeout = timeout\n        self.max_retries = max_retries\n      \
+      \  \n        # Packet parameters\n        self.PREAMBLE = bytes([0xAA, 0xAA,\
+      \ 0xAA, 0xAA])\n        # b = random.getrandbits(8)\n        # self.PREAMBLE\
+      \ = bytes([b] * 32)\n        self.SYNC_WORD = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD\
+      \ = 255\n        self.HEADER_SIZE = 8  # preamble(4) + sync(2) + src(1) + dst(1)\n\
+      \        self.CRC_SIZE = 2\n        \n        # Packet types\n        self.PKT_DATA\
+      \ = 0x01\n        self.PKT_ACK = 0x02\n        \n        # CRC-16 CCITT lookup\
+      \ table\n        self.crc_table = self.generate_crc_table()\n        \n    \
+      \    # State management\n        self.tx_queue = queue.Queue()\n        self.rx_queue\
+      \ = queue.Queue()\n        self.ack_queue = queue.Queue()\n        self.pending_ack\
+      \ = {}\n        self.seq_num_tx = 0\n        self.seq_num_rx = {}\n        self.rx_buffer\
+      \ = bytes()\n        \n        # Statistics\n        self.stats = {\n      \
+      \      'packets_sent': 0,\n            'packets_received': 0,\n            'acks_sent':\
+      \ 0,\n            'acks_received': 0,\n            'retransmissions': 0,\n \
+      \           'crc_errors': 0\n        }\n        \n        # Threading\n    \
+      \    self.running = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
+      \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
+      \ self.lock = threading.Lock()\n        \n        # Message ports\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
+      \        self.message_port_register_in(pmt.intern('pdu_in'))\n        self.message_port_register_out(pmt.intern('msg_out'))\n\
+      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        self.message_port_register_out(pmt.intern('feedback'))\n\
+      \        \n        # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
+      \ self.handle_msg_in)\n        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n\
+      \        \n        # Start threads\n        self.tx_thread.start()\n       \
+      \ self.rx_thread.start()\n        \n        print(f\"[Node {self.node_id}] Initialized\
+      \ - Ready for communication\")\n    \n    def generate_crc_table(self):\n  \
+      \      \"\"\"Generate CRC-16 CCITT lookup table\"\"\"\n        poly = 0x1021\n\
+      \        table = []\n        for i in range(256):\n            crc = i << 8\n\
+      \            for j in range(8):\n                if crc & 0x8000:\n        \
+      \            crc = ((crc << 1) ^ poly) & 0xFFFF\n                else:\n   \
+      \                 crc = (crc << 1) & 0xFFFF\n            table.append(crc)\n\
+      \        return table\n    \n    def calculate_crc16(self, data):\n        \"\
+      \"\"Calculate CRC-16 CCITT for given data\"\"\"\n        crc = 0xFFFF\n    \
+      \    for byte in data:\n            tbl_idx = ((crc >> 8) ^ byte) & 0xFF\n \
+      \           crc = ((crc << 8) ^ self.crc_table[tbl_idx]) & 0xFFFF\n        return\
+      \ crc\n    \n    def handle_msg_in(self, msg):\n        \"\"\"Handle incoming\
+      \ messages from GUI/application\"\"\"\n        try:\n            # Handle string\
+      \ messages directly\n            if pmt.is_symbol(msg):\n                # Simple\
+      \ text message format: \"dst_id:message\"\n                text = pmt.symbol_to_string(msg)\n\
+      \                if ':' in text:\n                    parts = text.split(':',\
+      \ 1)\n                    try:\n                        dst_id = int(parts[0])\n\
+      \                        data = parts[1].encode()\n                        self.tx_queue.put({'dst':\
+      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                        print(f\"\
+      [Node {self.node_id}] Queued message to {dst_id}: {parts[1]}\")\n          \
+      \          except ValueError:\n                        print(f\"[Node {self.node_id}]\
+      \ Invalid destination ID\")\n            \n            # Handle dictionary messages\n\
+      \            elif pmt.is_dict(msg):\n                meta = pmt.to_python(msg)\n\
+      \                if 'dst' in meta and 'data' in meta:\n                    dst_id\
+      \ = meta['dst']\n                    data = meta['data'].encode() if isinstance(meta['data'],\
+      \ str) else meta['data']\n                    self.tx_queue.put({'dst': dst_id,\
+      \ 'data': data, 'type': self.PKT_DATA})\n                    print(f\"[Node\
+      \ {self.node_id}] Queued message to {dst_id}\")\n            \n            #\
+      \ Handle pair messages (PDU format)\n            elif pmt.is_pair(msg):\n  \
+      \              meta = pmt.to_python(pmt.car(msg))\n                data = pmt.to_python(pmt.cdr(msg))\n\
+      \                if isinstance(meta, dict) and 'dst' in meta:\n            \
+      \        dst_id = meta['dst']\n                    if isinstance(data, str):\n\
+      \                        data = data.encode()\n                    elif isinstance(data,\
+      \ list):\n                        data = bytes(data)\n                    self.tx_queue.put({'dst':\
+      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                    print(f\"\
+      [Node {self.node_id}] Queued message to {dst_id}\")\n                    \n\
+      \        except Exception as e:\n            print(f\"[Node {self.node_id}]\
+      \ Error handling msg_in: {e}\")\n    \n    def handle_pdu_in(self, pdu):\n \
+      \       \"\"\"Handle incoming PDUs from demodulator\"\"\"\n        try:\n  \
+      \          # Extract PDU data\n            if pmt.is_pair(pdu):\n          \
+      \      meta = pmt.car(pdu)\n                data = pmt.cdr(pdu)\n          \
+      \      \n                # Convert to bytes\n                if pmt.is_u8vector(data):\n\
+      \                    print(\"loop run\")\t\n                    rx_bytes = bytes(pmt.u8vector_elements(data))\t\
+      \n                    self.rx_queue.put(rx_bytes)\n                elif pmt.is_uniform_vector(data):\n\
+      \                    # Handle float32 or other vector types\n              \
+      \      elements = pmt.to_python(data)\n                    # Convert to bytes\
+      \ (assuming 8-bit symbols)\n                    rx_bytes = bytes([int(x) & 0xFF\
+      \ for x in elements])\n                    self.rx_queue.put(rx_bytes)\n   \
+      \                 \n        except Exception as e:\n            print(f\"[Node\
+      \ {self.node_id}] Error handling pdu_in: {e}\")\n    \n    def create_packet(self,\
+      \ dst_id, seq_num, pkt_type, payload=b''):\n        \"\"\"Create a packet with\
+      \ headers and CRC\"\"\"\n        packet = bytearray()\n        \n        # Add\
+      \ preamble and sync word\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
+      \        \n        # Add header\n        packet.append(self.node_id)  # Source\
+      \ ID\n        packet.append(dst_id)         # Destination ID\n        packet.append(seq_num)\
+      \        # Sequence number\n        packet.append(pkt_type)       # Packet type\n\
+      \        packet.append(len(payload))   # Payload length\n        \n        #\
+      \ Add payload\n        if payload:\n            packet.extend(payload[:self.MAX_PAYLOAD])\n\
+      \        \n        # Calculate and add CRC16\n        crc_data = bytes(packet[len(self.PREAMBLE)\
+      \ + len(self.SYNC_WORD):])\n        crc_val = self.calculate_crc16(crc_data)\n\
+      \        packet.extend(struct.pack('>H', crc_val))\n        \n        return\
+      \ bytes(packet)\n    \n    def parse_packet(self, data):\n        \"\"\"Parse\
+      \ received packet and validate CRC\"\"\"\n        try:\n            # Find sync\
+      \ word\n            sync_idx = data.find(self.SYNC_WORD)\n            if sync_idx\
+      \ == -1:\n                return None\n            \n            # Check minimum\
+      \ packet size\n            start_idx = sync_idx + len(self.SYNC_WORD)\n    \
+      \        if len(data) < start_idx + 5 + self.CRC_SIZE:\n                return\
+      \ None\n            \n            # Extract header fields\n            src_id\
+      \ = data[start_idx]\n            dst_id = data[start_idx + 1]\n            seq_num\
+      \ = data[start_idx + 2]\n            pkt_type = data[start_idx + 3]\n      \
+      \      payload_len = data[start_idx + 4]\n            \n            # Check\
+      \ if we have complete packet\n            total_len = start_idx + 5 + payload_len\
+      \ + self.CRC_SIZE\n            if len(data) < total_len:\n                return\
+      \ None\n            \n            # Extract payload and CRC\n            payload\
+      \ = data[start_idx + 5:start_idx + 5 + payload_len]\n            rx_crc = struct.unpack('>H',\
+      \ data[total_len - self.CRC_SIZE:total_len])[0]\n            \n            #\
+      \ Verify CRC\n            crc_data = data[start_idx:total_len - self.CRC_SIZE]\n\
+      \            calc_crc = self.calculate_crc16(crc_data)\n            \n     \
+      \       if rx_crc != calc_crc:\n                self.stats['crc_errors'] +=\
+      \ 1\n                print(f\"[Node {self.node_id}] CRC mismatch (expected:\
+      \ {calc_crc:04X}, got: {rx_crc:04X})\")\n                return None\n     \
+      \       \n            return {\n                'src': src_id,\n           \
+      \     'dst': dst_id,\n                'seq': seq_num,\n                'type':\
+      \ pkt_type,\n                'payload': payload,\n                'consumed':\
+      \ total_len\n            }\n        except Exception as e:\n            print(f\"\
+      [Node {self.node_id}] Error parsing packet: {e}\")\n            return None\n\
+      \    \n    def send_sync_burst(self):\n        burst = bytes(random.getrandbits(8)\
+      \ for _ in range(1000))\n        self.transmit_packet(burst)\n\n    def tx_handler(self):\n\
+      \        \"\"\"Thread for handling packet transmission with ARQ\"\"\"\n    \
+      \    while self.running:\n            try:\n                # Get message from\
+      \ queue (with timeout for thread safety)\n                try:\n           \
+      \         msg = self.tx_queue.get(timeout=0.1)\n                except queue.Empty:\n\
+      \                    continue\n                \n                # ALOHA: Random\
+      \ backoff\n                if random.random() > self.aloha_prob:\n         \
+      \           backoff_time = random.uniform(0.1, 0.5)\n                    print(f\"\
+      [Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\")\n               \
+      \     time.sleep(backoff_time)\n                    # Re-queue the message\n\
+      \                    self.tx_queue.put(msg)\n                    continue\n\
+      \                \n                # Prepare packet\n                with self.lock:\n\
+      \                    seq_num = self.seq_num_tx\n                    self.seq_num_tx\
+      \ = (self.seq_num_tx + 1) % 256\n                \n                packet =\
+      \ self.create_packet(\n                    msg['dst'],\n                   \
+      \ seq_num,\n                    msg['type'],\n                    msg.get('data',\
+      \ b'')\n                )\n                \n                # Stop-and-Wait\
+      \ ARQ\n                retries = 0\n                ack_received = False\n\n\
+      \                self.send_sync_burst()\n                \n                while\
+      \ retries < self.max_retries and not ack_received:\n                    # Transmit\
+      \ packet\n                    print(f\"[Node {self.node_id}] TX: Sending packet\
+      \ seq={seq_num} to node {msg['dst']} (attempt {retries + 1})\")\n          \
+      \          self.transmit_packet(packet)\n                    self.stats['packets_sent']\
+      \ += 1\n                    \n                    if retries > 0:\n        \
+      \                self.stats['retransmissions'] += 1\n                    \n\
+      \                    # Wait for ACK\n                    ack_key = f\"{msg['dst']}_{seq_num}\"\
+      \n                    timeout_time = time.time() + self.timeout\n          \
+      \          \n                    while time.time() < timeout_time:\n       \
+      \                 try:\n                            ack = self.ack_queue.get(timeout=0.1)\n\
+      \                            if ack['key'] == ack_key:\n                   \
+      \             ack_received = True\n                                self.stats['acks_received']\
+      \ += 1\n                                print(f\"[Node {self.node_id}] TX: ACK\
+      \ received for seq={seq_num}\")\n                                output = \"\
+      TRUE\"\n                                msg = pmt.intern(output)\n         \
+      \                       self.message_port_pub(pmt.intern('feedback'), msg)\n\
+      \                                break\n                        except queue.Empty:\n\
+      \                            pass\n                    \n                  \
+      \  if not ack_received:\n                        retries += 1\n            \
+      \            if retries < self.max_retries:\n                            print(f\"\
+      [Node {self.node_id}] TX: Timeout, retry {retries}/{self.max_retries}\")\n \
+      \               \n                if not ack_received:\n                   \
+      \ print(f\"[Node {self.node_id}] TX: Failed to deliver packet seq={seq_num}\
+      \ after {self.max_retries} attempts\")\n                    output = \"FALSE\"\
+      \n                    msg = pmt.intern(output)\n                    self.message_port_pub(pmt.intern('feedback'),\
+      \ msg)\n                    \n            except Exception as e:\n         \
+      \       print(f\"[Node {self.node_id}] TX handler error: {e}\")\n    \n    def\
+      \ rx_handler(self):\n        \"\"\"Thread for handling packet reception\"\"\"\
+      \n        while self.running:\n            try:\n                # Get received\
+      \ data\n                try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \         \n                # Add to buffer\n                self.rx_buffer\
+      \ += rx_data\n                \n                # Try to parse packets from\
+      \ buffer\n                while len(self.rx_buffer) > 0:\n                 \
+      \   pkt = self.parse_packet(self.rx_buffer)\n                    \n        \
+      \            if pkt is None:\n                        # No valid packet found,\
+      \ remove first byte and try again\n                        if len(self.rx_buffer)\
+      \ > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n  \
+      \                      else:\n                            self.rx_buffer = bytes()\n\
+      \                        continue\n                    \n                  \
+      \  # Remove processed packet from buffer\n                    self.rx_buffer\
+      \ = self.rx_buffer[pkt['consumed']:]\n                    \n               \
+      \     # Check if packet is for this node or broadcast\n                    if\
+      \ pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n                     \
+      \   print(f\"[Node {self.node_id}] RX: Packet not for us (dst={pkt['dst']})\"\
+      )\n                        continue\n                    \n                \
+      \    # Handle based on packet type\n                    if pkt['type'] == self.PKT_DATA:\n\
+      \                        self.stats['packets_received'] += 1\n             \
+      \           print(f\"[Node {self.node_id}] RX: Data packet from node {pkt['src']},\
+      \ seq={pkt['seq']}\")\n                        \n                        # Check\
+      \ for duplicate\n                        is_duplicate = False\n            \
+      \            if pkt['src'] in self.seq_num_rx:\n                           \
+      \ if self.seq_num_rx[pkt['src']] == pkt['seq']:\n                          \
+      \      print(f\"[Node {self.node_id}] RX: Duplicate packet detected\")\n   \
+      \                             is_duplicate = True\n                        \n\
+      \                        self.seq_num_rx[pkt['src']] = pkt['seq']\n        \
+      \                \n                        # Send ACK\n                    \
+      \    ack_packet = self.create_packet(\n                            pkt['src'],\n\
+      \                            pkt['seq'],\n                            self.PKT_ACK\n\
+      \                        )\n                        print(f\"[Node {self.node_id}]\
+      \ RX: Sending ACK for seq={pkt['seq']}\")\n                        self.transmit_packet(ack_packet)\n\
+      \                        self.stats['acks_sent'] += 1\n                    \
+      \    \n                        # Forward to application if not duplicate\n \
+      \                       if not is_duplicate:\n                            self.forward_to_app(pkt['src'],\
+      \ pkt['payload'])\n                        \n                    elif pkt['type']\
+      \ == self.PKT_ACK:\n                        print(f\"[Node {self.node_id}] RX:\
+      \ ACK packet from node {pkt['src']}, seq={pkt['seq']}\")\n                 \
+      \       # Process ACK\n                        ack_key = f\"{pkt['src']}_{pkt['seq']}\"\
+      \n                        self.ack_queue.put({'key': ack_key})\n           \
+      \             \n            except Exception as e:\n                print(f\"\
+      [Node {self.node_id}] RX handler error: {e}\")\n    \n    def transmit_packet(self,\
+      \ packet):\n        \"\"\"Send packet to physical layer\"\"\"\n        try:\n\
+      \            # Convert to PDU format\n            vec = pmt.init_u8vector(len(packet),\
+      \ list(packet))\n            pdu = pmt.cons(pmt.PMT_NIL, vec)\n            \n\
+      \            # Send to modulator\n            self.message_port_pub(pmt.intern('pdu_out'),\
+      \ pdu)\n            \n        except Exception as e:\n            print(f\"\
+      [Node {self.node_id}] Error transmitting packet: {e}\")\n    \n    def forward_to_app(self,\
+      \ src_id, data):\n        \"\"\"Forward received data to application/GUI\"\"\
+      \"\n        try:\n            # Decode message\n            message = data.decode('utf-8',\
+      \ errors='ignore')\n            \n            # Create formatted output string\n\
+      \            output = f\"[From Node {src_id}]: {message}\"\n            \n \
+      \           # Send as simple string message\n            msg = pmt.intern(output)\n\
+      \            self.message_port_pub(pmt.intern('msg_out'), msg)\n           \
+      \ \n            # Also send as dictionary for more complex processing\n    \
+      \        meta = pmt.make_dict()\n            meta = pmt.dict_add(meta, pmt.intern(\"\
+      src\"), pmt.from_long(src_id))\n            meta = pmt.dict_add(meta, pmt.intern(\"\
+      data\"), pmt.intern(message))\n            \n            print(f\"[Node {self.node_id}]\
+      \ Message delivered: {output}\")\n            \n        except Exception as\
+      \ e:\n            print(f\"[Node {self.node_id}] Error forwarding to app: {e}\"\
+      )\n    \n    def work(self, input_items, output_items):\n        \"\"\"Main\
+      \ work function (not used for message passing blocks)\"\"\"\n        return\
+      \ 0\n    \n    def stop(self):\n        \"\"\"Clean shutdown\"\"\"\n       \
+      \ print(f\"\\n[Node {self.node_id}] Statistics:\")\n        print(f\"  Packets\
+      \ sent: {self.stats['packets_sent']}\")\n        print(f\"  Packets received:\
+      \ {self.stats['packets_received']}\")\n        print(f\"  ACKs sent: {self.stats['acks_sent']}\"\
+      )\n        print(f\"  ACKs received: {self.stats['acks_received']}\")\n    \
+      \    print(f\"  Retransmissions: {self.stats['retransmissions']}\")\n      \
+      \  print(f\"  CRC errors: {self.stats['crc_errors']}\")\n        \n        self.running\
+      \ = False\n        if self.tx_thread.is_alive():\n            self.tx_thread.join()\n\
+      \        if self.rx_thread.is_alive():\n            self.rx_thread.join()\n\
+      \        return True\n"
+    affinity: ''
+    alias: ''
+    aloha_prob: '0.6'
+    comment: User 1
+    max_retries: '100'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    node_id: '1'
+    timeout: '0.2'
+  states:
+    _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
+      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('msg_in', 'message', 1),
+      ('pdu_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
+      1), ('msg_out', 'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 156.0]
+    rotation: 0
+    state: enabled
 - name: epy_block_0_1
   id: epy_block
   parameters:
@@ -1812,696 +2352,6 @@ blocks:
     bus_structure: null
     coordinate: [1728, 1236.0]
     rotation: 180
-    state: enabled
-- name: epy_block_1_0
-  id: epy_block
-  parameters:
-    _source_code: "\"\"\"\nEmbedded Python Block for GNU Radio - Mesh Network Packet\
-      \ Communication\nImplements packetization, Go-Back-N ARQ, and p-persistent ALOHA\
-      \ medium access\nNo external CRC module required - implements CRC-16 CCITT manually\n\
-      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport threading\n\
-      import queue\nimport time\nimport random\nimport struct\nimport collections\n\
-      \n\nclass blk(gr.sync_block):\n    \"\"\"\n    Mesh Network Packet Communication\
-      \ Block\n    Handles packet transmission/reception with Go-Back-N ARQ + ALOHA\n\
-      \    \"\"\"\n\n    def __init__(\n        self,\n        node_id = 1,\n    \
-      \    aloha_prob = 0.3,\n        timeout = 1.0,\n        max_retries = 3,\n \
-      \       window_size = 4,\n        aloha_backoff_min = 0.1,\n        aloha_backoff_max\
-      \ = 0.5,\n    ):\n        \"\"\"\n        Arguments:\n            node_id: \
-      \          Unique identifier for this node (1-255)\n            aloha_prob:\
-      \        Transmission probability (p) for p-persistent ALOHA (0.0-1.0)\n   \
-      \         timeout:           ARQ timeout in seconds (timer for base of window)\n\
-      \            max_retries:       Maximum window retransmission attempts before\
-      \ giving up\n            window_size:       Go-Back-N window size (number of\
-      \ outstanding frames)\n            aloha_backoff_min: Minimum backoff before\
-      \ (re)transmission when ALOHA defers\n            aloha_backoff_max: Maximum\
-      \ backoff before (re)transmission when ALOHA defers\n        \"\"\"\n      \
-      \  gr.sync_block.__init__(\n            self,\n            name='Mesh Packet\
-      \ Comm GBN',\n            in_sig=None,\n            out_sig=None\n        )\n\
-      \n        # Node configuration\n        self.node_id = node_id\n        self.aloha_prob\
-      \ = float(aloha_prob)\n        self.timeout = float(timeout)\n        self.max_retries\
-      \ = int(max_retries)\n        self.window_size = int(window_size)\n        self.aloha_backoff_min\
-      \ = float(aloha_backoff_min)\n        self.aloha_backoff_max = float(aloha_backoff_max)\n\
-      \n        # Packet parameters\n        # Preamble: long, random-ish pattern\
-      \ for sync\n        b = random.getrandbits(8)\n        self.PREAMBLE = bytes([b]\
-      \ * 32)\n        self.SYNC_WORD = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD\
-      \ = 255\n        self.CRC_SIZE = 2\n\n        # Packet types\n        self.PKT_DATA\
-      \ = 0x01\n        self.PKT_ACK = 0x02\n\n        # CRC-16 CCITT lookup table\n\
-      \        self.crc_table = self.generate_crc_table()\n\n        # Queues\n  \
-      \      self.tx_queue = queue.Queue()   # app -> link layer (messages to send)\n\
-      \        self.rx_queue = queue.Queue()   # PHY -> link layer (raw received bytes)\n\
-      \        self.ack_queue = queue.Queue()  # RX thread -> TX thread (parsed ACKs)\n\
-      \n        # TX state (Go-Back-N)\n        self.seq_num_tx = 0  # next sequence\
-      \ number to use (mod 256)\n        # window: OrderedDict[seq] = {\n        #\
-      \   'packet': bytes,\n        #   'feedback_sent': bool\n        # }\n     \
-      \   self.tx_window = collections.OrderedDict()\n        self.window_timer_start\
-      \ = None\n        self.window_retries = 0\n\n        # RX state (per-source\
-      \ expected sequence for GBN)\n        # expected_seq_rx[src_id] = next expected\
-      \ seq from that source\n        self.expected_seq_rx = {}\n\n        # RX byte\
-      \ buffer for packet extraction\n        self.rx_buffer = bytes()\n\n       \
-      \ # Statistics\n        self.stats = {\n            'packets_sent': 0,\n   \
-      \         'packets_received': 0,\n            'acks_sent': 0,\n            'acks_received':\
-      \ 0,\n            'retransmissions': 0,\n            'crc_errors': 0,\n    \
-      \        'window_timeouts': 0,\n        }\n\n        # Threading\n        self.running\
-      \ = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
-      \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
-      \ self.tx_thread.daemon = True\n        self.rx_thread.daemon = True\n\n   \
-      \     # Message ports\n        self.port_msg_in = pmt.intern('msg_in')\n   \
-      \     self.port_pdu_in = pmt.intern('pdu_in')\n        self.port_msg_out = pmt.intern('msg_out')\n\
-      \        self.port_pdu_out = pmt.intern('pdu_out')\n        self.port_feedback\
-      \ = pmt.intern('feedback')\n\n        self.message_port_register_in(self.port_msg_in)\n\
-      \        self.message_port_register_in(self.port_pdu_in)\n        self.message_port_register_out(self.port_msg_out)\n\
-      \        self.message_port_register_out(self.port_pdu_out)\n        self.message_port_register_out(self.port_feedback)\n\
-      \n        # Set message handlers\n        self.set_msg_handler(self.port_msg_in,\
-      \ self.handle_msg_in)\n        self.set_msg_handler(self.port_pdu_in, self.handle_pdu_in)\n\
-      \n        # Start threads\n        self.tx_thread.start()\n        self.rx_thread.start()\n\
-      \n        print(f\"[Node {self.node_id}] Initialized (GBN+ALOHA) - Ready for\
-      \ communication\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # CRC helpers\n    # -------------------------------------------------------------------------\n\
-      \    def generate_crc_table(self):\n        \"\"\"Generate CRC-16 CCITT lookup\
-      \ table\"\"\"\n        poly = 0x1021\n        table = []\n        for i in range(256):\n\
-      \            crc = i << 8\n            for _ in range(8):\n                if\
-      \ crc & 0x8000:\n                    crc = ((crc << 1) ^ poly) & 0xFFFF\n  \
-      \              else:\n                    crc = (crc << 1) & 0xFFFF\n      \
-      \      table.append(crc)\n        return table\n\n    def calculate_crc16(self,\
-      \ data):\n        \"\"\"Calculate CRC-16 CCITT for given data\"\"\"\n      \
-      \  crc = 0xFFFF\n        for byte in data:\n            tbl_idx = ((crc >> 8)\
-      \ ^ byte) & 0xFF\n            crc = ((crc << 8) ^ self.crc_table[tbl_idx]) &\
-      \ 0xFFFF\n        return crc\n\n    # -------------------------------------------------------------------------\n\
-      \    # Upper-layer message handling\n    # -------------------------------------------------------------------------\n\
-      \    def handle_msg_in(self, msg):\n        \"\"\"Handle incoming messages from\
-      \ GUI/application\"\"\"\n        try:\n            # Handle string messages\
-      \ directly: \"dst_id:message\"\n            if pmt.is_symbol(msg):\n       \
-      \         text = pmt.symbol_to_string(msg)\n                if ':' in text:\n\
-      \                    dst_str, payload_str = text.split(':', 1)\n           \
-      \         try:\n                        dst_id = int(dst_str)\n            \
-      \            data = payload_str.encode()\n                        self.tx_queue.put({'dst':\
-      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                        print(f\"\
-      [Node {self.node_id}] Queued message to {dst_id}: {payload_str}\")\n       \
-      \             except ValueError:\n                        print(f\"[Node {self.node_id}]\
-      \ Invalid destination ID in text message\")\n\n            # Handle dictionary\
-      \ messages (Python dict via pmt.to_python)\n            elif pmt.is_dict(msg):\n\
-      \                meta = pmt.to_python(msg)\n                if 'dst' in meta\
-      \ and 'data' in meta:\n                    dst_id = meta['dst']\n          \
-      \          data = meta['data'].encode() if isinstance(meta['data'], str) else\
-      \ meta['data']\n                    self.tx_queue.put({'dst': dst_id, 'data':\
-      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
-      \ Queued dict message to {dst_id}\")\n\n            # Handle PDU-style pair:\
-      \ (meta, vec)\n            elif pmt.is_pair(msg):\n                meta = pmt.to_python(pmt.car(msg))\n\
-      \                data = pmt.to_python(pmt.cdr(msg))\n                if isinstance(meta,\
-      \ dict) and 'dst' in meta:\n                    dst_id = meta['dst']\n     \
-      \               if isinstance(data, str):\n                        data = data.encode()\n\
-      \                    elif isinstance(data, list):\n                        data\
-      \ = bytes(data)\n                    self.tx_queue.put({'dst': dst_id, 'data':\
-      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
-      \ Queued PDU message to {dst_id}\")\n\n        except Exception as e:\n    \
-      \        print(f\"[Node {self.node_id}] Error handling msg_in: {e}\")\n\n  \
-      \  def handle_pdu_in(self, pdu):\n        \"\"\"Handle incoming PDUs from demodulator/PHY\"\
-      \"\"\n        try:\n            if not pmt.is_pair(pdu):\n                return\n\
-      \n            meta = pmt.car(pdu)\n            data = pmt.cdr(pdu)\n\n     \
-      \       if pmt.is_u8vector(data):\n                rx_bytes = bytes(pmt.u8vector_elements(data))\n\
-      \                self.rx_queue.put(rx_bytes)\n            elif pmt.is_uniform_vector(data):\n\
-      \                elements = pmt.to_python(data)\n                rx_bytes =\
-      \ bytes([int(x) & 0xFF for x in elements])\n                self.rx_queue.put(rx_bytes)\n\
-      \n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
-      \ Error handling pdu_in: {e}\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # Packet creation & parsing\n    # -------------------------------------------------------------------------\n\
-      \    def create_packet(self, dst_id, seq_num, pkt_type, payload=b''):\n    \
-      \    \"\"\"Create a packet with headers and CRC\"\"\"\n        packet = bytearray()\n\
-      \n        # Preamble + sync\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
-      \n        # Header\n        packet.append(self.node_id)        # Source ID\n\
-      \        packet.append(dst_id & 0xFF)       # Destination ID\n        packet.append(seq_num\
-      \ & 0xFF)      # Sequence number\n        packet.append(pkt_type & 0xFF)   \
-      \  # Packet type\n        packet.append(len(payload) & 0xFF) # Payload length\n\
-      \n        # Payload (truncated to MAX_PAYLOAD)\n        if payload:\n      \
-      \      packet.extend(payload[:self.MAX_PAYLOAD])\n\n        # CRC over header\
-      \ + payload (not including preamble+sync)\n        crc_data = bytes(packet[len(self.PREAMBLE)\
-      \ + len(self.SYNC_WORD):])\n        crc_val = self.calculate_crc16(crc_data)\n\
-      \        packet.extend(struct.pack('>H', crc_val))\n\n        return bytes(packet)\n\
-      \n    def parse_packet(self, data):\n        \"\"\"Parse received packet and\
-      \ validate CRC. Returns dict or None.\"\"\"\n        try:\n            # Find\
-      \ sync word\n            sync_idx = data.find(self.SYNC_WORD)\n            if\
-      \ sync_idx == -1:\n                return None\n\n            start_idx = sync_idx\
-      \ + len(self.SYNC_WORD)\n\n            # Minimum: src(1) + dst(1) + seq(1) +\
-      \ type(1) + len(1) + CRC(2)\n            if len(data) < start_idx + 5 + self.CRC_SIZE:\n\
-      \                return None\n\n            src_id = data[start_idx]\n     \
-      \       dst_id = data[start_idx + 1]\n            seq_num = data[start_idx +\
-      \ 2]\n            pkt_type = data[start_idx + 3]\n            payload_len =\
-      \ data[start_idx + 4]\n\n            total_len = start_idx + 5 + payload_len\
-      \ + self.CRC_SIZE\n            if len(data) < total_len:\n                return\
-      \ None\n\n            payload = data[start_idx + 5:start_idx + 5 + payload_len]\n\
-      \            rx_crc = struct.unpack('>H', data[total_len - self.CRC_SIZE:total_len])[0]\n\
-      \n            crc_data = data[start_idx:total_len - self.CRC_SIZE]\n       \
-      \     calc_crc = self.calculate_crc16(crc_data)\n\n            if rx_crc !=\
-      \ calc_crc:\n                self.stats['crc_errors'] += 1\n               \
-      \ print(f\"[Node {self.node_id}] CRC mismatch (expected: {calc_crc:04X}, got:\
-      \ {rx_crc:04X})\")\n                return None\n\n            return {\n  \
-      \              'src': src_id,\n                'dst': dst_id,\n            \
-      \    'seq': seq_num,\n                'type': pkt_type,\n                'payload':\
-      \ payload,\n                'consumed': total_len\n            }\n\n       \
-      \ except Exception as e:\n            print(f\"[Node {self.node_id}] Error parsing\
-      \ packet: {e}\")\n            return None\n\n    # -------------------------------------------------------------------------\n\
-      \    # Medium access (ALOHA) + physical transmit\n    # -------------------------------------------------------------------------\n\
-      \    def send_with_aloha(self, packet):\n        \"\"\"\n        Apply simple\
-      \ p-persistent ALOHA:\n        - With probability p = aloha_prob, transmit immediately.\n\
-      \        - With probability (1-p), wait a random backoff then transmit.\n  \
-      \      \"\"\"\n        try:\n            if random.random() > self.aloha_prob:\n\
-      \                backoff = random.uniform(self.aloha_backoff_min, self.aloha_backoff_max)\n\
-      \                print(f\"[Node {self.node_id}] ALOHA backoff {backoff:.2f}s\"\
-      )\n                time.sleep(backoff)\n\n            self.transmit_packet(packet)\n\
-      \n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
-      \ Error in send_with_aloha: {e}\")\n\n    def transmit_packet(self, packet):\n\
-      \        \"\"\"Send packet to physical layer as a PDU\"\"\"\n        try:\n\
-      \            vec = pmt.init_u8vector(len(packet), list(packet))\n          \
-      \  pdu = pmt.cons(pmt.PMT_NIL, vec)\n            self.message_port_pub(self.port_pdu_out,\
-      \ pdu)\n\n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
-      \ Error transmitting packet: {e}\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # Go-Back-N TX thread\n    # -------------------------------------------------------------------------\n\
-      \    def process_acks(self):\n        \"\"\"Process all pending ACKs and slide\
-      \ the GBN window.\"\"\"\n        try:\n            while True:\n           \
-      \     ack = self.ack_queue.get_nowait()\n                ack_seq = ack['seq']\n\
-      \                # In this simple implementation we don't distinguish by src.\n\
-      \                if not self.tx_window:\n                    continue\n\n  \
-      \              if ack_seq not in self.tx_window:\n                    # Could\
-      \ be a cumulative ACK for multiple packets.\n                    # We remove\
-      \ from the left until we pass ack_seq if it appears.\n                    keys\
-      \ = list(self.tx_window.keys())\n                    if ack_seq in keys:\n \
-      \                       idx = keys.index(ack_seq)\n                        to_remove\
-      \ = keys[:idx + 1]\n                    else:\n                        # If\
-      \ ack_seq not present, we assume it's older than current base (duplicate) and\
-      \ ignore.\n                        continue\n                else:\n       \
-      \             # ack_seq is present; treat as cumulative ACK up to this seq.\n\
-      \                    keys = list(self.tx_window.keys())\n                  \
-      \  idx = keys.index(ack_seq)\n                    to_remove = keys[:idx + 1]\n\
-      \n                # Remove all ACKed packets from window (cumulative ACK)\n\
-      \                for s in to_remove:\n                    entry = self.tx_window.pop(s,\
-      \ None)\n                    if entry is not None and not entry.get('feedback_sent',\
-      \ False):\n                        self.send_feedback(True)\n              \
-      \          entry['feedback_sent'] = True\n\n                self.stats['acks_received']\
-      \ += 1\n\n                # Reset timer/retries based on new window state\n\
-      \                if self.tx_window:\n                    self.window_timer_start\
-      \ = time.time()\n                    self.window_retries = 0\n             \
-      \   else:\n                    self.window_timer_start = None\n            \
-      \        self.window_retries = 0\n\n        except queue.Empty:\n          \
-      \  # No more ACKs for now\n            pass\n        except Exception as e:\n\
-      \            print(f\"[Node {self.node_id}] Error processing ACKs: {e}\")\n\n\
-      \    def fill_window_from_queue(self):\n        \"\"\"Pull new messages from\
-      \ tx_queue into the Go-Back-N window if there's space.\"\"\"\n        try:\n\
-      \            while len(self.tx_window) < self.window_size:\n               \
-      \ try:\n                    msg = self.tx_queue.get_nowait()\n             \
-      \   except queue.Empty:\n                    break\n\n                dst =\
-      \ msg['dst']\n                data = msg.get('data', b'')\n                pkt_type\
-      \ = msg.get('type', self.PKT_DATA)\n\n                # Assign sequence number\n\
-      \                seq = self.seq_num_tx\n                self.seq_num_tx = (self.seq_num_tx\
-      \ + 1) % 256\n\n                packet = self.create_packet(dst, seq, pkt_type,\
-      \ data)\n\n                # For broadcast we typically don't do ARQ; transmit\
-      \ once and don't put in window\n                if dst == 0xFF or pkt_type !=\
-      \ self.PKT_DATA:\n                    print(f\"[Node {self.node_id}] TX (no\
-      \ ARQ): seq={seq} dst={dst}\")\n                    self.send_with_aloha(packet)\n\
-      \                    self.stats['packets_sent'] += 1\n                    continue\n\
-      \n                # Reliable (GBN-managed) packet\n                self.tx_window[seq]\
-      \ = {\n                    'packet': packet,\n                    'feedback_sent':\
-      \ False,\n                }\n\n                print(f\"[Node {self.node_id}]\
-      \ TX: Sending DATA seq={seq} dst={dst} (window size={len(self.tx_window)})\"\
-      )\n                self.send_with_aloha(packet)\n                self.stats['packets_sent']\
-      \ += 1\n\n                # If this is the first packet in window, start timer\n\
-      \                if len(self.tx_window) == 1:\n                    self.window_timer_start\
-      \ = time.time()\n                    self.window_retries = 0\n\n        except\
-      \ Exception as e:\n            print(f\"[Node {self.node_id}] Error filling\
-      \ window: {e}\")\n\n    def check_window_timeout(self):\n        \"\"\"Check\
-      \ for Go-Back-N timeout on the base of the window and retransmit if needed.\"\
-      \"\"\n        if not self.tx_window:\n            return\n\n        if self.window_timer_start\
-      \ is None:\n            return\n\n        now = time.time()\n        if now\
-      \ - self.window_timer_start < self.timeout:\n            return\n\n        #\
-      \ Timeout occurred for base of window\n        self.stats['window_timeouts']\
-      \ += 1\n        self.window_retries += 1\n        base_seq = next(iter(self.tx_window.keys()))\n\
-      \        print(f\"[Node {self.node_id}] GBN timeout at seq={base_seq}, retry\
-      \ {self.window_retries}/{self.max_retries}\")\n\n        if self.window_retries\
-      \ > self.max_retries:\n            print(f\"[Node {self.node_id}] GBN: Max retries\
-      \ exceeded, dropping window\")\n            # Mark all outstanding packets as\
-      \ failed\n            for _seq, entry in list(self.tx_window.items()):\n   \
-      \             if not entry.get('feedback_sent', False):\n                  \
-      \  self.send_feedback(False)\n                    entry['feedback_sent'] = True\n\
-      \            self.tx_window.clear()\n            self.window_timer_start = None\n\
-      \            self.window_retries = 0\n            return\n\n        # Go-Back-N:\
-      \ retransmit all packets currently in the window\n        for seq, entry in\
-      \ self.tx_window.items():\n            print(f\"[Node {self.node_id}] GBN retransmit\
-      \ seq={seq}\")\n            self.send_with_aloha(entry['packet'])\n        \
-      \    self.stats['retransmissions'] += 1\n\n        # Restart timer for the base\n\
-      \        self.window_timer_start = time.time()\n\n    def tx_handler(self):\n\
-      \        \"\"\"Thread for handling Go-Back-N transmission + ALOHA medium access.\"\
-      \"\"\n        while self.running:\n            try:\n                # 1) Process\
-      \ all ACKs\n                self.process_acks()\n\n                # 2) Check\
-      \ for timeout on window base\n                self.check_window_timeout()\n\n\
-      \                # 3) Fill window with new packets from tx_queue if space\n\
-      \                self.fill_window_from_queue()\n\n                # Small sleep\
-      \ to avoid busy-wait\n                time.sleep(0.01)\n\n            except\
-      \ Exception as e:\n                print(f\"[Node {self.node_id}] TX handler\
-      \ error: {e}\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # RX thread (packetization + GBN receiver side)\n    # -------------------------------------------------------------------------\n\
-      \    def rx_handler(self):\n        \"\"\"Thread for handling packet reception\
-      \ and GBN RX logic.\"\"\"\n        while self.running:\n            try:\n \
-      \               try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
-      \                except queue.Empty:\n                    continue\n\n     \
-      \           # Append to RX buffer\n                self.rx_buffer += rx_data\n\
-      \n                # Extract packets from buffer\n                while len(self.rx_buffer)\
-      \ > 0:\n                    pkt = self.parse_packet(self.rx_buffer)\n\n    \
-      \                if pkt is None:\n                        # No valid packet\
-      \ at current alignment; drop one byte and re-try\n                        if\
-      \ len(self.rx_buffer) > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n\
-      \                        else:\n                            self.rx_buffer =\
-      \ bytes()\n                        continue\n\n                    # Remove\
-      \ processed bytes\n                    self.rx_buffer = self.rx_buffer[pkt['consumed']:]\n\
-      \n                    # Addressing: packet must be for us or broadcast\n   \
-      \                 if pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n  \
-      \                      print(f\"[Node {self.node_id}] RX: Packet not for us\
-      \ (dst={pkt['dst']})\")\n                        continue\n\n              \
-      \      if pkt['type'] == self.PKT_DATA:\n                        self.handle_data_packet(pkt)\n\
-      \                    elif pkt['type'] == self.PKT_ACK:\n                   \
-      \     self.handle_ack_packet(pkt)\n\n            except Exception as e:\n  \
-      \              print(f\"[Node {self.node_id}] RX handler error: {e}\")\n\n \
-      \   def handle_data_packet(self, pkt):\n        \"\"\"Handle incoming DATA packet\
-      \ with GBN receiver logic.\"\"\"\n        src = pkt['src']\n        seq = pkt['seq']\n\
-      \        payload = pkt['payload']\n\n        self.stats['packets_received']\
-      \ += 1\n        expected = self.expected_seq_rx.get(src, 0)\n\n        if seq\
-      \ == expected:\n            # In-order packet: accept and advance\n        \
-      \    print(f\"[Node {self.node_id}] RX: In-order DATA from {src}, seq={seq}\
-      \ (expected={expected})\")\n            self.expected_seq_rx[src] = (expected\
-      \ + 1) % 256\n            ack_seq = seq\n            is_new = True\n       \
-      \ else:\n            # Out-of-order or duplicate\n            print(f\"[Node\
-      \ {self.node_id}] RX: Out-of-order/dup DATA from {src}, seq={seq}, expected={expected}\"\
-      )\n            # Last correctly received in-order seq is expected-1 (mod 256)\n\
-      \            if expected == 0:\n                ack_seq = 255\n            else:\n\
-      \                ack_seq = (expected - 1) & 0xFF\n            is_new = False\n\
-      \n        # Send ACK for last in-order seq (GBN cumulative ACK)\n        ack_packet\
-      \ = self.create_packet(src, ack_seq, self.PKT_ACK)\n        print(f\"[Node {self.node_id}]\
-      \ RX: Sending ACK seq={ack_seq} to {src}\")\n        self.send_with_aloha(ack_packet)\n\
-      \        self.stats['acks_sent'] += 1\n\n        # Deliver only new, in-order\
-      \ packets to the application\n        if is_new:\n            self.forward_to_app(src,\
-      \ payload)\n\n    def handle_ack_packet(self, pkt):\n        \"\"\"Handle incoming\
-      \ ACK packet (push to ack_queue for TX thread).\"\"\"\n        src = pkt['src']\n\
-      \        seq = pkt['seq']\n        print(f\"[Node {self.node_id}] RX: ACK from\
-      \ node {src}, seq={seq}\")\n        # Push seq to ack queue; TX thread handles\
-      \ window sliding\n        self.ack_queue.put({'src': src, 'seq': seq})\n\n \
-      \   # -------------------------------------------------------------------------\n\
-      \    # Upper-layer delivery & feedback\n    # -------------------------------------------------------------------------\n\
-      \    def forward_to_app(self, src_id, data):\n        \"\"\"Forward received\
-      \ data to application/GUI.\"\"\"\n        try:\n            message = data.decode('utf-8',\
-      \ errors='ignore')\n            output = f\"[From Node {src_id}]: {message}\"\
-      \n\n            # Simple string out\n            msg = pmt.intern(output)\n\
-      \            self.message_port_pub(self.port_msg_out, msg)\n\n            #\
-      \ (Optional) could also send a dict PDU here if needed\n            print(f\"\
-      [Node {self.node_id}] Message delivered: {output}\")\n\n        except Exception\
-      \ as e:\n            print(f\"[Node {self.node_id}] Error forwarding to app:\
-      \ {e}\")\n\n    def send_feedback(self, success):\n        \"\"\"Send boolean-like\
-      \ feedback (TRUE/FALSE) to feedback port.\"\"\"\n        try:\n            text\
-      \ = \"TRUE\" if success else \"FALSE\"\n            msg = pmt.intern(text)\n\
-      \            self.message_port_pub(self.port_feedback, msg)\n        except\
-      \ Exception as e:\n            print(f\"[Node {self.node_id}] Error sending\
-      \ feedback: {e}\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # GNU Radio boilerplate\n    # -------------------------------------------------------------------------\n\
-      \    def work(self, input_items, output_items):\n        \"\"\"Main work function\
-      \ (not used for message-passing block).\"\"\"\n        return 0\n\n    def stop(self):\n\
-      \        \"\"\"Clean shutdown\"\"\"\n        print(f\"\\n[Node {self.node_id}]\
-      \ Statistics:\")\n        print(f\"  Packets sent:      {self.stats['packets_sent']}\"\
-      )\n        print(f\"  Packets received:  {self.stats['packets_received']}\"\
-      )\n        print(f\"  ACKs sent:         {self.stats['acks_sent']}\")\n    \
-      \    print(f\"  ACKs received:     {self.stats['acks_received']}\")\n      \
-      \  print(f\"  Retransmissions:   {self.stats['retransmissions']}\")\n      \
-      \  print(f\"  CRC errors:        {self.stats['crc_errors']}\")\n        print(f\"\
-      \  Window timeouts:   {self.stats['window_timeouts']}\")\n\n        self.running\
-      \ = False\n        if self.tx_thread.is_alive():\n            self.tx_thread.join()\n\
-      \        if self.rx_thread.is_alive():\n            self.rx_thread.join()\n\
-      \        return True\n"
-    affinity: ''
-    alias: ''
-    aloha_backoff_max: '0.5'
-    aloha_backoff_min: '0.1'
-    aloha_prob: '0.3'
-    comment: ''
-    max_retries: '3'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    node_id: '1'
-    timeout: '1.0'
-    window_size: '4'
-  states:
-    _io_cache: ('Mesh Packet Comm GBN', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
-      ('timeout', '1.0'), ('max_retries', '3'), ('window_size', '4'), ('aloha_backoff_min',
-      '0.1'), ('aloha_backoff_max', '0.5')], [('msg_in', 'message', 1), ('pdu_in',
-      'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
-      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
-      packet transmission/reception with Go-Back-N ARQ + ALOHA\n    ', ['aloha_backoff_max',
-      'aloha_backoff_min', 'aloha_prob', 'max_retries', 'node_id', 'timeout', 'window_size'])
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [520, 168.0]
-    rotation: 0
-    state: enabled
-- name: epy_block_1_0_0
-  id: epy_block
-  parameters:
-    _source_code: "\"\"\"\nEmbedded Python Block for GNU Radio - Mesh Network Packet\
-      \ Communication\nImplements packetization, Go-Back-N ARQ, and p-persistent ALOHA\
-      \ medium access\nNo external CRC module required - implements CRC-16 CCITT manually\n\
-      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport threading\n\
-      import queue\nimport time\nimport random\nimport struct\nimport collections\n\
-      \n\nclass blk(gr.sync_block):\n    \"\"\"\n    Mesh Network Packet Communication\
-      \ Block\n    Handles packet transmission/reception with Go-Back-N ARQ + ALOHA\n\
-      \    \"\"\"\n\n    def __init__(\n        self,\n        node_id = 1,\n    \
-      \    aloha_prob = 0.3,\n        timeout = 1.0,\n        max_retries = 3,\n \
-      \       window_size = 4,\n        aloha_backoff_min = 0.1,\n        aloha_backoff_max\
-      \ = 0.5,\n    ):\n        \"\"\"\n        Arguments:\n            node_id: \
-      \          Unique identifier for this node (1-255)\n            aloha_prob:\
-      \        Transmission probability (p) for p-persistent ALOHA (0.0-1.0)\n   \
-      \         timeout:           ARQ timeout in seconds (timer for base of window)\n\
-      \            max_retries:       Maximum window retransmission attempts before\
-      \ giving up\n            window_size:       Go-Back-N window size (number of\
-      \ outstanding frames)\n            aloha_backoff_min: Minimum backoff before\
-      \ (re)transmission when ALOHA defers\n            aloha_backoff_max: Maximum\
-      \ backoff before (re)transmission when ALOHA defers\n        \"\"\"\n      \
-      \  gr.sync_block.__init__(\n            self,\n            name='Mesh Packet\
-      \ Comm GBN',\n            in_sig=None,\n            out_sig=None\n        )\n\
-      \n        # Node configuration\n        self.node_id = node_id\n        self.aloha_prob\
-      \ = float(aloha_prob)\n        self.timeout = float(timeout)\n        self.max_retries\
-      \ = int(max_retries)\n        self.window_size = int(window_size)\n        self.aloha_backoff_min\
-      \ = float(aloha_backoff_min)\n        self.aloha_backoff_max = float(aloha_backoff_max)\n\
-      \n        # Packet parameters\n        # Preamble: long, random-ish pattern\
-      \ for sync\n        b = random.getrandbits(8)\n        self.PREAMBLE = bytes([b]\
-      \ * 32)\n        self.SYNC_WORD = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD\
-      \ = 255\n        self.CRC_SIZE = 2\n\n        # Packet types\n        self.PKT_DATA\
-      \ = 0x01\n        self.PKT_ACK = 0x02\n\n        # CRC-16 CCITT lookup table\n\
-      \        self.crc_table = self.generate_crc_table()\n\n        # Queues\n  \
-      \      self.tx_queue = queue.Queue()   # app -> link layer (messages to send)\n\
-      \        self.rx_queue = queue.Queue()   # PHY -> link layer (raw received bytes)\n\
-      \        self.ack_queue = queue.Queue()  # RX thread -> TX thread (parsed ACKs)\n\
-      \n        # TX state (Go-Back-N)\n        self.seq_num_tx = 0  # next sequence\
-      \ number to use (mod 256)\n        # window: OrderedDict[seq] = {\n        #\
-      \   'packet': bytes,\n        #   'feedback_sent': bool\n        # }\n     \
-      \   self.tx_window = collections.OrderedDict()\n        self.window_timer_start\
-      \ = None\n        self.window_retries = 0\n\n        # RX state (per-source\
-      \ expected sequence for GBN)\n        # expected_seq_rx[src_id] = next expected\
-      \ seq from that source\n        self.expected_seq_rx = {}\n\n        # RX byte\
-      \ buffer for packet extraction\n        self.rx_buffer = bytes()\n\n       \
-      \ # Statistics\n        self.stats = {\n            'packets_sent': 0,\n   \
-      \         'packets_received': 0,\n            'acks_sent': 0,\n            'acks_received':\
-      \ 0,\n            'retransmissions': 0,\n            'crc_errors': 0,\n    \
-      \        'window_timeouts': 0,\n        }\n\n        # Threading\n        self.running\
-      \ = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
-      \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
-      \ self.tx_thread.daemon = True\n        self.rx_thread.daemon = True\n\n   \
-      \     # Message ports\n        self.port_msg_in = pmt.intern('msg_in')\n   \
-      \     self.port_pdu_in = pmt.intern('pdu_in')\n        self.port_msg_out = pmt.intern('msg_out')\n\
-      \        self.port_pdu_out = pmt.intern('pdu_out')\n        self.port_feedback\
-      \ = pmt.intern('feedback')\n\n        self.message_port_register_in(self.port_msg_in)\n\
-      \        self.message_port_register_in(self.port_pdu_in)\n        self.message_port_register_out(self.port_msg_out)\n\
-      \        self.message_port_register_out(self.port_pdu_out)\n        self.message_port_register_out(self.port_feedback)\n\
-      \n        # Set message handlers\n        self.set_msg_handler(self.port_msg_in,\
-      \ self.handle_msg_in)\n        self.set_msg_handler(self.port_pdu_in, self.handle_pdu_in)\n\
-      \n        # Start threads\n        self.tx_thread.start()\n        self.rx_thread.start()\n\
-      \n        print(f\"[Node {self.node_id}] Initialized (GBN+ALOHA) - Ready for\
-      \ communication\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # CRC helpers\n    # -------------------------------------------------------------------------\n\
-      \    def generate_crc_table(self):\n        \"\"\"Generate CRC-16 CCITT lookup\
-      \ table\"\"\"\n        poly = 0x1021\n        table = []\n        for i in range(256):\n\
-      \            crc = i << 8\n            for _ in range(8):\n                if\
-      \ crc & 0x8000:\n                    crc = ((crc << 1) ^ poly) & 0xFFFF\n  \
-      \              else:\n                    crc = (crc << 1) & 0xFFFF\n      \
-      \      table.append(crc)\n        return table\n\n    def calculate_crc16(self,\
-      \ data):\n        \"\"\"Calculate CRC-16 CCITT for given data\"\"\"\n      \
-      \  crc = 0xFFFF\n        for byte in data:\n            tbl_idx = ((crc >> 8)\
-      \ ^ byte) & 0xFF\n            crc = ((crc << 8) ^ self.crc_table[tbl_idx]) &\
-      \ 0xFFFF\n        return crc\n\n    # -------------------------------------------------------------------------\n\
-      \    # Upper-layer message handling\n    # -------------------------------------------------------------------------\n\
-      \    def handle_msg_in(self, msg):\n        \"\"\"Handle incoming messages from\
-      \ GUI/application\"\"\"\n        try:\n            # Handle string messages\
-      \ directly: \"dst_id:message\"\n            if pmt.is_symbol(msg):\n       \
-      \         text = pmt.symbol_to_string(msg)\n                if ':' in text:\n\
-      \                    dst_str, payload_str = text.split(':', 1)\n           \
-      \         try:\n                        dst_id = int(dst_str)\n            \
-      \            data = payload_str.encode()\n                        self.tx_queue.put({'dst':\
-      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                        print(f\"\
-      [Node {self.node_id}] Queued message to {dst_id}: {payload_str}\")\n       \
-      \             except ValueError:\n                        print(f\"[Node {self.node_id}]\
-      \ Invalid destination ID in text message\")\n\n            # Handle dictionary\
-      \ messages (Python dict via pmt.to_python)\n            elif pmt.is_dict(msg):\n\
-      \                meta = pmt.to_python(msg)\n                if 'dst' in meta\
-      \ and 'data' in meta:\n                    dst_id = meta['dst']\n          \
-      \          data = meta['data'].encode() if isinstance(meta['data'], str) else\
-      \ meta['data']\n                    self.tx_queue.put({'dst': dst_id, 'data':\
-      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
-      \ Queued dict message to {dst_id}\")\n\n            # Handle PDU-style pair:\
-      \ (meta, vec)\n            elif pmt.is_pair(msg):\n                meta = pmt.to_python(pmt.car(msg))\n\
-      \                data = pmt.to_python(pmt.cdr(msg))\n                if isinstance(meta,\
-      \ dict) and 'dst' in meta:\n                    dst_id = meta['dst']\n     \
-      \               if isinstance(data, str):\n                        data = data.encode()\n\
-      \                    elif isinstance(data, list):\n                        data\
-      \ = bytes(data)\n                    self.tx_queue.put({'dst': dst_id, 'data':\
-      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
-      \ Queued PDU message to {dst_id}\")\n\n        except Exception as e:\n    \
-      \        print(f\"[Node {self.node_id}] Error handling msg_in: {e}\")\n\n  \
-      \  def handle_pdu_in(self, pdu):\n        \"\"\"Handle incoming PDUs from demodulator/PHY\"\
-      \"\"\n        try:\n            if not pmt.is_pair(pdu):\n                return\n\
-      \n            meta = pmt.car(pdu)\n            data = pmt.cdr(pdu)\n\n     \
-      \       if pmt.is_u8vector(data):\n                rx_bytes = bytes(pmt.u8vector_elements(data))\n\
-      \                self.rx_queue.put(rx_bytes)\n            elif pmt.is_uniform_vector(data):\n\
-      \                elements = pmt.to_python(data)\n                rx_bytes =\
-      \ bytes([int(x) & 0xFF for x in elements])\n                self.rx_queue.put(rx_bytes)\n\
-      \n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
-      \ Error handling pdu_in: {e}\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # Packet creation & parsing\n    # -------------------------------------------------------------------------\n\
-      \    def create_packet(self, dst_id, seq_num, pkt_type, payload=b''):\n    \
-      \    \"\"\"Create a packet with headers and CRC\"\"\"\n        packet = bytearray()\n\
-      \n        # Preamble + sync\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
-      \n        # Header\n        packet.append(self.node_id)        # Source ID\n\
-      \        packet.append(dst_id & 0xFF)       # Destination ID\n        packet.append(seq_num\
-      \ & 0xFF)      # Sequence number\n        packet.append(pkt_type & 0xFF)   \
-      \  # Packet type\n        packet.append(len(payload) & 0xFF) # Payload length\n\
-      \n        # Payload (truncated to MAX_PAYLOAD)\n        if payload:\n      \
-      \      packet.extend(payload[:self.MAX_PAYLOAD])\n\n        # CRC over header\
-      \ + payload (not including preamble+sync)\n        crc_data = bytes(packet[len(self.PREAMBLE)\
-      \ + len(self.SYNC_WORD):])\n        crc_val = self.calculate_crc16(crc_data)\n\
-      \        packet.extend(struct.pack('>H', crc_val))\n\n        return bytes(packet)\n\
-      \n    def parse_packet(self, data):\n        \"\"\"Parse received packet and\
-      \ validate CRC. Returns dict or None.\"\"\"\n        try:\n            # Find\
-      \ sync word\n            sync_idx = data.find(self.SYNC_WORD)\n            if\
-      \ sync_idx == -1:\n                return None\n\n            start_idx = sync_idx\
-      \ + len(self.SYNC_WORD)\n\n            # Minimum: src(1) + dst(1) + seq(1) +\
-      \ type(1) + len(1) + CRC(2)\n            if len(data) < start_idx + 5 + self.CRC_SIZE:\n\
-      \                return None\n\n            src_id = data[start_idx]\n     \
-      \       dst_id = data[start_idx + 1]\n            seq_num = data[start_idx +\
-      \ 2]\n            pkt_type = data[start_idx + 3]\n            payload_len =\
-      \ data[start_idx + 4]\n\n            total_len = start_idx + 5 + payload_len\
-      \ + self.CRC_SIZE\n            if len(data) < total_len:\n                return\
-      \ None\n\n            payload = data[start_idx + 5:start_idx + 5 + payload_len]\n\
-      \            rx_crc = struct.unpack('>H', data[total_len - self.CRC_SIZE:total_len])[0]\n\
-      \n            crc_data = data[start_idx:total_len - self.CRC_SIZE]\n       \
-      \     calc_crc = self.calculate_crc16(crc_data)\n\n            if rx_crc !=\
-      \ calc_crc:\n                self.stats['crc_errors'] += 1\n               \
-      \ print(f\"[Node {self.node_id}] CRC mismatch (expected: {calc_crc:04X}, got:\
-      \ {rx_crc:04X})\")\n                return None\n\n            return {\n  \
-      \              'src': src_id,\n                'dst': dst_id,\n            \
-      \    'seq': seq_num,\n                'type': pkt_type,\n                'payload':\
-      \ payload,\n                'consumed': total_len\n            }\n\n       \
-      \ except Exception as e:\n            print(f\"[Node {self.node_id}] Error parsing\
-      \ packet: {e}\")\n            return None\n\n    # -------------------------------------------------------------------------\n\
-      \    # Medium access (ALOHA) + physical transmit\n    # -------------------------------------------------------------------------\n\
-      \    def send_with_aloha(self, packet):\n        \"\"\"\n        Apply simple\
-      \ p-persistent ALOHA:\n        - With probability p = aloha_prob, transmit immediately.\n\
-      \        - With probability (1-p), wait a random backoff then transmit.\n  \
-      \      \"\"\"\n        try:\n            if random.random() > self.aloha_prob:\n\
-      \                backoff = random.uniform(self.aloha_backoff_min, self.aloha_backoff_max)\n\
-      \                print(f\"[Node {self.node_id}] ALOHA backoff {backoff:.2f}s\"\
-      )\n                time.sleep(backoff)\n\n            self.transmit_packet(packet)\n\
-      \n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
-      \ Error in send_with_aloha: {e}\")\n\n    def transmit_packet(self, packet):\n\
-      \        \"\"\"Send packet to physical layer as a PDU\"\"\"\n        try:\n\
-      \            vec = pmt.init_u8vector(len(packet), list(packet))\n          \
-      \  pdu = pmt.cons(pmt.PMT_NIL, vec)\n            self.message_port_pub(self.port_pdu_out,\
-      \ pdu)\n\n        except Exception as e:\n            print(f\"[Node {self.node_id}]\
-      \ Error transmitting packet: {e}\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # Go-Back-N TX thread\n    # -------------------------------------------------------------------------\n\
-      \    def process_acks(self):\n        \"\"\"Process all pending ACKs and slide\
-      \ the GBN window.\"\"\"\n        try:\n            while True:\n           \
-      \     ack = self.ack_queue.get_nowait()\n                ack_seq = ack['seq']\n\
-      \                # In this simple implementation we don't distinguish by src.\n\
-      \                if not self.tx_window:\n                    continue\n\n  \
-      \              if ack_seq not in self.tx_window:\n                    # Could\
-      \ be a cumulative ACK for multiple packets.\n                    # We remove\
-      \ from the left until we pass ack_seq if it appears.\n                    keys\
-      \ = list(self.tx_window.keys())\n                    if ack_seq in keys:\n \
-      \                       idx = keys.index(ack_seq)\n                        to_remove\
-      \ = keys[:idx + 1]\n                    else:\n                        # If\
-      \ ack_seq not present, we assume it's older than current base (duplicate) and\
-      \ ignore.\n                        continue\n                else:\n       \
-      \             # ack_seq is present; treat as cumulative ACK up to this seq.\n\
-      \                    keys = list(self.tx_window.keys())\n                  \
-      \  idx = keys.index(ack_seq)\n                    to_remove = keys[:idx + 1]\n\
-      \n                # Remove all ACKed packets from window (cumulative ACK)\n\
-      \                for s in to_remove:\n                    entry = self.tx_window.pop(s,\
-      \ None)\n                    if entry is not None and not entry.get('feedback_sent',\
-      \ False):\n                        self.send_feedback(True)\n              \
-      \          entry['feedback_sent'] = True\n\n                self.stats['acks_received']\
-      \ += 1\n\n                # Reset timer/retries based on new window state\n\
-      \                if self.tx_window:\n                    self.window_timer_start\
-      \ = time.time()\n                    self.window_retries = 0\n             \
-      \   else:\n                    self.window_timer_start = None\n            \
-      \        self.window_retries = 0\n\n        except queue.Empty:\n          \
-      \  # No more ACKs for now\n            pass\n        except Exception as e:\n\
-      \            print(f\"[Node {self.node_id}] Error processing ACKs: {e}\")\n\n\
-      \    def fill_window_from_queue(self):\n        \"\"\"Pull new messages from\
-      \ tx_queue into the Go-Back-N window if there's space.\"\"\"\n        try:\n\
-      \            while len(self.tx_window) < self.window_size:\n               \
-      \ try:\n                    msg = self.tx_queue.get_nowait()\n             \
-      \   except queue.Empty:\n                    break\n\n                dst =\
-      \ msg['dst']\n                data = msg.get('data', b'')\n                pkt_type\
-      \ = msg.get('type', self.PKT_DATA)\n\n                # Assign sequence number\n\
-      \                seq = self.seq_num_tx\n                self.seq_num_tx = (self.seq_num_tx\
-      \ + 1) % 256\n\n                packet = self.create_packet(dst, seq, pkt_type,\
-      \ data)\n\n                # For broadcast we typically don't do ARQ; transmit\
-      \ once and don't put in window\n                if dst == 0xFF or pkt_type !=\
-      \ self.PKT_DATA:\n                    print(f\"[Node {self.node_id}] TX (no\
-      \ ARQ): seq={seq} dst={dst}\")\n                    self.send_with_aloha(packet)\n\
-      \                    self.stats['packets_sent'] += 1\n                    continue\n\
-      \n                # Reliable (GBN-managed) packet\n                self.tx_window[seq]\
-      \ = {\n                    'packet': packet,\n                    'feedback_sent':\
-      \ False,\n                }\n\n                print(f\"[Node {self.node_id}]\
-      \ TX: Sending DATA seq={seq} dst={dst} (window size={len(self.tx_window)})\"\
-      )\n                self.send_with_aloha(packet)\n                self.stats['packets_sent']\
-      \ += 1\n\n                # If this is the first packet in window, start timer\n\
-      \                if len(self.tx_window) == 1:\n                    self.window_timer_start\
-      \ = time.time()\n                    self.window_retries = 0\n\n        except\
-      \ Exception as e:\n            print(f\"[Node {self.node_id}] Error filling\
-      \ window: {e}\")\n\n    def check_window_timeout(self):\n        \"\"\"Check\
-      \ for Go-Back-N timeout on the base of the window and retransmit if needed.\"\
-      \"\"\n        if not self.tx_window:\n            return\n\n        if self.window_timer_start\
-      \ is None:\n            return\n\n        now = time.time()\n        if now\
-      \ - self.window_timer_start < self.timeout:\n            return\n\n        #\
-      \ Timeout occurred for base of window\n        self.stats['window_timeouts']\
-      \ += 1\n        self.window_retries += 1\n        base_seq = next(iter(self.tx_window.keys()))\n\
-      \        print(f\"[Node {self.node_id}] GBN timeout at seq={base_seq}, retry\
-      \ {self.window_retries}/{self.max_retries}\")\n\n        if self.window_retries\
-      \ > self.max_retries:\n            print(f\"[Node {self.node_id}] GBN: Max retries\
-      \ exceeded, dropping window\")\n            # Mark all outstanding packets as\
-      \ failed\n            for _seq, entry in list(self.tx_window.items()):\n   \
-      \             if not entry.get('feedback_sent', False):\n                  \
-      \  self.send_feedback(False)\n                    entry['feedback_sent'] = True\n\
-      \            self.tx_window.clear()\n            self.window_timer_start = None\n\
-      \            self.window_retries = 0\n            return\n\n        # Go-Back-N:\
-      \ retransmit all packets currently in the window\n        for seq, entry in\
-      \ self.tx_window.items():\n            print(f\"[Node {self.node_id}] GBN retransmit\
-      \ seq={seq}\")\n            self.send_with_aloha(entry['packet'])\n        \
-      \    self.stats['retransmissions'] += 1\n\n        # Restart timer for the base\n\
-      \        self.window_timer_start = time.time()\n\n    def tx_handler(self):\n\
-      \        \"\"\"Thread for handling Go-Back-N transmission + ALOHA medium access.\"\
-      \"\"\n        while self.running:\n            try:\n                # 1) Process\
-      \ all ACKs\n                self.process_acks()\n\n                # 2) Check\
-      \ for timeout on window base\n                self.check_window_timeout()\n\n\
-      \                # 3) Fill window with new packets from tx_queue if space\n\
-      \                self.fill_window_from_queue()\n\n                # Small sleep\
-      \ to avoid busy-wait\n                time.sleep(0.01)\n\n            except\
-      \ Exception as e:\n                print(f\"[Node {self.node_id}] TX handler\
-      \ error: {e}\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # RX thread (packetization + GBN receiver side)\n    # -------------------------------------------------------------------------\n\
-      \    def rx_handler(self):\n        \"\"\"Thread for handling packet reception\
-      \ and GBN RX logic.\"\"\"\n        while self.running:\n            try:\n \
-      \               try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
-      \                except queue.Empty:\n                    continue\n\n     \
-      \           # Append to RX buffer\n                self.rx_buffer += rx_data\n\
-      \n                # Extract packets from buffer\n                while len(self.rx_buffer)\
-      \ > 0:\n                    pkt = self.parse_packet(self.rx_buffer)\n\n    \
-      \                if pkt is None:\n                        # No valid packet\
-      \ at current alignment; drop one byte and re-try\n                        if\
-      \ len(self.rx_buffer) > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n\
-      \                        else:\n                            self.rx_buffer =\
-      \ bytes()\n                        continue\n\n                    # Remove\
-      \ processed bytes\n                    self.rx_buffer = self.rx_buffer[pkt['consumed']:]\n\
-      \n                    # Addressing: packet must be for us or broadcast\n   \
-      \                 if pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n  \
-      \                      print(f\"[Node {self.node_id}] RX: Packet not for us\
-      \ (dst={pkt['dst']})\")\n                        continue\n\n              \
-      \      if pkt['type'] == self.PKT_DATA:\n                        self.handle_data_packet(pkt)\n\
-      \                    elif pkt['type'] == self.PKT_ACK:\n                   \
-      \     self.handle_ack_packet(pkt)\n\n            except Exception as e:\n  \
-      \              print(f\"[Node {self.node_id}] RX handler error: {e}\")\n\n \
-      \   def handle_data_packet(self, pkt):\n        \"\"\"Handle incoming DATA packet\
-      \ with GBN receiver logic.\"\"\"\n        src = pkt['src']\n        seq = pkt['seq']\n\
-      \        payload = pkt['payload']\n\n        self.stats['packets_received']\
-      \ += 1\n        expected = self.expected_seq_rx.get(src, 0)\n\n        if seq\
-      \ == expected:\n            # In-order packet: accept and advance\n        \
-      \    print(f\"[Node {self.node_id}] RX: In-order DATA from {src}, seq={seq}\
-      \ (expected={expected})\")\n            self.expected_seq_rx[src] = (expected\
-      \ + 1) % 256\n            ack_seq = seq\n            is_new = True\n       \
-      \ else:\n            # Out-of-order or duplicate\n            print(f\"[Node\
-      \ {self.node_id}] RX: Out-of-order/dup DATA from {src}, seq={seq}, expected={expected}\"\
-      )\n            # Last correctly received in-order seq is expected-1 (mod 256)\n\
-      \            if expected == 0:\n                ack_seq = 255\n            else:\n\
-      \                ack_seq = (expected - 1) & 0xFF\n            is_new = False\n\
-      \n        # Send ACK for last in-order seq (GBN cumulative ACK)\n        ack_packet\
-      \ = self.create_packet(src, ack_seq, self.PKT_ACK)\n        print(f\"[Node {self.node_id}]\
-      \ RX: Sending ACK seq={ack_seq} to {src}\")\n        self.send_with_aloha(ack_packet)\n\
-      \        self.stats['acks_sent'] += 1\n\n        # Deliver only new, in-order\
-      \ packets to the application\n        if is_new:\n            self.forward_to_app(src,\
-      \ payload)\n\n    def handle_ack_packet(self, pkt):\n        \"\"\"Handle incoming\
-      \ ACK packet (push to ack_queue for TX thread).\"\"\"\n        src = pkt['src']\n\
-      \        seq = pkt['seq']\n        print(f\"[Node {self.node_id}] RX: ACK from\
-      \ node {src}, seq={seq}\")\n        # Push seq to ack queue; TX thread handles\
-      \ window sliding\n        self.ack_queue.put({'src': src, 'seq': seq})\n\n \
-      \   # -------------------------------------------------------------------------\n\
-      \    # Upper-layer delivery & feedback\n    # -------------------------------------------------------------------------\n\
-      \    def forward_to_app(self, src_id, data):\n        \"\"\"Forward received\
-      \ data to application/GUI.\"\"\"\n        try:\n            message = data.decode('utf-8',\
-      \ errors='ignore')\n            output = f\"[From Node {src_id}]: {message}\"\
-      \n\n            # Simple string out\n            msg = pmt.intern(output)\n\
-      \            self.message_port_pub(self.port_msg_out, msg)\n\n            #\
-      \ (Optional) could also send a dict PDU here if needed\n            print(f\"\
-      [Node {self.node_id}] Message delivered: {output}\")\n\n        except Exception\
-      \ as e:\n            print(f\"[Node {self.node_id}] Error forwarding to app:\
-      \ {e}\")\n\n    def send_feedback(self, success):\n        \"\"\"Send boolean-like\
-      \ feedback (TRUE/FALSE) to feedback port.\"\"\"\n        try:\n            text\
-      \ = \"TRUE\" if success else \"FALSE\"\n            msg = pmt.intern(text)\n\
-      \            self.message_port_pub(self.port_feedback, msg)\n        except\
-      \ Exception as e:\n            print(f\"[Node {self.node_id}] Error sending\
-      \ feedback: {e}\")\n\n    # -------------------------------------------------------------------------\n\
-      \    # GNU Radio boilerplate\n    # -------------------------------------------------------------------------\n\
-      \    def work(self, input_items, output_items):\n        \"\"\"Main work function\
-      \ (not used for message-passing block).\"\"\"\n        return 0\n\n    def stop(self):\n\
-      \        \"\"\"Clean shutdown\"\"\"\n        print(f\"\\n[Node {self.node_id}]\
-      \ Statistics:\")\n        print(f\"  Packets sent:      {self.stats['packets_sent']}\"\
-      )\n        print(f\"  Packets received:  {self.stats['packets_received']}\"\
-      )\n        print(f\"  ACKs sent:         {self.stats['acks_sent']}\")\n    \
-      \    print(f\"  ACKs received:     {self.stats['acks_received']}\")\n      \
-      \  print(f\"  Retransmissions:   {self.stats['retransmissions']}\")\n      \
-      \  print(f\"  CRC errors:        {self.stats['crc_errors']}\")\n        print(f\"\
-      \  Window timeouts:   {self.stats['window_timeouts']}\")\n\n        self.running\
-      \ = False\n        if self.tx_thread.is_alive():\n            self.tx_thread.join()\n\
-      \        if self.rx_thread.is_alive():\n            self.rx_thread.join()\n\
-      \        return True\n"
-    affinity: ''
-    alias: ''
-    aloha_backoff_max: '0.5'
-    aloha_backoff_min: '0.1'
-    aloha_prob: '0.3'
-    comment: ''
-    max_retries: '3'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    node_id: '2'
-    timeout: '1.0'
-    window_size: '4'
-  states:
-    _io_cache: ('Mesh Packet Comm GBN', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
-      ('timeout', '1.0'), ('max_retries', '3'), ('window_size', '4'), ('aloha_backoff_min',
-      '0.1'), ('aloha_backoff_max', '0.5')], [('msg_in', 'message', 1), ('pdu_in',
-      'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
-      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
-      packet transmission/reception with Go-Back-N ARQ + ALOHA\n    ', ['aloha_backoff_max',
-      'aloha_backoff_min', 'aloha_prob', 'max_retries', 'node_id', 'timeout', 'window_size'])
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1664, 1056.0]
-    rotation: 0
     state: enabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
@@ -3585,24 +3435,24 @@ connections:
 - [epy_block_0_0_0, feedback, epy_block_0_1_0, feedback]
 - [epy_block_0_0_0, msg_out, epy_block_0_1_0, in_msg]
 - [epy_block_0_0_0, pdu_out, digital_protocol_formatter_async_0_0, in]
+- [epy_block_0_0_1, feedback, epy_block_0_1_0, feedback]
+- [epy_block_0_0_1, msg_out, epy_block_0_1_0, in_msg]
+- [epy_block_0_0_1, pdu_out, digital_protocol_formatter_async_0_0, in]
+- [epy_block_0_0_2, feedback, epy_block_0_1, feedback]
+- [epy_block_0_0_2, msg_out, epy_block_0_1, in_msg]
+- [epy_block_0_0_2, pdu_out, digital_protocol_formatter_async_0, in]
 - [epy_block_0_1, out, epy_block_0_0, msg_in]
-- [epy_block_0_1, out, epy_block_1_0, msg_in]
+- [epy_block_0_1, out, epy_block_0_0_2, msg_in]
 - [epy_block_0_1_0, out, epy_block_0_0_0, msg_in]
-- [epy_block_0_1_0, out, epy_block_1_0_0, msg_in]
-- [epy_block_1_0, feedback, epy_block_0_1, feedback]
-- [epy_block_1_0, msg_out, epy_block_0_1, in_msg]
-- [epy_block_1_0, pdu_out, digital_protocol_formatter_async_0, in]
-- [epy_block_1_0_0, feedback, epy_block_0_1_0, feedback]
-- [epy_block_1_0_0, msg_out, epy_block_0_1_0, in_msg]
-- [epy_block_1_0_0, pdu_out, digital_protocol_formatter_async_0_0, in]
+- [epy_block_0_1_0, out, epy_block_0_0_1, msg_in]
 - [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0_0, '1']
 - [pdu_pdu_to_tagged_stream_0_1, '0', blocks_tagged_stream_mux_0_0, '0']
 - [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_0_0, pdu_in]
-- [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_1_0, pdu_in]
+- [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_0_0_2, pdu_in]
 - [pdu_tagged_stream_to_pdu_0_0_0, pdus, epy_block_0_0_0, pdu_in]
-- [pdu_tagged_stream_to_pdu_0_0_0, pdus, epy_block_1_0_0, pdu_in]
+- [pdu_tagged_stream_to_pdu_0_0_0, pdus, epy_block_0_0_1, pdu_in]
 - [soapy_bladerf_source_0_0, '0', digital_symbol_sync_xx_0_0, '0']
 - [soapy_bladerf_source_0_0, '0', qtgui_const_sink_x_0, '0']
 - [soapy_bladerf_source_0_0, '0', qtgui_freq_sink_x_1_0, '0']

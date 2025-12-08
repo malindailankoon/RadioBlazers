@@ -29,7 +29,7 @@ class blk(gr.sync_block):
         """
         gr.sync_block.__init__(
             self,
-            name='Mesh Packet Comm',
+            name='Mesh Packet Comm with sync',
             in_sig=None,
             out_sig=None
         )
@@ -41,9 +41,9 @@ class blk(gr.sync_block):
         self.max_retries = max_retries
         
         # Packet parameters
-        # self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])
-        b = random.getrandbits(8)
-        self.PREAMBLE = bytes([b] * 32)
+        self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])
+        # b = random.getrandbits(8)
+        # self.PREAMBLE = bytes([b] * 32)
         self.SYNC_WORD = bytes([0x2D, 0xD4])
         self.MAX_PAYLOAD = 255
         self.HEADER_SIZE = 8  # preamble(4) + sync(2) + src(1) + dst(1)
@@ -261,6 +261,10 @@ class blk(gr.sync_block):
             print(f"[Node {self.node_id}] Error parsing packet: {e}")
             return None
     
+    def send_sync_burst(self):
+        burst = bytes(random.getrandbits(8) for _ in range(1000))
+        self.transmit_packet(burst)
+
     def tx_handler(self):
         """Thread for handling packet transmission with ARQ"""
         while self.running:
@@ -295,6 +299,8 @@ class blk(gr.sync_block):
                 # Stop-and-Wait ARQ
                 retries = 0
                 ack_received = False
+
+                self.send_sync_burst()
                 
                 while retries < self.max_retries and not ack_received:
                     # Transmit packet
