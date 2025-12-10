@@ -7,7 +7,7 @@
 # GNU Radio Python Flow Graph
 # Title: Not titled yet
 # Author: malinda
-# GNU Radio version: 3.10.9.2
+# GNU Radio version: 3.10.12.0
 
 from PyQt5 import Qt
 from gnuradio import qtgui
@@ -27,6 +27,7 @@ from gnuradio import eng_notation
 from gnuradio import gr, pdu
 from gnuradio import soapy
 import sip
+import threading
 import user_1_epy_block_0_0 as epy_block_0_0  # embedded python block
 import user_1_epy_block_0_1 as epy_block_0_1  # embedded python block
 
@@ -55,7 +56,7 @@ class user_1(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "user_1")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "user_1")
 
         try:
             geometry = self.settings.value("geometry")
@@ -63,6 +64,7 @@ class user_1(gr.top_block, Qt.QWidget):
                 self.restoreGeometry(geometry)
         except BaseException as exc:
             print(f"Qt GUI: Could not restore geometry: {str(exc)}", file=sys.stderr)
+        self.flowgraph_started = threading.Event()
 
         ##################################################
         # Parameters
@@ -77,6 +79,8 @@ class user_1(gr.top_block, Qt.QWidget):
         4, 2, 2, 1, 1).base()
         self.nfilts = nfilts = 32
         self.variable_adaptive_algorithm_0 = variable_adaptive_algorithm_0 = digital.adaptive_algorithm_cma( qpsk, .0001, 4).base()
+        self.user2_freq = user2_freq = 2.4e9
+        self.user1_freq = user1_freq = 2.5e9
         self.spr = spr = 750000
         self.samp_rate_blade = samp_rate_blade = 600e3
         self.samp_rate = samp_rate = 600e3
@@ -126,7 +130,7 @@ class user_1(gr.top_block, Qt.QWidget):
                                   stream_args, tune_args, settings)
         self.soapy_bladerf_source_0_0.set_sample_rate(0, samp_rate*2)
         self.soapy_bladerf_source_0_0.set_bandwidth(0, 10000)
-        self.soapy_bladerf_source_0_0.set_frequency(0, 5.8e9)
+        self.soapy_bladerf_source_0_0.set_frequency(0, user1_freq)
         self.soapy_bladerf_source_0_0.set_frequency_correction(0, 0)
         self.soapy_bladerf_source_0_0.set_gain(0, min(max(30.0, -1.0), 60.0))
         self.soapy_bladerf_sink_0 = None
@@ -139,7 +143,7 @@ class user_1(gr.top_block, Qt.QWidget):
                                   stream_args, tune_args, settings)
         self.soapy_bladerf_sink_0.set_sample_rate(0, samp_rate_blade*2)
         self.soapy_bladerf_sink_0.set_bandwidth(0, 10000)
-        self.soapy_bladerf_sink_0.set_frequency(0, 1.2e9)
+        self.soapy_bladerf_sink_0.set_frequency(0, user2_freq)
         self.soapy_bladerf_sink_0.set_frequency_correction(0, 0)
         self.soapy_bladerf_sink_0.set_gain(0, min(max(50, 17.0), 73.0))
         self.qtgui_freq_sink_x_1_0 = qtgui.freq_sink_c(
@@ -236,7 +240,7 @@ class user_1(gr.top_block, Qt.QWidget):
         for c in range(1, 2):
             self.controls_grid_layout_1.setColumnStretch(c, 1)
         self.epy_block_0_1 = epy_block_0_1.messenger_gui(bg_image=r"C:\Users\Oshan\Desktop\message.jpg")
-        self.epy_block_0_0 = epy_block_0_0.blk(node_id=1, aloha_prob=0.6, timeout=0.2, max_retries=100)
+        self.epy_block_0_0 = epy_block_0_0.blk(node_id=2, aloha_prob=0.6, timeout=0.2, max_retries=100)
         self.digital_symbol_sync_xx_0_0 = digital.symbol_sync_cc(
             digital.TED_SIGNAL_TIMES_SLOPE_ML,
             sps,
@@ -302,7 +306,7 @@ class user_1(gr.top_block, Qt.QWidget):
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "user_1")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "user_1")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -343,6 +347,20 @@ class user_1(gr.top_block, Qt.QWidget):
     def set_variable_adaptive_algorithm_0(self, variable_adaptive_algorithm_0):
         self.variable_adaptive_algorithm_0 = variable_adaptive_algorithm_0
 
+    def get_user2_freq(self):
+        return self.user2_freq
+
+    def set_user2_freq(self, user2_freq):
+        self.user2_freq = user2_freq
+        self.soapy_bladerf_sink_0.set_frequency(0, self.user2_freq)
+
+    def get_user1_freq(self):
+        return self.user1_freq
+
+    def set_user1_freq(self, user1_freq):
+        self.user1_freq = user1_freq
+        self.soapy_bladerf_source_0_0.set_frequency(0, self.user1_freq)
+
     def get_spr(self):
         return self.spr
 
@@ -361,8 +379,8 @@ class user_1(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.soapy_bladerf_source_0_0.set_sample_rate(0, self.samp_rate*2)
         self.qtgui_freq_sink_x_1_0.set_frequency_range(0, self.samp_rate)
+        self.soapy_bladerf_source_0_0.set_sample_rate(0, self.samp_rate*2)
 
     def get_rrc_taps(self):
         return self.rrc_taps
@@ -433,6 +451,7 @@ def main(top_block_cls=user_1, options=None):
     tb = top_block_cls(MTU=options.MTU)
 
     tb.start()
+    tb.flowgraph_started.set()
 
     tb.show()
 

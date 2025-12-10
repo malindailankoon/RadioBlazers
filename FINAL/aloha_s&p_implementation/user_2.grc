@@ -238,7 +238,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [160, 8.0]
+    coordinate: [168, 8.0]
     rotation: 0
     state: enabled
 - name: user2_freq
@@ -250,7 +250,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 8.0]
+    coordinate: [256, 8.0]
     rotation: 0
     state: enabled
 - name: variable_adaptive_algorithm_0
@@ -866,7 +866,7 @@ blocks:
     max_retries: '100'
     maxoutbuf: '0'
     minoutbuf: '0'
-    node_id: '1'
+    node_id: '2'
     timeout: '0.2'
   states:
     _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
@@ -1312,7 +1312,7 @@ blocks:
     affinity: ''
     alias: ''
     bandwidth: '10000'
-    center_freq: user1_freq
+    center_freq: user2_freq
     comment: ''
     dev_args: ''
     freq_correction: '0'
@@ -1323,7 +1323,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2192, 284.0]
+    coordinate: [2216, 288.0]
     rotation: 0
     state: enabled
 - name: soapy_bladerf_source_0_0
@@ -1332,7 +1332,7 @@ blocks:
     affinity: ''
     alias: ''
     bandwidth: '10000'
-    center_freq: user2_freq
+    center_freq: user1_freq
     comment: ''
     dev_args: ''
     freq_correction: '0'
