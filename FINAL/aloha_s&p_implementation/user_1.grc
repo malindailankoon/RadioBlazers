@@ -1,0 +1,1726 @@
+options:
+  parameters:
+    author: malinda
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: user_1
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Not titled yet
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: arity
+  id: variable
+  parameters:
+    comment: ''
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2832, 204.0]
+    rotation: 0
+    state: enabled
+- name: eq_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'controls@0: 0,1,1,1'
+    label: 'Equalizer: rate'
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.0'
+    step: '0.001'
+    stop: '0.1'
+    value: '0.01'
+    widget: slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3088, 336.0]
+    rotation: 0
+    state: enabled
+- name: excess_bw
+  id: variable
+  parameters:
+    comment: Set Bandwidth
+    value: '.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2688, 124.0]
+    rotation: 0
+    state: enabled
+- name: hdr_format
+  id: variable_header_format_default
+  parameters:
+    access_code: '11100001010110101110100010010011'
+    bps: '1'
+    comment: ''
+    threshold: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2880, 340.0]
+    rotation: 0
+    state: enabled
+- name: k
+  id: variable
+  parameters:
+    comment: ''
+    value: '7'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2608, 124.0]
+    rotation: 0
+    state: enabled
+- name: nfilts
+  id: variable
+  parameters:
+    comment: ''
+    value: '32'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2752, 204.0]
+    rotation: 0
+    state: enabled
+- name: phase_bw
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: controls@0:0,0,1,1
+    label: 'Phase: Bandwidth'
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.0'
+    step: '0.01'
+    stop: '1.0'
+    value: 6.28/100.0
+    widget: slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3296, 160.0]
+    rotation: 0
+    state: enabled
+- name: polys
+  id: variable
+  parameters:
+    comment: ''
+    value: '[109, 79]'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2792, 284.0]
+    rotation: 0
+    state: enabled
+- name: qpsk
+  id: variable_constellation_rect
+  parameters:
+    comment: ''
+    const_points: '[0.707+0.707j, -0.707+0.707j, -0.707-0.707j, 0.707-0.707j]'
+    imag_sect: '2'
+    precision: '8'
+    real_sect: '2'
+    rot_sym: '4'
+    soft_dec_lut: None
+    sym_map: '[0, 1, 2, 3]'
+    w_imag_sect: '1'
+    w_real_sect: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3088, 140.0]
+    rotation: 0
+    state: enabled
+- name: rrc_taps
+  id: variable
+  parameters:
+    comment: ''
+    value: firdes.root_raised_cosine(nfilts, nfilts, 1.0/float(sps), 0.35, 11*sps*nfilts)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2896, 124.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 600e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2792, 124.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate_blade
+  id: variable
+  parameters:
+    comment: ''
+    value: 600e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2608, 204.0]
+    rotation: 0
+    state: enabled
+- name: spr
+  id: variable
+  parameters:
+    comment: ''
+    value: '750000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2896, 284.0]
+    rotation: 0
+    state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: Samples Per Symbol
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2912, 204.0]
+    rotation: 0
+    state: enabled
+- name: user1_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: 2.5e9
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [160, 8.0]
+    rotation: 0
+    state: enabled
+- name: user2_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: 2.4e9
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [248, 8.0]
+    rotation: 0
+    state: enabled
+- name: variable_adaptive_algorithm_0
+  id: variable_adaptive_algorithm
+  parameters:
+    comment: ''
+    cons: qpsk
+    delta: '10.0'
+    ffactor: '0.99'
+    modulus: '4'
+    step_size: '.0001'
+    type: cma
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2688, 340.0]
+    rotation: 0
+    state: enabled
+- name: MTU
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: MTU
+    short_id: ''
+    type: intx
+    value: '1500'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2992, 180.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '0.8'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1968, 280.0]
+    rotation: 0
+    state: disabled
+- name: blocks_repack_bits_bb_1_0
+  id: blocks_repack_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    align_output: 'False'
+    comment: ''
+    endianness: gr.GR_MSB_FIRST
+    k: '1'
+    l: '8'
+    len_tag_key: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [680, 808.0]
+    rotation: 180
+    state: enabled
+- name: blocks_tagged_stream_mux_0
+  id: blocks_tagged_stream_mux
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    lengthtagname: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ninputs: '2'
+    tag_preserve_head_pos: '0'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1448, 372.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle2_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: '48000'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1984, 368.0]
+    rotation: 0
+    state: enabled
+- name: blocks_unpack_k_bits_bb_0_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: unpack 2 bits per symbol into bits
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1264, 604.0]
+    rotation: 180
+    state: enabled
+- name: channels_channel_model_0
+  id: channels_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    block_tags: 'False'
+    comment: ''
+    epsilon: '1.0'
+    freq_offset: '0.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_voltage: '0.1'
+    seed: '0'
+    taps: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2192, 464.0]
+    rotation: 0
+    state: enabled
+- name: controls
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: 0,0,1,1
+    label0: Reciever Sync Settings
+    label1: Receiver
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    label2: Tab 2
+    label3: Tab 3
+    label4: Tab 4
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    num_tabs: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2536, 344.0]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_decoder_cb_0_0
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Decode a constellation's points from \na complex space to index of constellation\
+      \ \nsymbol based on the map of the  object."
+    constellation: qpsk
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1880, 676.0]
+    rotation: 180
+    state: enabled
+- name: digital_constellation_modulator_0
+  id: digital_constellation_modulator
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Modulation block
+    constellation: qpsk
+    differential: 'True'
+    excess_bw: excess_bw
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: sps
+    truncate: 'False'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1728, 504.0]
+    rotation: 0
+    state: enabled
+- name: digital_correlate_access_code_xx_ts_0_0
+  id: digital_correlate_access_code_xx_ts
+  parameters:
+    access_code: '11100001010110101110100010010011'
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tagname: '"packet_len"'
+    threshold: '2'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 668.0]
+    rotation: 180
+    state: enabled
+- name: digital_costas_loop_cc_0_0
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Phase and Fine Frequency Correction
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: arity
+    use_snr: 'False'
+    w: phase_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1872, 852.0]
+    rotation: 0
+    state: enabled
+- name: digital_diff_decoder_bb_0_0
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: "translate the differential coded symbols\n back to their original symbols"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1600, 688.0]
+    rotation: 180
+    state: enabled
+- name: digital_linear_equalizer_0_0_0
+  id: digital_linear_equalizer
+  parameters:
+    adapt_after_training: 'True'
+    affinity: ''
+    alg: variable_adaptive_algorithm_0
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_taps: '15'
+    sps: '4'
+    training_sequence: '[ ]'
+    training_start_tag: corr_est
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1552, 1116.0]
+    rotation: 0
+    state: enabled
+- name: digital_map_bb_0_0
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "convert the symbols \nfrom the differential decoder to the \noriginal\
+      \ symbols we transmitted."
+    map: '[0,1,2,3]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1384, 732.0]
+    rotation: 180
+    state: enabled
+- name: digital_protocol_formatter_async_0
+  id: digital_protocol_formatter_async
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    format: hdr_format
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 372.0]
+    rotation: 0
+    state: enabled
+- name: digital_symbol_sync_xx_0_0
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: digital.constellation_bpsk().base()
+    damping: '1.0'
+    loop_bw: phase_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '32'
+    osps: '4'
+    pfb_mf_taps: rrc_taps
+    resamp_type: digital.IR_PFB_MF
+    sps: sps
+    ted_gain: '1.0'
+    ted_type: digital.TED_SIGNAL_TIMES_SLOPE_ML
+    type: cc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 844.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ threading\nimport queue\nimport time\nimport random\nimport struct\n\nclass\
+      \ blk(gr.sync_block):\n    \"\"\"\n    Embedded Python Block for User Node \n\
+      \    Performs message transmission and reception via two threads using PDUs\n\
+      \    Uses Stop and Wait ARQ to ensure packet transmission reliably\n    Uses\
+      \ ALOHA backoff to avoid collisions due to simultaneous transmissions\n\n  \
+      \  \"\"\"\n    \n    def __init__(self, node_id=1, aloha_prob=0.3, timeout=1.0,\
+      \ max_retries=3):\n        \"\"\"\n        Arguments:\n            node_id:\
+      \ Unique identifier for this node (1-255)\n            aloha_prob: Transmission\
+      \ probability for ALOHA (0.0-1.0)\n            timeout: ARQ timeout in seconds\n\
+      \            max_retries: Maximum retransmission attempts\n        \"\"\"\n\
+      \        gr.sync_block.__init__(\n            self,\n            name='Mesh\
+      \ Packet Comm with sync',\n            in_sig=None,\n            out_sig=None\n\
+      \        )\n        \n        # Node configuration\n        self.node_id = node_id\n\
+      \        self.aloha_prob = aloha_prob\n        self.timeout = timeout\n    \
+      \    self.max_retries = max_retries\n        \n        # Packet parameters\n\
+      \        self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])\n        self.SYNC_WORD\
+      \ = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD = 255\n        self.HEADER_SIZE\
+      \ = 8  # preamble(4) + sync(2) + src(1) + dst(1)\n        self.CRC_SIZE = 2\n\
+      \        \n        # Packet types\n        self.PKT_DATA = 0x01\n        self.PKT_ACK\
+      \ = 0x02\n        \n        # CRC-16 CCITT lookup table\n        self.crc_table\
+      \ = self.generate_crc_table()\n        \n        # State management\n      \
+      \  self.tx_queue = queue.Queue()\n        self.rx_queue = queue.Queue()\n  \
+      \      self.ack_queue = queue.Queue()\n        self.pending_ack = {}\n     \
+      \   self.seq_num_tx = 0\n        self.seq_num_rx = {}\n        self.rx_buffer\
+      \ = bytes()\n        \n        # Statistics\n        self.stats = {\n      \
+      \      'packets_sent': 0,\n            'packets_received': 0,\n            'acks_sent':\
+      \ 0,\n            'acks_received': 0,\n            'retransmissions': 0,\n \
+      \           'crc_errors': 0\n        }\n        \n        # Threading\n    \
+      \    self.running = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
+      \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
+      \ self.lock = threading.Lock()\n        \n        # Message ports\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
+      \        self.message_port_register_in(pmt.intern('pdu_in'))\n        self.message_port_register_in(pmt.intern('sync_cmd'))\n\
+      \        self.message_port_register_out(pmt.intern('msg_out'))\n        self.message_port_register_out(pmt.intern('pdu_out'))\n\
+      \        self.message_port_register_out(pmt.intern('feedback'))\n        \n\
+      \        \n        # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
+      \ self.handle_msg_in)\n        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n\
+      \        self.set_msg_handler(pmt.intern('sync_cmd'), self.handle_sync_cmd)\n\
+      \        \n        # Start threads\n        self.tx_thread.start()\n       \
+      \ self.rx_thread.start()\n        \n        print(f\"[Node {self.node_id}] Initialized\
+      \ - Ready for communication\")\n    \n    def generate_crc_table(self):\n  \
+      \      \"\"\"Generate CRC-16 CCITT lookup table\"\"\"\n        poly = 0x1021\n\
+      \        table = []\n        for i in range(256):\n            crc = i << 8\n\
+      \            for j in range(8):\n                if crc & 0x8000:\n        \
+      \            crc = ((crc << 1) ^ poly) & 0xFFFF\n                else:\n   \
+      \                 crc = (crc << 1) & 0xFFFF\n            table.append(crc)\n\
+      \        return table\n    \n    def calculate_crc16(self, data):\n        \"\
+      \"\"Calculate CRC-16 CCITT for given data\"\"\"\n        crc = 0xFFFF\n    \
+      \    for byte in data:\n            tbl_idx = ((crc >> 8) ^ byte) & 0xFF\n \
+      \           crc = ((crc << 8) ^ self.crc_table[tbl_idx]) & 0xFFFF\n        return\
+      \ crc\n    \n    def handle_msg_in(self, msg):\n        \"\"\"Handle incoming\
+      \ messages from GUI\"\"\"\n        try:\n            #redundant\n          \
+      \  # Handle string messages directly\n            if pmt.is_symbol(msg):\n \
+      \               # Simple text message format: \"dst_id:message\"\n         \
+      \       text = pmt.symbol_to_string(msg)\n                if ':' in text:\n\
+      \                    parts = text.split(':', 1)\n                    try:\n\
+      \                        dst_id = int(parts[0])\n                        data\
+      \ = parts[1].encode()\n                        self.tx_queue.put({'dst': dst_id,\
+      \ 'data': data, 'type': self.PKT_DATA})\n                        print(f\"[Node\
+      \ {self.node_id}] Queued message to {dst_id}: {parts[1]}\")\n              \
+      \      except ValueError:\n                        print(f\"[Node {self.node_id}]\
+      \ Invalid destination ID\")\n            \n            #redundant\n        \
+      \    # Handle dictionary messages\n            elif pmt.is_dict(msg):\n    \
+      \            meta = pmt.to_python(msg)\n                if 'dst' in meta and\
+      \ 'data' in meta:\n                    dst_id = meta['dst']\n              \
+      \      data = meta['data'].encode() if isinstance(meta['data'], str) else meta['data']\n\
+      \                    self.tx_queue.put({'dst': dst_id, 'data': data, 'type':\
+      \ self.PKT_DATA})\n                    print(f\"[Node {self.node_id}] Queued\
+      \ message to {dst_id}\")\n            \n            # Handle pair messages (PDU\
+      \ format)\n            elif pmt.is_pair(msg):\n                meta = pmt.to_python(pmt.car(msg))\n\
+      \                data = pmt.to_python(pmt.cdr(msg))\n                if isinstance(meta,\
+      \ dict) and 'dst' in meta:\n                    dst_id = meta['dst']\n     \
+      \               if isinstance(data, str):\n                        data = data.encode()\n\
+      \                    elif isinstance(data, list):\n                        data\
+      \ = bytes(data)\n                    self.tx_queue.put({'dst': dst_id, 'data':\
+      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
+      \ Queued message to {dst_id}\")\n                    \n        except Exception\
+      \ as e:\n            print(f\"[Node {self.node_id}] Error handling msg_in: {e}\"\
+      )\n    \n    def handle_pdu_in(self, pdu):\n        \"\"\"Handle incoming PDUs\
+      \ from demodulator\"\"\"\n        try:\n            # Extract PDU data\n   \
+      \         if pmt.is_pair(pdu):\n                meta = pmt.car(pdu)\n      \
+      \          data = pmt.cdr(pdu)\n                \n                # Convert\
+      \ to bytes\n                if pmt.is_u8vector(data):\n                    print(f\"\
+      User Port {self.node_id} activated\")\t\n                    rx_bytes = bytes(pmt.u8vector_elements(data))\t\
+      \n                    self.rx_queue.put(rx_bytes)\n                elif pmt.is_uniform_vector(data):\n\
+      \                    # Handle float32 or other vector types\n              \
+      \      elements = pmt.to_python(data)\n                    # Convert to bytes\
+      \ (assuming 8-bit symbols)\n                    rx_bytes = bytes([int(x) & 0xFF\
+      \ for x in elements])\n                    self.rx_queue.put(rx_bytes)\n   \
+      \                 \n        except Exception as e:\n            print(f\"[Node\
+      \ {self.node_id}] Error handling pdu_in: {e}\")\n    \n    def create_packet(self,\
+      \ dst_id, seq_num, pkt_type, payload=b''):\n        \"\"\"Create a packet with\
+      \ headers and CRC\"\"\"\n        packet = bytearray()\n        \n        # Add\
+      \ preamble and sync word\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
+      \        \n        # Add header\n        packet.append(self.node_id)   # Source\
+      \ ID\n        packet.append(dst_id)         # Destination ID\n        packet.append(seq_num)\
+      \        # Sequence number\n        packet.append(pkt_type)       # Packet type\n\
+      \        packet.append(len(payload))   # Payload length\n        \n        #\
+      \ Add payload\n        if payload:\n            packet.extend(payload[:self.MAX_PAYLOAD])\n\
+      \        \n        # Calculate and add CRC16\n        crc_data = bytes(packet[len(self.PREAMBLE)\
+      \ + len(self.SYNC_WORD):])\n        crc_val = self.calculate_crc16(crc_data)\n\
+      \        packet.extend(struct.pack('>H', crc_val))\n        \n        return\
+      \ bytes(packet)\n    \n    def parse_packet(self, data):\n        \"\"\"Parse\
+      \ received packet and validate CRC\"\"\"\n        try:\n            # Find sync\
+      \ word\n            sync_idx = data.find(self.SYNC_WORD)\n            if sync_idx\
+      \ == -1:\n                return None\n            \n            # Check minimum\
+      \ packet size\n            start_idx = sync_idx + len(self.SYNC_WORD)\n    \
+      \        if len(data) < start_idx + 5 + self.CRC_SIZE:\n                return\
+      \ None\n            \n            # Extract header fields\n            src_id\
+      \ = data[start_idx]\n            dst_id = data[start_idx + 1]\n            seq_num\
+      \ = data[start_idx + 2]\n            pkt_type = data[start_idx + 3]\n      \
+      \      payload_len = data[start_idx + 4]\n            \n            # Check\
+      \ if we have complete packet\n            total_len = start_idx + 5 + payload_len\
+      \ + self.CRC_SIZE\n            if len(data) < total_len:\n                return\
+      \ None\n            \n            # Extract payload and CRC\n            payload\
+      \ = data[start_idx + 5:start_idx + 5 + payload_len]\n            rx_crc = struct.unpack('>H',\
+      \ data[total_len - self.CRC_SIZE:total_len])[0]\n            \n            #\
+      \ Verify CRC\n            crc_data = data[start_idx:total_len - self.CRC_SIZE]\n\
+      \            calc_crc = self.calculate_crc16(crc_data)\n            \n     \
+      \       if rx_crc != calc_crc:\n                self.stats['crc_errors'] +=\
+      \ 1\n                print(f\"[Node {self.node_id}] CRC mismatch (expected:\
+      \ {calc_crc:04X}, got: {rx_crc:04X})\")\n                return None\n     \
+      \       \n            return {\n                'src': src_id,\n           \
+      \     'dst': dst_id,\n                'seq': seq_num,\n                'type':\
+      \ pkt_type,\n                'payload': payload,\n                'consumed':\
+      \ total_len\n            }\n        except Exception as e:\n            print(f\"\
+      [Node {self.node_id}] Error parsing packet: {e}\")\n            return None\n\
+      \    \n    def send_sync_burst(self):\n        \"\"\"Sync Bursts are used before\
+      \ packet transmission to help syncing the SDRs\"\"\"\n        burst = bytes(random.getrandbits(8)\
+      \ for _ in range(100))\n        self.transmit_packet(burst)\n\n    def handle_sync_cmd(self,\
+      \ cmd):\n        \"\"\"Allows for manual syncing if necessary via sync button\
+      \ in GUI\"\"\"\n        burst = bytes(random.getrandbits(8) for _ in range(1000))\n\
+      \        self.transmit_packet(burst)\n\n    def tx_handler(self):\n        \"\
+      \"\"Thread for handling packet transmission with ARQ\"\"\"\n        while self.running:\n\
+      \            try:\n                # Get message from queue (with timeout for\
+      \ thread safety)\n                try:\n                    msg = self.tx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \         \n                # ALOHA: Random backoff\n                if random.random()\
+      \ > self.aloha_prob:\n                    backoff_time = random.uniform(0.1,\
+      \ 0.5)\n                    print(f\"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\"\
+      )\n                    time.sleep(backoff_time)\n                    # Re-queue\
+      \ the message\n                    self.tx_queue.put(msg)\n                \
+      \    continue\n                \n                # Prepare packet\n        \
+      \        with self.lock:\n                    seq_num = self.seq_num_tx\n  \
+      \                  self.seq_num_tx = (self.seq_num_tx + 1) % 256\n         \
+      \       \n                packet = self.create_packet(\n                   \
+      \ msg['dst'],\n                    seq_num,\n                    msg['type'],\n\
+      \                    msg.get('data', b'')\n                )\n             \
+      \   \n                # Stop-and-Wait ARQ\n                retries = 0\n   \
+      \             ack_received = False\n\n                #self.send_sync_burst()\n\
+      \                \n                while retries < self.max_retries and not\
+      \ ack_received:\n                    # Transmit packet\n                   \
+      \ print(f\"[Node {self.node_id}] TX: Sending packet seq={seq_num} to node {msg['dst']}\
+      \ (attempt {retries + 1})\")\n                    # Attempt to sync before transmission\n\
+      \                    self.send_sync_burst()\n                    self.transmit_packet(packet)\n\
+      \                    self.stats['packets_sent'] += 1\n                    \n\
+      \                    if retries > 0:\n                        self.stats['retransmissions']\
+      \ += 1\n                    \n                    # Wait for ACK\n         \
+      \           ack_key = f\"{msg['dst']}_{seq_num}\"\n                    timeout_time\
+      \ = time.time() + self.timeout\n                    \n                    while\
+      \ time.time() < timeout_time:\n                        try:\n              \
+      \              ack = self.ack_queue.get(timeout=0.1)\n                     \
+      \       if ack['key'] == ack_key:\n                                ack_received\
+      \ = True\n                                self.stats['acks_received'] += 1\n\
+      \                                print(f\"[Node {self.node_id}] TX: ACK received\
+      \ for seq={seq_num}\")\n                                # Informing GUI of message\
+      \ acknowledgment success\n                                output = \"TRUE\"\n\
+      \                                msg = pmt.intern(output)\n                \
+      \                self.message_port_pub(pmt.intern('feedback'), msg)\n      \
+      \                          break\n                        except queue.Empty:\n\
+      \                            pass\n                    \n                  \
+      \  if not ack_received:\n                        retries += 1\n            \
+      \            if retries < self.max_retries:\n                            print(f\"\
+      [Node {self.node_id}] TX: Timeout, retry {retries}/{self.max_retries}\")\n \
+      \               \n                if not ack_received:\n                   \
+      \ print(f\"[Node {self.node_id}] TX: Failed to deliver packet seq={seq_num}\
+      \ after {self.max_retries} attempts\")\n                    # Informing GUI\
+      \ of message acknowledgment failure\n                    output = \"FALSE\"\n\
+      \                    msg = pmt.intern(output)\n                    self.message_port_pub(pmt.intern('feedback'),\
+      \ msg)\n                    \n            except Exception as e:\n         \
+      \       print(f\"[Node {self.node_id}] TX handler error: {e}\")\n    \n    def\
+      \ rx_handler(self):\n        \"\"\"Thread for handling packet reception\"\"\"\
+      \n        while self.running:\n            try:\n                # Get received\
+      \ data\n                try:\n                    rx_data = self.rx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \         \n                # Add to buffer\n                self.rx_buffer\
+      \ += rx_data\n                \n                # Try to parse packets from\
+      \ buffer\n                while len(self.rx_buffer) > 0:\n                 \
+      \   pkt = self.parse_packet(self.rx_buffer)\n                    \n        \
+      \            if pkt is None:\n                        # No valid packet found,\
+      \ remove first byte and try again\n                        if len(self.rx_buffer)\
+      \ > 1:\n                            self.rx_buffer = self.rx_buffer[1:]\n  \
+      \                      else:\n                            self.rx_buffer = bytes()\n\
+      \                        continue\n                    \n                  \
+      \  # Remove processed packet from buffer\n                    self.rx_buffer\
+      \ = self.rx_buffer[pkt['consumed']:]\n                    \n               \
+      \     # Check if packet is for this node or broadcast\n                    if\
+      \ pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n                     \
+      \   print(f\"[Node {self.node_id}] RX: Packet not for us (dst={pkt['dst']})\"\
+      )\n                        continue\n                    \n                \
+      \    # Handle based on packet type\n                    if pkt['type'] == self.PKT_DATA:\n\
+      \                        self.stats['packets_received'] += 1\n             \
+      \           print(f\"[Node {self.node_id}] RX: Data packet from node {pkt['src']},\
+      \ seq={pkt['seq']}\")\n                        \n                        # Check\
+      \ for duplicate\n                        is_duplicate = False\n            \
+      \            if pkt['src'] in self.seq_num_rx:\n                           \
+      \ if self.seq_num_rx[pkt['src']] == pkt['seq']:\n                          \
+      \      print(f\"[Node {self.node_id}] RX: Duplicate packet detected\")\n   \
+      \                             is_duplicate = True\n                        \n\
+      \                        self.seq_num_rx[pkt['src']] = pkt['seq']\n        \
+      \                \n                        # Send ACK\n                    \
+      \    ack_packet = self.create_packet(\n                            pkt['src'],\n\
+      \                            pkt['seq'],\n                            self.PKT_ACK\n\
+      \                        )\n                        print(f\"[Node {self.node_id}]\
+      \ RX: Sending ACK for seq={pkt['seq']}\")\n                        self.send_sync_burst()\n\
+      \                        self.transmit_packet(ack_packet)\n                \
+      \        self.stats['acks_sent'] += 1\n                        \n          \
+      \              # Forward to application if not duplicate\n                 \
+      \       if not is_duplicate:\n                            self.forward_to_app(pkt['src'],\
+      \ pkt['payload'])\n                        \n                    elif pkt['type']\
+      \ == self.PKT_ACK:\n                        print(f\"[Node {self.node_id}] RX:\
+      \ ACK packet from node {pkt['src']}, seq={pkt['seq']}\")\n                 \
+      \       # Process ACK\n                        ack_key = f\"{pkt['src']}_{pkt['seq']}\"\
+      \n                        self.ack_queue.put({'key': ack_key})\n           \
+      \             \n            except Exception as e:\n                print(f\"\
+      [Node {self.node_id}] RX handler error: {e}\")\n    \n    def transmit_packet(self,\
+      \ packet):\n        \"\"\"Send packet to physical layer\"\"\"\n        try:\n\
+      \            # Convert to PDU format\n            vec = pmt.init_u8vector(len(packet),\
+      \ list(packet))\n            pdu = pmt.cons(pmt.PMT_NIL, vec)\n            \n\
+      \            # Send to modulator\n            self.message_port_pub(pmt.intern('pdu_out'),\
+      \ pdu)\n            \n        except Exception as e:\n            print(f\"\
+      [Node {self.node_id}] Error transmitting packet: {e}\")\n    \n    def forward_to_app(self,\
+      \ src_id, data):\n        \"\"\"Forward received data to application/GUI\"\"\
+      \"\n        try:\n            # Decode message\n            message = data.decode('utf-8',\
+      \ errors='ignore')\n            \n            # Create formatted output string\n\
+      \            output = f\"[From Node {src_id}]: {message}\"\n            \n \
+      \           # Send as simple string message\n            msg = pmt.intern(output)\n\
+      \            self.message_port_pub(pmt.intern('msg_out'), msg)\n           \
+      \ \n            # Also send as dictionary for more complex processing\n    \
+      \        meta = pmt.make_dict()\n            meta = pmt.dict_add(meta, pmt.intern(\"\
+      src\"), pmt.from_long(src_id))\n            meta = pmt.dict_add(meta, pmt.intern(\"\
+      data\"), pmt.intern(message))\n            \n            print(f\"[Node {self.node_id}]\
+      \ Message delivered: {output}\")\n            \n        except Exception as\
+      \ e:\n            print(f\"[Node {self.node_id}] Error forwarding to app: {e}\"\
+      )\n    \n    def work(self, input_items, output_items):\n        \"\"\"Main\
+      \ work function (not used for message passing blocks)\"\"\"\n        return\
+      \ 0\n    \n    def stop(self):\n        \"\"\"Clean shutdown\"\"\"\n       \
+      \ print(f\"\\n[Node {self.node_id}] Statistics:\")\n        print(f\"  Packets\
+      \ sent: {self.stats['packets_sent']}\")\n        print(f\"  Packets received:\
+      \ {self.stats['packets_received']}\")\n        print(f\"  ACKs sent: {self.stats['acks_sent']}\"\
+      )\n        print(f\"  ACKs received: {self.stats['acks_received']}\")\n    \
+      \    print(f\"  Retransmissions: {self.stats['retransmissions']}\")\n      \
+      \  print(f\"  CRC errors: {self.stats['crc_errors']}\")\n        \n        self.running\
+      \ = False\n        if self.tx_thread.is_alive():\n            self.tx_thread.join()\n\
+      \        if self.rx_thread.is_alive():\n            self.rx_thread.join()\n\
+      \        return True\n"
+    affinity: ''
+    alias: ''
+    aloha_prob: '0.6'
+    comment: User 1
+    max_retries: '100'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    node_id: '1'
+    timeout: '0.2'
+  states:
+    _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
+      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1),
+      ('sync_cmd', 'message', 1), ('msg_in', 'message', 1)], [('feedback', 'message',
+      1), ('pdu_out', 'message', 1), ('msg_out', 'message', 1)], '\n    Embedded Python
+      Block for User Node \n    Performs message transmission and reception via two
+      threads using PDUs\n    Uses Stop and Wait ARQ to ensure packet transmission
+      reliably\n    Uses ALOHA backoff to avoid collisions due to simultaneous transmissions\n\n    ',
+      ['aloha_prob', 'max_retries', 'node_id', 'timeout'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [608, 224.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0_1
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\nfrom gnuradio\
+      \ import gr\nfrom PyQt5 import QtWidgets, QtCore, QtGui\nimport sys\nimport\
+      \ pmt\nfrom datetime import datetime\nimport os\n\n# For sound effects\ntry:\n\
+      \    import pygame\n    pygame.mixer.init()\n    SOUND_ENABLED = True\nexcept:\n\
+      \    SOUND_ENABLED = False\n    print(\"Sound disabled: pygame not installed\"\
+      )\n\nclass WallpaperScrollArea(QtWidgets.QScrollArea):\n    def __init__(self,\
+      \ bg_image=\"\", parent=None):\n        super().__init__(parent)\n        self.setWidgetResizable(True)\n\
+      \        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n    \
+      \    \n        # Hospital-themed background gradient\n        self.bg_color1\
+      \ = QtGui.QColor(240, 248, 255)  # Alice Blue\n        self.bg_color2 = QtGui.QColor(230,\
+      \ 240, 255)  # Lighter blue\n        \n    def paintEvent(self, event):\n  \
+      \      painter = QtGui.QPainter(self.viewport())\n        \n        # Draw gradient\
+      \ background\n        gradient = QtGui.QLinearGradient(0, 0, 0, self.height())\n\
+      \        gradient.setColorAt(0, self.bg_color1)\n        gradient.setColorAt(1,\
+      \ self.bg_color2)\n        painter.fillRect(self.rect(), gradient)\n       \
+      \ \n        # Draw subtle grid lines (like hospital forms)\n        painter.setPen(QtGui.QPen(QtGui.QColor(220,\
+      \ 230, 240), 1))\n        for i in range(0, self.height(), 20):\n          \
+      \  painter.drawLine(0, i, self.width(), i)\n        \n        super().paintEvent(event)\n\
+      \n\nclass AnimatedButton(QtWidgets.QPushButton):\n    \"\"\"Button with smooth\
+      \ animation for hospital theme\"\"\"\n    def __init__(self, text, parent=None):\n\
+      \        super().__init__(text, parent)\n        self.animation = QtCore.QPropertyAnimation(self,\
+      \ b\"geometry\")\n        self.animation.setDuration(150)\n        self.default_style\
+      \ = \"\"\n        \n    def enterEvent(self, event):\n        self.animation.stop()\n\
+      \        self.animation.setStartValue(self.geometry())\n        self.animation.setEndValue(QtCore.QRect(\n\
+      \            self.x() - 1, self.y() - 1,\n            self.width() + 2, self.height()\
+      \ + 2\n        ))\n        self.animation.start()\n        super().enterEvent(event)\n\
+      \        \n    def leaveEvent(self, event):\n        self.animation.stop()\n\
+      \        self.animation.setStartValue(self.geometry())\n        self.animation.setEndValue(QtCore.QRect(\n\
+      \            self.x() + 1, self.y() + 1,\n            self.width() - 2, self.height()\
+      \ - 2\n        ))\n        self.animation.start()\n        super().leaveEvent(event)\n\
+      \n\nclass CharacterCounter(QtWidgets.QLabel):\n    \"\"\"Character counter widget\
+      \ that changes color based on remaining characters\"\"\"\n    def __init__(self,\
+      \ max_chars=256, parent=None):\n        super().__init__(parent)\n        self.max_chars\
+      \ = max_chars\n        self.current_chars = 0\n        self.update_display()\n\
+      \        \n    def update_count(self, text):\n        \"\"\"Update the counter\
+      \ with new text length\"\"\"\n        self.current_chars = len(text)\n     \
+      \   self.update_display()\n        \n    def update_display(self):\n       \
+      \ \"\"\"Update the display with current count and appropriate color\"\"\"\n\
+      \        remaining = self.max_chars - self.current_chars\n        percentage\
+      \ = (self.current_chars / self.max_chars) * 100\n        \n        # Set text\n\
+      \        self.setText(f\"{self.current_chars}/{self.max_chars}\")\n        \n\
+      \        # Change color based on remaining characters\n        if remaining\
+      \ < 0:\n            # Over limit - red\n            self.setStyleSheet(\"\"\"\
+      \n                QLabel {\n                    color: #E53E3E;\n          \
+      \          font-weight: bold;\n                    font-size: 12px;\n      \
+      \          }\n            \"\"\")\n        elif remaining <= 25:  # Less than\
+      \ 25 characters left\n            # Warning - orange\n            self.setStyleSheet(\"\
+      \"\"\n                QLabel {\n                    color: #D69E2E;\n      \
+      \              font-weight: bold;\n                    font-size: 12px;\n  \
+      \              }\n            \"\"\")\n        elif percentage >= 75:  # Over\
+      \ 75% used\n            # Caution - yellow\n            self.setStyleSheet(\"\
+      \"\"\n                QLabel {\n                    color: #ECC94B;\n      \
+      \              font-weight: bold;\n                    font-size: 12px;\n  \
+      \              }\n            \"\"\")\n        else:\n            # Normal -\
+      \ green/blue\n            self.setStyleSheet(\"\"\"\n                QLabel\
+      \ {\n                    color: #38A169;\n                    font-weight: bold;\n\
+      \                    font-size: 12px;\n                }\n            \"\"\"\
+      )\n            \n    def is_valid(self):\n        \"\"\"Check if current text\
+      \ length is within limit\"\"\"\n        return self.current_chars <= self.max_chars\
+      \ and self.current_chars > 0\n\n\nclass MessageBubble(QtWidgets.QFrame):\n \
+      \   \"\"\"Individual message bubble for hospital paging system\"\"\"\n    def\
+      \ __init__(self, text, is_outgoing=True, address=\"\", numeric_address=\"\"\
+      , parent=None):\n        super().__init__(parent)\n        self.is_outgoing\
+      \ = is_outgoing\n        self.address = address  # Display address (e.g., \"\
+      Station 1\")\n        self.numeric_address = numeric_address  # Actual numeric\
+      \ address (e.g., \"1\")\n        \n        self.setFrameStyle(QtWidgets.QFrame.NoFrame)\n\
+      \        self.setFixedWidth(400)\n        \n        main_layout = QtWidgets.QVBoxLayout(self)\n\
+      \        main_layout.setContentsMargins(10, 8, 10, 8)\n        main_layout.setSpacing(4)\n\
+      \        \n        # Header with address and time\n        header_layout = QtWidgets.QHBoxLayout()\n\
+      \        \n        if is_outgoing:\n            header_label = QtWidgets.QLabel(f\"\
+      TO: {address}\")\n            header_label.setStyleSheet(\"\"\"\n          \
+      \      QLabel {\n                    color: #2C5282;\n                    font-weight:\
+      \ bold;\n                    font-size: 11px;\n                }\n         \
+      \   \"\"\")\n            header_layout.addWidget(header_label, alignment=QtCore.Qt.AlignRight)\n\
+      \        else:\n            header_label = QtWidgets.QLabel(f\"FROM: {address}\"\
+      )\n            header_label.setStyleSheet(\"\"\"\n                QLabel {\n\
+      \                    color: #234E52;\n                    font-weight: bold;\n\
+      \                    font-size: 11px;\n                }\n            \"\"\"\
+      )\n            header_layout.addWidget(header_label, alignment=QtCore.Qt.AlignLeft)\n\
+      \        \n        time_label = QtWidgets.QLabel(datetime.now().strftime(\"\
+      %H:%M\"))\n        time_label.setStyleSheet(\"\"\"\n            QLabel {\n \
+      \               color: #718096;\n                font-size: 10px;\n        \
+      \    }\n        \"\"\")\n        header_layout.addWidget(time_label, alignment=QtCore.Qt.AlignRight\
+      \ if is_outgoing else QtCore.Qt.AlignLeft)\n        main_layout.addLayout(header_layout)\n\
+      \        \n        # Message text\n        text_label = QtWidgets.QLabel(text)\n\
+      \        text_label.setWordWrap(True)\n        text_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)\n\
+      \        \n        if is_outgoing:\n            # Outgoing: doctor/nurse sending\n\
+      \            self.setStyleSheet(\"\"\"\n                MessageBubble {\n  \
+      \                  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n\
+      \                        stop:0 #BEE3F8, stop:1 #90CDF4);\n                \
+      \    border: 2px solid #4299E1;\n                    border-radius: 8px;\n \
+      \               }\n            \"\"\")\n            text_label.setStyleSheet(\"\
+      \"\"\n                QLabel {\n                    color: #2D3748;\n      \
+      \              font-size: 13px;\n                    font-weight: 500;\n   \
+      \                 padding: 8px;\n                }\n            \"\"\")\n  \
+      \      else:\n            # Incoming: patient/other staff\n            self.setStyleSheet(\"\
+      \"\"\n                MessageBubble {\n                    background-color:\
+      \ qlineargradient(x1:0, y1:0, x2:1, y2:1,\n                        stop:0 #F0FFF4,\
+      \ stop:1 #C6F6D5);\n                    border: 2px solid #48BB78;\n       \
+      \             border-radius: 8px;\n                }\n            \"\"\")\n\
+      \            text_label.setStyleSheet(\"\"\"\n                QLabel {\n   \
+      \                 color: #22543D;\n                    font-size: 13px;\n  \
+      \                  font-weight: 500;\n                    padding: 8px;\n  \
+      \              }\n            \"\"\")\n        \n        main_layout.addWidget(text_label)\n\
+      \        \n        # Status indicator (only for outgoing messages)\n       \
+      \ if is_outgoing:\n            self.status_label = QtWidgets.QLabel(\"\u23F3\
+      \ Sending...\")\n            self.status_label.setStyleSheet(\"\"\"\n      \
+      \          QLabel {\n                    color: #D69E2E;\n                 \
+      \   font-size: 10px;\n                    font-weight: bold;\n             \
+      \   }\n            \"\"\")\n            main_layout.addWidget(self.status_label,\
+      \ alignment=QtCore.Qt.AlignRight)\n        \n        # Small label showing actual\
+      \ numeric address (subtle, for debugging)\n        if numeric_address and numeric_address\
+      \ != address:\n            numeric_label = QtWidgets.QLabel(f\"[ID: {numeric_address}]\"\
+      )\n            numeric_label.setStyleSheet(\"\"\"\n                QLabel {\n\
+      \                    color: #A0AEC0;\n                    font-size: 9px;\n\
+      \                    font-style: italic;\n                }\n            \"\"\
+      \")\n            if is_outgoing:\n                main_layout.addWidget(numeric_label,\
+      \ alignment=QtCore.Qt.AlignRight)\n            else:\n                main_layout.addWidget(numeric_label,\
+      \ alignment=QtCore.Qt.AlignLeft)\n        \n        # Animation for new messages\n\
+      \        self.fade_animation = QtCore.QPropertyAnimation(self, b\"windowOpacity\"\
+      )\n        self.fade_animation.setDuration(500)\n        self.fade_animation.setStartValue(0)\n\
+      \        self.fade_animation.setEndValue(1)\n        self.fade_animation.start()\n\
+      \n\nclass _GuiPoster(QtCore.QObject):\n    \"\"\"Helper QObject to post strings\
+      \ into the Qt thread safely.\"\"\"\n    sig = QtCore.pyqtSignal(str)  # emits\
+      \ text payload\n\n    def __init__(self):\n        super().__init__()\n\n\n\
+      class messenger_gui(gr.basic_block):\n    \"\"\"\n    Hospital Paging System\
+      \ GUI (GNU Radio embedded block).\n    - Outgoing messages: published on message\
+      \ port \"out\" with numeric address prepended as \"addr:body\"\n    - Feedback\
+      \ port \"feedback\": updates delivery status\n    - Incoming messages: received\
+      \ on port \"in_msg\" (same numeric format \"addr:body\")\n    \"\"\"\n\n   \
+      \ def __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n   \
+      \         self,\n            name=\"Hospital Paging System\",\n            in_sig=None,\n\
+      \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))    # outgoing messages\n        self.message_port_register_out(pmt.intern(\"\
+      sync_cmd\"))\n        self.message_port_register_in(pmt.intern(\"feedback\"\
+      ))# delivery feedback\n        self.message_port_register_in(pmt.intern(\"in_msg\"\
+      ))  # incoming messages from remote/devices\n\n        # Bind handlers\n   \
+      \     self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      \        self.set_msg_handler(pmt.intern(\"in_msg\"), self._receive_message)\n\
+      \n        # Poster used to safely move messages to GUI thread\n        self._poster\
+      \ = _GuiPoster()\n        self._poster.sig.connect(self._display_incoming) \
+      \ # connect to GUI-thread handler\n\n        # Message tracking\n        self.message_widgets\
+      \ = {}  # Store message widgets for feedback\n        self.message_counter =\
+      \ 0\n        self.MAX_CHARS = 256  # Maximum characters allowed\n\n        #\
+      \ Qt Application\n        self.app = QtWidgets.QApplication.instance()\n   \
+      \     if self.app is None:\n            self.app = QtWidgets.QApplication(sys.argv)\n\
+      \n        # Set hospital-like font\n        font = QtGui.QFont(\"Arial\", 10)\n\
+      \        self.app.setFont(font)\n\n        # Main window\n        self.qt_widget\
+      \ = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\U0001F3E5\
+      \ Hospital Paging System - Station 1\")\n        self.qt_widget.resize(1000,\
+      \ 800)\n        self.qt_widget.setStyleSheet(\"\"\"\n            QWidget {\n\
+      \                background-color: #F7FAFC;\n            }\n        \"\"\")\n\
+      \n        main_layout = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(20,\
+      \ 20, 20, 20)\n        main_layout.setSpacing(15)\n        self.qt_widget.setLayout(main_layout)\n\
+      \n        # Title Bar\n        title_layout = QtWidgets.QHBoxLayout()\n    \
+      \    \n        # Hospital logo/icon\n        icon_label = QtWidgets.QLabel(\"\
+      \U0001F3E5\")\n        icon_label.setStyleSheet(\"\"\"\n            QLabel {\n\
+      \                font-size: 36px;\n            }\n        \"\"\")\n        title_layout.addWidget(icon_label)\n\
+      \        \n        title_label = QtWidgets.QLabel(\"HOSPITAL PAGING SYSTEM\"\
+      )\n        title_label.setStyleSheet(\"\"\"\n            QLabel {\n        \
+      \        color: #2C5282;\n                font-size: 24px;\n               \
+      \ font-weight: bold;\n                font-family: 'Arial Black';\n        \
+      \    }\n        \"\"\")\n        title_layout.addWidget(title_label)\n     \
+      \   title_layout.addStretch()\n        \n        # System status\n        status_label\
+      \ = QtWidgets.QLabel(\"\U0001F7E2 ONLINE\")\n        status_label.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                color: #38A169;\n              \
+      \  font-size: 14px;\n                font-weight: bold;\n                background-color:\
+      \ #C6F6D5;\n                padding: 4px 12px;\n                border-radius:\
+      \ 12px;\n                border: 1px solid #38A169;\n            }\n       \
+      \ \"\"\")\n        title_layout.addWidget(status_label)\n        \n        main_layout.addLayout(title_layout)\n\
+      \n        # Control Panel\n        control_frame = QtWidgets.QFrame()\n    \
+      \    control_frame.setStyleSheet(\"\"\"\n            QFrame {\n            \
+      \    background-color: #EDF2F7;\n                border: 2px solid #CBD5E0;\n\
+      \                border-radius: 10px;\n            }\n        \"\"\")\n    \
+      \    control_frame.setFixedHeight(150)\n        \n        control_layout = QtWidgets.QHBoxLayout(control_frame)\n\
+      \        control_layout.setContentsMargins(20, 15, 20, 15)\n        \n     \
+      \   # Recipient Selection - GUI shows \"Station X\" but uses numeric address\
+      \ internally\n        recipient_group = QtWidgets.QGroupBox(\"PAGE RECIPIENT\"\
+      )\n        recipient_group.setStyleSheet(\"\"\"\n            QGroupBox {\n \
+      \               color: #4A5568;\n                font-weight: bold;\n      \
+      \          font-size: 12px;\n                border: 2px solid #A0AEC0;\n  \
+      \              border-radius: 6px;\n                margin-top: 12px;\n    \
+      \            padding-top: 10px;\n            }\n            QGroupBox::title\
+      \ {\n                subcontrol-origin: margin;\n                left: 10px;\n\
+      \                padding: 0 10px 0 10px;\n            }\n        \"\"\")\n \
+      \       recipient_layout = QtWidgets.QHBoxLayout(recipient_group)\n        \n\
+      \        # Create stations 1-10 for display, but we'll use numeric addresses\n\
+      \        self.addr_box = QtWidgets.QComboBox()\n        # Add stations 1-10\
+      \ with display names\n        for i in range(1, 11):\n            self.addr_box.addItem(f\"\
+      Station {i}\", userData=str(i))  # Display: \"Station 1\", Data: \"1\"\n   \
+      \     \n        # Add some special stations with their numeric IDs\n       \
+      \ self.addr_box.addItem(\"Emergency Room\", userData=\"11\")\n        self.addr_box.addItem(\"\
+      Pharmacy\", userData=\"12\")\n        self.addr_box.addItem(\"Lab\", userData=\"\
+      13\")\n        self.addr_box.addItem(\"Radiology\", userData=\"14\")\n     \
+      \   \n        self.addr_box.setFixedWidth(180)\n        self.addr_box.setStyleSheet(\"\
+      \"\"\n            QComboBox {\n                background-color: white;\n  \
+      \              border: 2px solid #4299E1;\n                border-radius: 6px;\n\
+      \                padding: 8px;\n                font-size: 14px;\n         \
+      \       font-weight: bold;\n            }\n            QComboBox:hover {\n \
+      \               border-color: #3182CE;\n            }\n            QComboBox::drop-down\
+      \ {\n                border: none;\n            }\n        \"\"\")\n       \
+      \ recipient_layout.addWidget(self.addr_box)\n        control_layout.addWidget(recipient_group)\n\
+      \n        control_layout.addSpacing(20)\n\n        # Message Input with character\
+      \ counter\n        input_group = QtWidgets.QGroupBox(\"MESSAGE\")\n        input_group.setStyleSheet(\"\
+      \"\"\n            QGroupBox {\n                color: #4A5568;\n           \
+      \     font-weight: bold;\n                font-size: 12px;\n               \
+      \ border: 2px solid #A0AEC0;\n                border-radius: 6px;\n        \
+      \        margin-top: 12px;\n                padding-top: 10px;\n           \
+      \ }\n            QGroupBox::title {\n                subcontrol-origin: margin;\n\
+      \                left: 10px;\n                padding: 0 10px 0 10px;\n    \
+      \        }\n        \"\"\")\n        input_layout = QtWidgets.QVBoxLayout(input_group)\n\
+      \        \n        # Character counter at the top\n        counter_layout =\
+      \ QtWidgets.QHBoxLayout()\n        counter_label = QtWidgets.QLabel(\"Characters:\"\
+      )\n        counter_label.setStyleSheet(\"\"\"\n            QLabel {\n      \
+      \          color: #4A5568;\n                font-size: 11px;\n             \
+      \   font-weight: bold;\n            }\n        \"\"\")\n        counter_layout.addWidget(counter_label)\n\
+      \        \n        self.char_counter = CharacterCounter(max_chars=self.MAX_CHARS)\n\
+      \        counter_layout.addWidget(self.char_counter)\n        counter_layout.addStretch()\n\
+      \        \n        # Add limit info\n        limit_label = QtWidgets.QLabel(f\"\
+      (Max: {self.MAX_CHARS} characters)\")\n        limit_label.setStyleSheet(\"\"\
+      \"\n            QLabel {\n                color: #718096;\n                font-size:\
+      \ 10px;\n                font-style: italic;\n            }\n        \"\"\"\
+      )\n        counter_layout.addWidget(limit_label)\n        input_layout.addLayout(counter_layout)\n\
+      \        \n        # Message input box\n        input_box_layout = QtWidgets.QHBoxLayout()\n\
+      \        self.input_box = QtWidgets.QLineEdit()\n        self.input_box.setPlaceholderText(f\"\
+      Type your message here (max {self.MAX_CHARS} characters)...\")\n        self.input_box.setFixedHeight(40)\n\
+      \        self.input_box.setStyleSheet(\"\"\"\n            QLineEdit {\n    \
+      \            background-color: white;\n                border: 2px solid #CBD5E0;\n\
+      \                border-radius: 8px;\n                padding: 8px 12px;\n \
+      \               font-size: 14px;\n            }\n            QLineEdit:focus\
+      \ {\n                border-color: #4299E1;\n            }\n            QLineEdit[invalid=\"\
+      true\"] {\n                border-color: #E53E3E;\n                background-color:\
+      \ #FFF5F5;\n            }\n        \"\"\")\n        self.input_box.textChanged.connect(self.update_character_counter)\n\
+      \        input_box_layout.addWidget(self.input_box)\n        input_layout.addLayout(input_box_layout)\n\
+      \        \n        control_layout.addWidget(input_group)\n\n        control_layout.addSpacing(20)\n\
+      \n        # Action Buttons\n        button_layout = QtWidgets.QVBoxLayout()\n\
+      \        button_layout.setSpacing(10)\n        \n        self.send_button =\
+      \ AnimatedButton(\"\U0001F4E4 SEND PAGE\")\n        self.send_button.setFixedSize(120,\
+      \ 40)\n        self.send_button.setStyleSheet(\"\"\"\n            QPushButton\
+      \ {\n                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n\
+      \                    stop:0 #4299E1, stop:1 #3182CE);\n                color:\
+      \ white;\n                font-weight: bold;\n                font-size: 13px;\n\
+      \                border: none;\n                border-radius: 8px;\n      \
+      \          padding: 8px;\n            }\n            QPushButton:hover {\n \
+      \               background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n\
+      \                    stop:0 #3182CE, stop:1 #2B6CB0);\n            }\n     \
+      \       QPushButton:pressed {\n                background-color: #2C5282;\n\
+      \            }\n            QPushButton:disabled {\n                background-color:\
+      \ #CBD5E0;\n                color: #718096;\n            }\n        \"\"\")\n\
+      \        \n        self.sync_button = AnimatedButton(\"\U0001F504 SYNC\")\n\
+      \        self.sync_button.setFixedSize(120, 40)\n        self.sync_button.setStyleSheet(\"\
+      \"\"\n            QPushButton {\n                background-color: qlineargradient(x1:0,\
+      \ y1:0, x2:1, y2:1,\n                    stop:0 #38A169, stop:1 #2F855A);\n\
+      \                color: white;\n                font-weight: bold;\n       \
+      \         font-size: 13px;\n                border: none;\n                border-radius:\
+      \ 8px;\n                padding: 8px;\n            }\n            QPushButton:hover\
+      \ {\n                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n\
+      \                    stop:0 #2F855A, stop:1 #276749);\n            }\n     \
+      \       QPushButton:pressed {\n                background-color: #22543D;\n\
+      \            }\n        \"\"\")\n        \n        button_layout.addWidget(self.send_button)\n\
+      \        button_layout.addWidget(self.sync_button)\n        control_layout.addLayout(button_layout)\n\
+      \        \n        main_layout.addWidget(control_frame)\n\n        # Messages\
+      \ Display Area\n        messages_frame = QtWidgets.QFrame()\n        messages_frame.setStyleSheet(\"\
+      \"\"\n            QFrame {\n                background-color: #F7FAFC;\n   \
+      \             border: 2px solid #CBD5E0;\n                border-radius: 10px;\n\
+      \            }\n        \"\"\")\n        \n        messages_layout = QtWidgets.QVBoxLayout(messages_frame)\n\
+      \        messages_layout.setContentsMargins(15, 15, 15, 15)\n        \n    \
+      \    # Messages header\n        messages_header = QtWidgets.QLabel(\"\U0001F4E8\
+      \ MESSAGE LOG\")\n        messages_header.setStyleSheet(\"\"\"\n           \
+      \ QLabel {\n                color: #4A5568;\n                font-size: 16px;\n\
+      \                font-weight: bold;\n                padding-bottom: 10px;\n\
+      \                border-bottom: 2px solid #E2E8F0;\n            }\n        \"\
+      \"\")\n        messages_layout.addWidget(messages_header)\n        \n      \
+      \  # Scroll area for messages\n        self.scroll_area = WallpaperScrollArea()\n\
+      \        self.scroll_area.setWidgetResizable(True)\n        \n        # Chat\
+      \ container\n        self.chat_container = QtWidgets.QWidget()\n        self.chat_layout\
+      \ = QtWidgets.QVBoxLayout(self.chat_container)\n        self.chat_layout.setAlignment(QtCore.Qt.AlignTop)\n\
+      \        self.chat_layout.setSpacing(12)\n        self.chat_container.setLayout(self.chat_layout)\n\
+      \        self.scroll_area.setWidget(self.chat_container)\n        \n       \
+      \ messages_layout.addWidget(self.scroll_area)\n        main_layout.addWidget(messages_frame,\
+      \ stretch=1)\n\n        # Footer\n        footer_layout = QtWidgets.QHBoxLayout()\n\
+      \        footer_label = QtWidgets.QLabel(\"\xA9 RadioBlazers | EN2130 Communication\
+      \ Design Project | Hospital Paging System\")\n        footer_label.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                color: #718096;\n              \
+      \  font-size: 11px;\n                font-style: italic;\n            }\n  \
+      \      \"\"\")\n        footer_layout.addWidget(footer_label)\n        main_layout.addLayout(footer_layout)\n\
+      \n        # Connect GUI signals\n        self.send_button.clicked.connect(self.send_message)\n\
+      \        self.input_box.returnPressed.connect(self.send_message)\n        self.sync_button.clicked.connect(self.send_sync_cmd)\n\
+      \        \n        # Initial button state\n        self.update_send_button_state()\n\
+      \n        # Show window\n        self.qt_widget.show()\n        \n    def update_character_counter(self):\n\
+      \        \"\"\"Update the character counter when text changes\"\"\"\n      \
+      \  text = self.input_box.text()\n        self.char_counter.update_count(text)\n\
+      \        self.update_send_button_state()\n        \n        # Update input box\
+      \ style based on character count\n        if len(text) > self.MAX_CHARS:\n \
+      \           self.input_box.setProperty(\"invalid\", True)\n        else:\n \
+      \           self.input_box.setProperty(\"invalid\", False)\n        self.input_box.style().polish(self.input_box)\n\
+      \        \n    def update_send_button_state(self):\n        \"\"\"Enable/disable\
+      \ send button based on character count\"\"\"\n        text = self.input_box.text().strip()\n\
+      \        char_count = len(text)\n        \n        # Disable if text is empty\
+      \ or exceeds max characters\n        if not text or char_count > self.MAX_CHARS:\n\
+      \            self.send_button.setEnabled(False)\n        else:\n           \
+      \ self.send_button.setEnabled(True)\n            \n    def play_sound(self,\
+      \ sound_type):\n        \"\"\"Play sound effects for interactions\"\"\"\n  \
+      \      if not SOUND_ENABLED:\n            return\n            \n        try:\n\
+      \            if sound_type == \"send\":\n                # Generate a beep sound\n\
+      \                pygame.mixer.Sound(buffer=bytes([128 + int(127 * (i % 256)\
+      \ / 255) \n                    for i in range(44100 // 4)])).play()\n      \
+      \      elif sound_type == \"button\":\n                pygame.mixer.Sound(buffer=bytes([128\
+      \ + int(127 * (i % 128) / 127) \n                    for i in range(44100 //\
+      \ 8)])).play()\n            elif sound_type == \"receive\":\n              \
+      \  pygame.mixer.Sound(buffer=bytes([128 + int(127 * (i % 512) / 511) \n    \
+      \                for i in range(44100 // 2)])).play()\n            elif sound_type\
+      \ == \"error\":\n                pygame.mixer.Sound(buffer=bytes([128 + int(127\
+      \ * (i % 64) / 63) \n                    for i in range(44100 // 16)])).play()\n\
+      \        except:\n            pass\n\n    def send_sync_cmd(self):\n       \
+      \ \"\"\"Send synchronization command\"\"\"\n        self.play_sound(\"button\"\
+      )\n        sync_cmd_message = \"T\"\n        try:\n            self.message_port_pub(pmt.intern(\"\
+      sync_cmd\"), pmt.intern(sync_cmd_message))\n        except Exception:\n    \
+      \        self.message_port_pub(pmt.intern(\"sync_cmd\"), pmt.intern(sync_cmd_message))\n\
+      \        \n        # Show sync animation\n        self.sync_button.setText(\"\
+      \U0001F504 SYNCING...\")\n        QtCore.QTimer.singleShot(1000, lambda: self.sync_button.setText(\"\
+      \U0001F504 SYNC\"))\n\n    def send_message(self):\n        \"\"\"Called from\
+      \ GUI thread when user sends a message.\"\"\"\n        text = self.input_box.text().strip()\n\
+      \        if not text:\n            return\n            \n        # Check character\
+      \ limit\n        if len(text) > self.MAX_CHARS:\n            self.play_sound(\"\
+      error\")\n            # Show error animation\n            self.input_box.setStyleSheet(\"\
+      \"\"\n                QLineEdit {\n                    background-color: #FFF5F5;\n\
+      \                    border: 2px solid #E53E3E;\n                    border-radius:\
+      \ 8px;\n                    padding: 8px 12px;\n                    font-size:\
+      \ 14px;\n                }\n            \"\"\")\n            QtCore.QTimer.singleShot(500,\
+      \ lambda: self.input_box.setStyleSheet(\"\"\"\n                QLineEdit {\n\
+      \                    background-color: white;\n                    border: 2px\
+      \ solid #CBD5E0;\n                    border-radius: 8px;\n                \
+      \    padding: 8px 12px;\n                    font-size: 14px;\n            \
+      \    }\n                QLineEdit:focus {\n                    border-color:\
+      \ #4299E1;\n                }\n            \"\"\"))\n            return\n\n\
+      \        self.play_sound(\"send\")\n        \n        # Get the numeric address\
+      \ from the selected item's userData\n        selected_index = self.addr_box.currentIndex()\n\
+      \        numeric_address = self.addr_box.itemData(selected_index)\n        \n\
+      \        if not numeric_address:\n            # Fallback: extract number from\
+      \ display text\n            display_text = self.addr_box.currentText()\n   \
+      \         # Try to extract number from \"Station X\" format\n            import\
+      \ re\n            match = re.search(r'(\\d+)', display_text)\n            if\
+      \ match:\n                numeric_address = match.group(1)\n            else:\n\
+      \                # Default to station 1\n                numeric_address = \"\
+      1\"\n        \n        # Create the message in \"addr:body\" format with numeric\
+      \ address\n        full_msg = f\"{numeric_address}:{text}\"\n        \n    \
+      \    # Get display text for GUI\n        display_address = self.addr_box.currentText()\n\
+      \n        # Publish as PMT symbol/string on 'out' port\n        try:\n     \
+      \       self.message_port_pub(pmt.intern(\"out\"), pmt.intern(full_msg))\n \
+      \       except Exception:\n            self.message_port_pub(pmt.intern(\"out\"\
+      ), pmt.intern(full_msg))\n\n        # Create and display message bubble\n  \
+      \      message_widget = MessageBubble(\n            text, \n            is_outgoing=True,\
+      \ \n            address=display_address,\n            numeric_address=numeric_address\n\
+      \        )\n        self.chat_layout.addWidget(message_widget, alignment=QtCore.Qt.AlignRight)\n\
+      \        \n        # Store widget reference for feedback\n        self.message_counter\
+      \ += 1\n        msg_id = f\"msg_{self.message_counter}\"\n        self.message_widgets[msg_id]\
+      \ = message_widget\n\n        # Clear input and scroll to bottom\n        self.input_box.clear()\n\
+      \        QtCore.QTimer.singleShot(100, lambda: self.scroll_area.verticalScrollBar().setValue(\n\
+      \            self.scroll_area.verticalScrollBar().maximum()\n        ))\n\n\
+      \    def _process_feedback(self, msg_pmt):\n        \"\"\"\n        Handler\
+      \ for 'feedback' port. Expected feedback values:\n          - \"TRUE\" => message\
+      \ delivered\n          - \"FALSE\" => delivery failed\n        \"\"\"\n    \
+      \    try:\n            if pmt.is_symbol(msg_pmt) or pmt.is_string(msg_pmt):\n\
+      \                fb = pmt.symbol_to_string(msg_pmt)\n            else:\n   \
+      \             py = pmt.to_python(msg_pmt)\n                fb = str(py)\n  \
+      \      except Exception:\n            fb = \"<unreadable feedback>\"\n\n   \
+      \     # Update the most recent outgoing message's status\n        if self.message_widgets:\n\
+      \            # Get the most recent message\n            msg_id = f\"msg_{self.message_counter}\"\
+      \n            if msg_id in self.message_widgets:\n                msg_widget\
+      \ = self.message_widgets[msg_id]\n                if fb == \"TRUE\":\n     \
+      \               msg_widget.status_label.setText(\"\u2705 Delivered\")\n    \
+      \                msg_widget.status_label.setStyleSheet(\"\"\"\n            \
+      \            QLabel {\n                            color: #38A169;\n       \
+      \                     font-size: 10px;\n                            font-weight:\
+      \ bold;\n                        }\n                    \"\"\")\n          \
+      \      elif fb == \"FALSE\":\n                    msg_widget.status_label.setText(\"\
+      \u274C Failed\")\n                    msg_widget.status_label.setStyleSheet(\"\
+      \"\"\n                        QLabel {\n                            color: #E53E3E;\n\
+      \                            font-size: 10px;\n                            font-weight:\
+      \ bold;\n                        }\n                    \"\"\")\n\n    def _receive_message(self,\
+      \ msg_pmt):\n        \"\"\"\n        Handler for 'in_msg' port. Extracts string\
+      \ and posts it to GUI thread.\n        \"\"\"\n        try:\n            if\
+      \ pmt.is_symbol(msg_pmt) or pmt.is_string(msg_pmt):\n                s = pmt.symbol_to_string(msg_pmt)\n\
+      \            else:\n                py = pmt.to_python(msg_pmt)\n          \
+      \      s = str(py)\n        except Exception:\n            s = \"<unreadable\
+      \ message>\"\n\n        # Post to GUI-thread handler\n        try:\n       \
+      \     self._poster.sig.emit(s)\n        except Exception:\n            try:\n\
+      \                self._display_incoming(s)\n            except Exception:\n\
+      \                print(\"[Hospital Paging] failed to deliver incoming message\
+      \ to GUI:\", s)\n\n    def _display_incoming(self, full_msg):\n        \"\"\"\
+      \n        Display incoming message bubble.\n        full_msg expected in \"\
+      addr:body\" format with numeric address.\n        \"\"\"\n        self.play_sound(\"\
+      receive\")\n        \n        # Parse numeric address and body\n        if \"\
+      :\" in full_msg:\n            numeric_address, body = full_msg.split(\":\",\
+      \ 1)\n            \n            # Convert numeric address to display name\n\
+      \            try:\n                addr_num = int(numeric_address)\n       \
+      \         if 1 <= addr_num <= 10:\n                    display_address = f\"\
+      Station {addr_num}\"\n                elif addr_num == 11:\n               \
+      \     display_address = \"Emergency Room\"\n                elif addr_num ==\
+      \ 12:\n                    display_address = \"Pharmacy\"\n                elif\
+      \ addr_num == 13:\n                    display_address = \"Lab\"\n         \
+      \       elif addr_num == 14:\n                    display_address = \"Radiology\"\
+      \n                else:\n                    display_address = f\"Station {addr_num}\"\
+      \n            except ValueError:\n                display_address = f\"Station\
+      \ {numeric_address}\"\n        else:\n            display_address = \"Unknown\
+      \ Station\"\n            numeric_address = \"?\"\n            body = full_msg\n\
+      \n        # Create and display message bubble\n        message_widget = MessageBubble(\n\
+      \            body, \n            is_outgoing=False, \n            address=display_address,\n\
+      \            numeric_address=numeric_address\n        )\n        self.chat_layout.addWidget(message_widget,\
+      \ alignment=QtCore.Qt.AlignLeft)\n\n        # Scroll to bottom\n        QtCore.QTimer.singleShot(100,\
+      \ lambda: self.scroll_area.verticalScrollBar().setValue(\n            self.scroll_area.verticalScrollBar().maximum()\n\
+      \        ))"
+    affinity: ''
+    alias: ''
+    bg_image: r"C:\Users\Oshan\Desktop\message.jpg"
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: '(''Hospital Paging System'', ''messenger_gui'', [(''bg_image'', "''''")],
+      [(''feedback'', ''message'', 1), (''in_msg'', ''message'', 1)], [(''sync_cmd'',
+      ''message'', 1), (''out'', ''message'', 1)], ''\n    Hospital Paging System
+      GUI (GNU Radio embedded block).\n    - Outgoing messages: published on message
+      port "out" with numeric address prepended as "addr:body"\n    - Feedback port
+      "feedback": updates delivery status\n    - Incoming messages: received on port
+      "in_msg" (same numeric format "addr:body")\n    '', [])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [616, 456.0]
+    rotation: 180
+    state: enabled
+- name: pdu_pdu_to_tagged_stream_0
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Header
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1216, 268.0]
+    rotation: 0
+    state: true
+- name: pdu_pdu_to_tagged_stream_0_0
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Payload
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1184, 516.0]
+    rotation: 0
+    state: true
+- name: pdu_tagged_stream_to_pdu_0_0
+  id: pdu_tagged_stream_to_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [616, 568.0]
+    rotation: 180
+    state: enabled
+- name: qtgui_const_sink_x_0
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    grid: 'False'
+    gui_hint: 1,0,1,1
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: '"User 1 RX Constellation"'
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '2'
+    xmin: '-2'
+    ymax: '2'
+    ymin: '-2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 1148.0]
+    rotation: 180
+    state: enabled
+- name: qtgui_const_sink_x_0_0
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    grid: 'False'
+    gui_hint: 1,1,1,1
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: '"User 1 RX Synced Constellation"'
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '2'
+    xmin: '-2'
+    ymax: '2'
+    ymin: '-2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2192, 868.0]
+    rotation: 0
+    state: enabled
+- name: soapy_bladerf_sink_0
+  id: soapy_bladerf_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '10000'
+    center_freq: user1_freq
+    comment: ''
+    dev_args: ''
+    freq_correction: '0'
+    gain: '50'
+    samp_rate: samp_rate_blade*2
+    type: fc32
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2192, 284.0]
+    rotation: 0
+    state: disabled
+- name: soapy_bladerf_source_0_0
+  id: soapy_bladerf_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '10000'
+    center_freq: user2_freq
+    comment: ''
+    dev_args: ''
+    freq_correction: '0'
+    gain: '30.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate*2
+    type: fc32
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [824, 912.0]
+    rotation: 0
+    state: disabled
+- name: virtual_sink_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: to_user_2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2480, 572.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_0_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: channel_tx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1760, 300.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_1
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: ACK
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 660.0]
+    rotation: 180
+    state: enabled
+- name: virtual_source_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: channel_tx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1464, 468.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_1
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: to_user_2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1080, 1144.0]
+    rotation: 180
+    state: enabled
+- name: virtual_source_2
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: ACK
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 568.0]
+    rotation: 180
+    state: enabled
+
+connections:
+- [blocks_multiply_const_vxx_0, '0', soapy_bladerf_sink_0, '0']
+- [blocks_repack_bits_bb_1_0, '0', virtual_sink_1, '0']
+- [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
+- [blocks_throttle2_0, '0', channels_channel_model_0, '0']
+- [blocks_unpack_k_bits_bb_0_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
+- [channels_channel_model_0, '0', virtual_sink_0, '0']
+- [digital_constellation_decoder_cb_0_0, '0', digital_diff_decoder_bb_0_0, '0']
+- [digital_constellation_modulator_0, '0', blocks_multiply_const_vxx_0, '0']
+- [digital_constellation_modulator_0, '0', blocks_throttle2_0, '0']
+- [digital_correlate_access_code_xx_ts_0_0, '0', blocks_repack_bits_bb_1_0, '0']
+- [digital_costas_loop_cc_0_0, '0', digital_constellation_decoder_cb_0_0, '0']
+- [digital_costas_loop_cc_0_0, '0', qtgui_const_sink_x_0_0, '0']
+- [digital_diff_decoder_bb_0_0, '0', digital_map_bb_0_0, '0']
+- [digital_linear_equalizer_0_0_0, '0', digital_costas_loop_cc_0_0, '0']
+- [digital_map_bb_0_0, '0', blocks_unpack_k_bits_bb_0_0, '0']
+- [digital_protocol_formatter_async_0, header, pdu_pdu_to_tagged_stream_0, pdus]
+- [digital_protocol_formatter_async_0, payload, pdu_pdu_to_tagged_stream_0_0, pdus]
+- [digital_symbol_sync_xx_0_0, '0', digital_linear_equalizer_0_0_0, '0']
+- [epy_block_0_0, feedback, epy_block_0_1, feedback]
+- [epy_block_0_0, msg_out, epy_block_0_1, in_msg]
+- [epy_block_0_0, pdu_out, digital_protocol_formatter_async_0, in]
+- [epy_block_0_1, out, epy_block_0_0, msg_in]
+- [epy_block_0_1, sync_cmd, epy_block_0_0, sync_cmd]
+- [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
+- [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0, '1']
+- [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_0_0, pdu_in]
+- [soapy_bladerf_source_0_0, '0', digital_symbol_sync_xx_0_0, '0']
+- [soapy_bladerf_source_0_0, '0', qtgui_const_sink_x_0, '0']
+- [virtual_source_0, '0', digital_constellation_modulator_0, '0']
+- [virtual_source_1, '0', digital_symbol_sync_xx_0_0, '0']
+- [virtual_source_1, '0', qtgui_const_sink_x_0, '0']
+- [virtual_source_2, '0', pdu_tagged_stream_to_pdu_0_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
