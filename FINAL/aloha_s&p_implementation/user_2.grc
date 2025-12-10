@@ -42,14 +42,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2832, 204.0]
+    coordinate: [336, 80.0]
     rotation: 0
     state: enabled
 - name: eq_gain
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 'controls@1: 0,1,1,1'
+    gui_hint: 0,1,1,1
     label: 'Equalizer: rate'
     min_len: '200'
     orient: QtCore.Qt.Horizontal
@@ -58,24 +58,24 @@ blocks:
     step: '0.001'
     stop: '0.1'
     value: '0.01'
-    widget: slider
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3088, 336.0]
+    coordinate: [1368, 24.0]
     rotation: 0
     state: enabled
 - name: excess_bw
   id: variable
   parameters:
-    comment: Set Bandwidth
+    comment: ''
     value: '.5'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2688, 124.0]
+    coordinate: [456, 8.0]
     rotation: 0
     state: enabled
 - name: hdr_format
@@ -89,7 +89,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2880, 340.0]
+    coordinate: [856, 16.0]
     rotation: 0
     state: enabled
 - name: k
@@ -101,7 +101,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2608, 124.0]
+    coordinate: [544, 80.0]
     rotation: 0
     state: enabled
 - name: nfilts
@@ -113,14 +113,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2752, 204.0]
+    coordinate: [608, 80.0]
     rotation: 0
     state: enabled
 - name: phase_bw
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 'controls@1: 0,2,1,1'
+    gui_hint: 0,0,1,1
     label: 'Phase: Bandwidth'
     min_len: '200'
     orient: QtCore.Qt.Horizontal
@@ -129,12 +129,12 @@ blocks:
     step: '0.01'
     stop: '1.0'
     value: 6.28/100.0
-    widget: slider
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3288, 160.0]
+    coordinate: [1224, 24.0]
     rotation: 0
     state: enabled
 - name: polys
@@ -146,7 +146,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2792, 284.0]
+    coordinate: [248, 80.0]
     rotation: 0
     state: enabled
 - name: qpsk
@@ -166,7 +166,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3088, 140.0]
+    coordinate: [696, 12.0]
     rotation: 0
     state: enabled
 - name: rrc_taps
@@ -178,7 +178,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2896, 124.0]
+    coordinate: [544, 8.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -190,7 +190,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2792, 124.0]
+    coordinate: [160, 80.0]
     rotation: 0
     state: enabled
 - name: samp_rate_blade
@@ -202,7 +202,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2608, 204.0]
+    coordinate: [336, 8.0]
     rotation: 0
     state: enabled
 - name: spr
@@ -214,19 +214,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2896, 284.0]
+    coordinate: [464, 80.0]
     rotation: 0
     state: enabled
 - name: sps
   id: variable
   parameters:
-    comment: Samples Per Symbol
+    comment: ''
     value: '4'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2912, 204.0]
+    coordinate: [400, 80.0]
     rotation: 0
     state: enabled
 - name: user1_freq
@@ -238,7 +238,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [168, 8.0]
+    coordinate: [160, 8.0]
     rotation: 0
     state: enabled
 - name: user2_freq
@@ -250,7 +250,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [256, 8.0]
+    coordinate: [248, 8.0]
     rotation: 0
     state: enabled
 - name: variable_adaptive_algorithm_0
@@ -267,24 +267,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2688, 340.0]
-    rotation: 0
-    state: enabled
-- name: MTU
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: MTU
-    short_id: ''
-    type: intx
-    value: '1500'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2992, 180.0]
+    coordinate: [856, 120.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_vxx_0
@@ -302,9 +285,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1968, 260.0]
+    coordinate: [1560, 280.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_repack_bits_bb_1_0
   id: blocks_repack_bits_bb
   parameters:
@@ -322,7 +305,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 700.0]
+    coordinate: [384, 736.0]
     rotation: 180
     state: enabled
 - name: blocks_tagged_stream_mux_0
@@ -330,7 +313,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: ''
+    comment: Prepends Header to the Payload Streamwise
     lengthtagname: '"packet_len"'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -342,7 +325,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1448, 372.0]
+    coordinate: [1024, 416.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_0
@@ -363,15 +346,15 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2224, 508.0]
+    coordinate: [1560, 416.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_unpack_k_bits_bb_0_0
   id: blocks_unpack_k_bits_bb
   parameters:
     affinity: ''
     alias: ''
-    comment: unpack 2 bits per symbol into bits
+    comment: Unpack the symbols into bits
     k: '2'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -379,7 +362,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1272, 692.0]
+    coordinate: [872, 744.0]
     rotation: 180
     state: enabled
 - name: channels_channel_model_0
@@ -388,7 +371,7 @@ blocks:
     affinity: ''
     alias: ''
     block_tags: 'False'
-    comment: ''
+    comment: Channel Simulation
     epsilon: '1.0'
     freq_offset: '0.0'
     maxoutbuf: '0'
@@ -400,41 +383,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2536, 528.0]
-    rotation: 0
-    state: disabled
-- name: controls
-  id: qtgui_tab_widget
-  parameters:
-    alias: ''
-    comment: ''
-    gui_hint: 0,0,1,2
-    label0: Channel
-    label1: Receiver
-    label10: Tab 10
-    label11: Tab 11
-    label12: Tab 12
-    label13: Tab 13
-    label14: Tab 14
-    label15: Tab 15
-    label16: Tab 16
-    label17: Tab 17
-    label18: Tab 18
-    label19: Tab 19
-    label2: Tab 2
-    label3: Tab 3
-    label4: Tab 4
-    label5: Tab 5
-    label6: Tab 6
-    label7: Tab 7
-    label8: Tab 8
-    label9: Tab 9
-    num_tabs: '2'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2544, 260.0]
+    coordinate: [1752, 384.0]
     rotation: 0
     state: enabled
 - name: digital_constellation_decoder_cb_0_0
@@ -442,8 +391,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "Decode a constellation's points from \na complex space to index of constellation\
-      \ \nsymbol based on the map of the  object."
+    comment: Decode a constellation's points
     constellation: qpsk
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -451,7 +399,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1816, 692.0]
+    coordinate: [1512, 744.0]
     rotation: 180
     state: enabled
 - name: digital_constellation_modulator_0
@@ -459,7 +407,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: Modulation block
+    comment: QPSK Modulator
     constellation: qpsk
     differential: 'True'
     excess_bw: excess_bw
@@ -473,7 +421,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1672, 436.0]
+    coordinate: [1288, 400.0]
     rotation: 0
     state: enabled
 - name: digital_correlate_access_code_xx_ts_0_0
@@ -482,7 +430,7 @@ blocks:
     access_code: '11100001010110101110100010010011'
     affinity: ''
     alias: ''
-    comment: ''
+    comment: Scans for the initial header and places length tags
     maxoutbuf: '0'
     minoutbuf: '0'
     tagname: '"packet_len"'
@@ -492,7 +440,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [968, 680.0]
+    coordinate: [592, 728.0]
     rotation: 180
     state: enabled
 - name: digital_costas_loop_cc_0_0
@@ -510,7 +458,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1800, 820.0]
+    coordinate: [1496, 864.0]
     rotation: 0
     state: enabled
 - name: digital_diff_decoder_bb_0_0
@@ -519,7 +467,7 @@ blocks:
     affinity: ''
     alias: ''
     coding: digital.DIFF_DIFFERENTIAL
-    comment: "translate the differential coded symbols\n back to their original symbols"
+    comment: Decodes differentially encoded bits
     maxoutbuf: '0'
     minoutbuf: '0'
     modulus: '4'
@@ -527,7 +475,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1600, 700.0]
+    coordinate: [1288, 736.0]
     rotation: 180
     state: enabled
 - name: digital_linear_equalizer_0_0_0
@@ -537,18 +485,18 @@ blocks:
     affinity: ''
     alg: variable_adaptive_algorithm_0
     alias: ''
-    comment: ''
+    comment: Provides Linear Equalization
     maxoutbuf: '0'
     minoutbuf: '0'
     num_taps: '15'
-    sps: '4'
+    sps: '2'
     training_sequence: '[ ]'
     training_start_tag: corr_est
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1496, 852.0]
+    coordinate: [1208, 896.0]
     rotation: 0
     state: enabled
 - name: digital_map_bb_0_0
@@ -556,8 +504,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "convert the symbols \nfrom the differential decoder to the \noriginal\
-      \ symbols we transmitted."
+    comment: Maps decoded symbols to original symbols
     map: '[0,1,2,3]'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -565,7 +512,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1440, 692.0]
+    coordinate: [1056, 744.0]
     rotation: 180
     state: enabled
 - name: digital_protocol_formatter_async_0
@@ -573,7 +520,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: ''
+    comment: Generates Header
     format: hdr_format
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -581,7 +528,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [920, 372.0]
+    coordinate: [448, 416.0]
     rotation: 0
     state: enabled
 - name: digital_symbol_sync_xx_0_0
@@ -589,7 +536,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: ''
+    comment: Performs Clock Recovery
     constellation: digital.constellation_bpsk().base()
     damping: '1.0'
     loop_bw: phase_bw
@@ -597,7 +544,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     nfilters: '32'
-    osps: '4'
+    osps: '2'
     pfb_mf_taps: rrc_taps
     resamp_type: digital.IR_PFB_MF
     sps: sps
@@ -608,49 +555,51 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1080, 832.0]
+    coordinate: [832, 892.0]
     rotation: 0
     state: enabled
 - name: epy_block_0_0
   id: epy_block
   parameters:
-    _source_code: "\"\"\"\nEmbedded Python Block for GNU Radio - Mesh Network Packet\
-      \ Communication\nImplements packetization, Stop-and-Wait ARQ, and ALOHA collision\
-      \ avoidance\nNo external CRC module required - implements CRC-16 CCITT manually\n\
-      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\nimport pmt\nimport threading\n\
-      import queue\nimport time\nimport random\nimport struct\n\nclass blk(gr.sync_block):\n\
-      \    \"\"\"\n    Mesh Network Packet Communication Block\n    Handles packet\
-      \ transmission/reception with Stop-and-Wait ARQ\n    \"\"\"\n    \n    def __init__(self,\
-      \ node_id=1, aloha_prob=0.3, timeout=1.0, max_retries=3):\n        \"\"\"\n\
-      \        Arguments:\n            node_id: Unique identifier for this node (1-255)\n\
-      \            aloha_prob: Transmission probability for ALOHA (0.0-1.0)\n    \
-      \        timeout: ARQ timeout in seconds\n            max_retries: Maximum retransmission\
-      \ attempts\n        \"\"\"\n        gr.sync_block.__init__(\n            self,\n\
-      \            name='Mesh Packet Comm with sync',\n            in_sig=None,\n\
-      \            out_sig=None\n        )\n        \n        # Node configuration\n\
-      \        self.node_id = node_id\n        self.aloha_prob = aloha_prob\n    \
-      \    self.timeout = timeout\n        self.max_retries = max_retries\n      \
-      \  \n        # Packet parameters\n        self.PREAMBLE = bytes([0xAA, 0xAA,\
-      \ 0xAA, 0xAA])\n        # b = random.getrandbits(8)\n        # self.PREAMBLE\
-      \ = bytes([b] * 32)\n        self.SYNC_WORD = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD\
-      \ = 255\n        self.HEADER_SIZE = 8  # preamble(4) + sync(2) + src(1) + dst(1)\n\
-      \        self.CRC_SIZE = 2\n        \n        # Packet types\n        self.PKT_DATA\
-      \ = 0x01\n        self.PKT_ACK = 0x02\n        \n        # CRC-16 CCITT lookup\
-      \ table\n        self.crc_table = self.generate_crc_table()\n        \n    \
-      \    # State management\n        self.tx_queue = queue.Queue()\n        self.rx_queue\
-      \ = queue.Queue()\n        self.ack_queue = queue.Queue()\n        self.pending_ack\
-      \ = {}\n        self.seq_num_tx = 0\n        self.seq_num_rx = {}\n        self.rx_buffer\
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ threading\nimport queue\nimport time\nimport random\nimport struct\n\nclass\
+      \ blk(gr.sync_block):\n    \"\"\"\n    Embedded Python Block for User Node \n\
+      \    Performs message transmission and reception via two threads using PDUs\n\
+      \    Uses Stop and Wait ARQ to ensure packet transmission reliably\n    Uses\
+      \ ALOHA backoff to avoid collisions due to simultaneous transmissions\n\n  \
+      \  \"\"\"\n    \n    def __init__(self, node_id=1, aloha_prob=0.3, timeout=1.0,\
+      \ max_retries=3):\n        \"\"\"\n        Arguments:\n            node_id:\
+      \ Unique identifier for this node (1-255)\n            aloha_prob: Transmission\
+      \ probability for ALOHA (0.0-1.0)\n            timeout: ARQ timeout in seconds\n\
+      \            max_retries: Maximum retransmission attempts\n        \"\"\"\n\
+      \        gr.sync_block.__init__(\n            self,\n            name='Mesh\
+      \ Packet Comm with sync',\n            in_sig=None,\n            out_sig=None\n\
+      \        )\n        \n        # Node configuration\n        self.node_id = node_id\n\
+      \        self.aloha_prob = aloha_prob\n        self.timeout = timeout\n    \
+      \    self.max_retries = max_retries\n        \n        # Packet parameters\n\
+      \        self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])\n        self.SYNC_WORD\
+      \ = bytes([0x2D, 0xD4])\n        self.MAX_PAYLOAD = 255\n        self.HEADER_SIZE\
+      \ = 8  # preamble(4) + sync(2) + src(1) + dst(1)\n        self.CRC_SIZE = 2\n\
+      \        \n        # Packet types\n        self.PKT_DATA = 0x01\n        self.PKT_ACK\
+      \ = 0x02\n        \n        # CRC-16 CCITT lookup table\n        self.crc_table\
+      \ = self.generate_crc_table()\n        \n        # State management\n      \
+      \  self.tx_queue = queue.Queue()\n        self.rx_queue = queue.Queue()\n  \
+      \      self.ack_queue = queue.Queue()\n        self.pending_ack = {}\n     \
+      \   self.seq_num_tx = 0\n        self.seq_num_rx = {}\n        self.rx_buffer\
       \ = bytes()\n        \n        # Statistics\n        self.stats = {\n      \
       \      'packets_sent': 0,\n            'packets_received': 0,\n            'acks_sent':\
       \ 0,\n            'acks_received': 0,\n            'retransmissions': 0,\n \
       \           'crc_errors': 0\n        }\n        \n        # Threading\n    \
       \    self.running = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
       \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
-      \ self.lock = threading.Lock()\n        \n        # Message ports\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
-      \        self.message_port_register_in(pmt.intern('pdu_in'))\n        self.message_port_register_out(pmt.intern('msg_out'))\n\
-      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        self.message_port_register_out(pmt.intern('feedback'))\n\
-      \        \n        # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
-      \ self.handle_msg_in)\n        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n\
+      \ self.lock = threading.Lock()\n        \n        # Message ports\n        \n\
+      \        self.message_port_register_in(pmt.intern('pdu_in'))\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
+      \        self.message_port_register_in(pmt.intern('sync_cmd'))\n        \n \
+      \       self.message_port_register_out(pmt.intern('feedback'))\n        self.message_port_register_out(pmt.intern('msg_out'))\n\
+      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        # Set\
+      \ message handlers\n        self.set_msg_handler(pmt.intern('msg_in'), self.handle_msg_in)\n\
+      \        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n  \
+      \      self.set_msg_handler(pmt.intern('sync_cmd'), self.handle_sync_cmd)\n\
       \        \n        # Start threads\n        self.tx_thread.start()\n       \
       \ self.rx_thread.start()\n        \n        print(f\"[Node {self.node_id}] Initialized\
       \ - Ready for communication\")\n    \n    def generate_crc_table(self):\n  \
@@ -664,37 +613,39 @@ blocks:
       \    for byte in data:\n            tbl_idx = ((crc >> 8) ^ byte) & 0xFF\n \
       \           crc = ((crc << 8) ^ self.crc_table[tbl_idx]) & 0xFFFF\n        return\
       \ crc\n    \n    def handle_msg_in(self, msg):\n        \"\"\"Handle incoming\
-      \ messages from GUI/application\"\"\"\n        try:\n            # Handle string\
-      \ messages directly\n            if pmt.is_symbol(msg):\n                # Simple\
-      \ text message format: \"dst_id:message\"\n                text = pmt.symbol_to_string(msg)\n\
-      \                if ':' in text:\n                    parts = text.split(':',\
-      \ 1)\n                    try:\n                        dst_id = int(parts[0])\n\
-      \                        data = parts[1].encode()\n                        self.tx_queue.put({'dst':\
-      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                        print(f\"\
-      [Node {self.node_id}] Queued message to {dst_id}: {parts[1]}\")\n          \
-      \          except ValueError:\n                        print(f\"[Node {self.node_id}]\
-      \ Invalid destination ID\")\n            \n            # Handle dictionary messages\n\
-      \            elif pmt.is_dict(msg):\n                meta = pmt.to_python(msg)\n\
-      \                if 'dst' in meta and 'data' in meta:\n                    dst_id\
-      \ = meta['dst']\n                    data = meta['data'].encode() if isinstance(meta['data'],\
-      \ str) else meta['data']\n                    self.tx_queue.put({'dst': dst_id,\
-      \ 'data': data, 'type': self.PKT_DATA})\n                    print(f\"[Node\
-      \ {self.node_id}] Queued message to {dst_id}\")\n            \n            #\
-      \ Handle pair messages (PDU format)\n            elif pmt.is_pair(msg):\n  \
-      \              meta = pmt.to_python(pmt.car(msg))\n                data = pmt.to_python(pmt.cdr(msg))\n\
-      \                if isinstance(meta, dict) and 'dst' in meta:\n            \
-      \        dst_id = meta['dst']\n                    if isinstance(data, str):\n\
-      \                        data = data.encode()\n                    elif isinstance(data,\
-      \ list):\n                        data = bytes(data)\n                    self.tx_queue.put({'dst':\
-      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                    print(f\"\
-      [Node {self.node_id}] Queued message to {dst_id}\")\n                    \n\
-      \        except Exception as e:\n            print(f\"[Node {self.node_id}]\
-      \ Error handling msg_in: {e}\")\n    \n    def handle_pdu_in(self, pdu):\n \
-      \       \"\"\"Handle incoming PDUs from demodulator\"\"\"\n        try:\n  \
-      \          # Extract PDU data\n            if pmt.is_pair(pdu):\n          \
-      \      meta = pmt.car(pdu)\n                data = pmt.cdr(pdu)\n          \
-      \      \n                # Convert to bytes\n                if pmt.is_u8vector(data):\n\
-      \                    print(\"loop run\")\t\n                    rx_bytes = bytes(pmt.u8vector_elements(data))\t\
+      \ messages from GUI\"\"\"\n        try:\n            #redundant\n          \
+      \  # Handle string messages directly\n            if pmt.is_symbol(msg):\n \
+      \               # Simple text message format: \"dst_id:message\"\n         \
+      \       text = pmt.symbol_to_string(msg)\n                if ':' in text:\n\
+      \                    parts = text.split(':', 1)\n                    try:\n\
+      \                        dst_id = int(parts[0])\n                        data\
+      \ = parts[1].encode()\n                        self.tx_queue.put({'dst': dst_id,\
+      \ 'data': data, 'type': self.PKT_DATA})\n                        print(f\"[Node\
+      \ {self.node_id}] Queued message to {dst_id}: {parts[1]}\")\n              \
+      \      except ValueError:\n                        print(f\"[Node {self.node_id}]\
+      \ Invalid destination ID\")\n            \n            #redundant\n        \
+      \    # Handle dictionary messages\n            elif pmt.is_dict(msg):\n    \
+      \            meta = pmt.to_python(msg)\n                if 'dst' in meta and\
+      \ 'data' in meta:\n                    dst_id = meta['dst']\n              \
+      \      data = meta['data'].encode() if isinstance(meta['data'], str) else meta['data']\n\
+      \                    self.tx_queue.put({'dst': dst_id, 'data': data, 'type':\
+      \ self.PKT_DATA})\n                    print(f\"[Node {self.node_id}] Queued\
+      \ message to {dst_id}\")\n            \n            # Handle pair messages (PDU\
+      \ format)\n            elif pmt.is_pair(msg):\n                meta = pmt.to_python(pmt.car(msg))\n\
+      \                data = pmt.to_python(pmt.cdr(msg))\n                if isinstance(meta,\
+      \ dict) and 'dst' in meta:\n                    dst_id = meta['dst']\n     \
+      \               if isinstance(data, str):\n                        data = data.encode()\n\
+      \                    elif isinstance(data, list):\n                        data\
+      \ = bytes(data)\n                    self.tx_queue.put({'dst': dst_id, 'data':\
+      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
+      \ Queued message to {dst_id}\")\n                    \n        except Exception\
+      \ as e:\n            print(f\"[Node {self.node_id}] Error handling msg_in: {e}\"\
+      )\n    \n    def handle_pdu_in(self, pdu):\n        \"\"\"Handle incoming PDUs\
+      \ from demodulator\"\"\"\n        try:\n            # Extract PDU data\n   \
+      \         if pmt.is_pair(pdu):\n                meta = pmt.car(pdu)\n      \
+      \          data = pmt.cdr(pdu)\n                \n                # Convert\
+      \ to bytes\n                if pmt.is_u8vector(data):\n                    print(f\"\
+      User Port {self.node_id} activated\")\t\n                    rx_bytes = bytes(pmt.u8vector_elements(data))\t\
       \n                    self.rx_queue.put(rx_bytes)\n                elif pmt.is_uniform_vector(data):\n\
       \                    # Handle float32 or other vector types\n              \
       \      elements = pmt.to_python(data)\n                    # Convert to bytes\
@@ -705,7 +656,7 @@ blocks:
       \ dst_id, seq_num, pkt_type, payload=b''):\n        \"\"\"Create a packet with\
       \ headers and CRC\"\"\"\n        packet = bytearray()\n        \n        # Add\
       \ preamble and sync word\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
-      \        \n        # Add header\n        packet.append(self.node_id)  # Source\
+      \        \n        # Add header\n        packet.append(self.node_id)   # Source\
       \ ID\n        packet.append(dst_id)         # Destination ID\n        packet.append(seq_num)\
       \        # Sequence number\n        packet.append(pkt_type)       # Packet type\n\
       \        packet.append(len(payload))   # Payload length\n        \n        #\
@@ -738,51 +689,58 @@ blocks:
       \ pkt_type,\n                'payload': payload,\n                'consumed':\
       \ total_len\n            }\n        except Exception as e:\n            print(f\"\
       [Node {self.node_id}] Error parsing packet: {e}\")\n            return None\n\
-      \    \n    def send_sync_burst(self):\n        burst = bytes(random.getrandbits(8)\
-      \ for _ in range(1000))\n        self.transmit_packet(burst)\n\n    def tx_handler(self):\n\
-      \        \"\"\"Thread for handling packet transmission with ARQ\"\"\"\n    \
-      \    while self.running:\n            try:\n                # Get message from\
-      \ queue (with timeout for thread safety)\n                try:\n           \
-      \         msg = self.tx_queue.get(timeout=0.1)\n                except queue.Empty:\n\
-      \                    continue\n                \n                # ALOHA: Random\
-      \ backoff\n                if random.random() > self.aloha_prob:\n         \
-      \           backoff_time = random.uniform(0.1, 0.5)\n                    print(f\"\
-      [Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\")\n               \
-      \     time.sleep(backoff_time)\n                    # Re-queue the message\n\
-      \                    self.tx_queue.put(msg)\n                    continue\n\
-      \                \n                # Prepare packet\n                with self.lock:\n\
-      \                    seq_num = self.seq_num_tx\n                    self.seq_num_tx\
-      \ = (self.seq_num_tx + 1) % 256\n                \n                packet =\
-      \ self.create_packet(\n                    msg['dst'],\n                   \
-      \ seq_num,\n                    msg['type'],\n                    msg.get('data',\
-      \ b'')\n                )\n                \n                # Stop-and-Wait\
-      \ ARQ\n                retries = 0\n                ack_received = False\n\n\
-      \                self.send_sync_burst()\n                \n                while\
-      \ retries < self.max_retries and not ack_received:\n                    # Transmit\
-      \ packet\n                    print(f\"[Node {self.node_id}] TX: Sending packet\
-      \ seq={seq_num} to node {msg['dst']} (attempt {retries + 1})\")\n          \
-      \          self.transmit_packet(packet)\n                    self.stats['packets_sent']\
-      \ += 1\n                    \n                    if retries > 0:\n        \
-      \                self.stats['retransmissions'] += 1\n                    \n\
-      \                    # Wait for ACK\n                    ack_key = f\"{msg['dst']}_{seq_num}\"\
-      \n                    timeout_time = time.time() + self.timeout\n          \
-      \          \n                    while time.time() < timeout_time:\n       \
-      \                 try:\n                            ack = self.ack_queue.get(timeout=0.1)\n\
-      \                            if ack['key'] == ack_key:\n                   \
-      \             ack_received = True\n                                self.stats['acks_received']\
-      \ += 1\n                                print(f\"[Node {self.node_id}] TX: ACK\
-      \ received for seq={seq_num}\")\n                                output = \"\
-      TRUE\"\n                                msg = pmt.intern(output)\n         \
-      \                       self.message_port_pub(pmt.intern('feedback'), msg)\n\
-      \                                break\n                        except queue.Empty:\n\
+      \    \n    def send_sync_burst(self):\n        \"\"\"Sync Bursts are used before\
+      \ packet transmission to help syncing the SDRs\"\"\"\n        burst = bytes(random.getrandbits(8)\
+      \ for _ in range(100))\n        self.transmit_packet(burst)\n\n    def handle_sync_cmd(self,\
+      \ cmd):\n        \"\"\"Allows for manual syncing if necessary via sync button\
+      \ in GUI\"\"\"\n        burst = bytes(random.getrandbits(8) for _ in range(1000))\n\
+      \        self.transmit_packet(burst)\n\n    def tx_handler(self):\n        \"\
+      \"\"Thread for handling packet transmission with ARQ\"\"\"\n        while self.running:\n\
+      \            try:\n                # Get message from queue (with timeout for\
+      \ thread safety)\n                try:\n                    msg = self.tx_queue.get(timeout=0.1)\n\
+      \                except queue.Empty:\n                    continue\n       \
+      \         \n                # ALOHA: Random backoff\n                if random.random()\
+      \ > self.aloha_prob:\n                    backoff_time = random.uniform(0.1,\
+      \ 0.5)\n                    print(f\"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\"\
+      )\n                    time.sleep(backoff_time)\n                    # Re-queue\
+      \ the message\n                    self.tx_queue.put(msg)\n                \
+      \    continue\n                \n                # Prepare packet\n        \
+      \        with self.lock:\n                    seq_num = self.seq_num_tx\n  \
+      \                  self.seq_num_tx = (self.seq_num_tx + 1) % 256\n         \
+      \       \n                packet = self.create_packet(\n                   \
+      \ msg['dst'],\n                    seq_num,\n                    msg['type'],\n\
+      \                    msg.get('data', b'')\n                )\n             \
+      \   \n                # Stop-and-Wait ARQ\n                retries = 0\n   \
+      \             ack_received = False\n\n                #self.send_sync_burst()\n\
+      \                \n                while retries < self.max_retries and not\
+      \ ack_received:\n                    # Transmit packet\n                   \
+      \ print(f\"[Node {self.node_id}] TX: Sending packet seq={seq_num} to node {msg['dst']}\
+      \ (attempt {retries + 1})\")\n                    # Attempt to sync before transmission\n\
+      \                    self.send_sync_burst()\n                    self.transmit_packet(packet)\n\
+      \                    self.stats['packets_sent'] += 1\n                    \n\
+      \                    if retries > 0:\n                        self.stats['retransmissions']\
+      \ += 1\n                    \n                    # Wait for ACK\n         \
+      \           ack_key = f\"{msg['dst']}_{seq_num}\"\n                    timeout_time\
+      \ = time.time() + self.timeout\n                    \n                    while\
+      \ time.time() < timeout_time:\n                        try:\n              \
+      \              ack = self.ack_queue.get(timeout=0.1)\n                     \
+      \       if ack['key'] == ack_key:\n                                ack_received\
+      \ = True\n                                self.stats['acks_received'] += 1\n\
+      \                                print(f\"[Node {self.node_id}] TX: ACK received\
+      \ for seq={seq_num}\")\n                                # Informing GUI of message\
+      \ acknowledgment success\n                                output = \"TRUE\"\n\
+      \                                msg = pmt.intern(output)\n                \
+      \                self.message_port_pub(pmt.intern('feedback'), msg)\n      \
+      \                          break\n                        except queue.Empty:\n\
       \                            pass\n                    \n                  \
       \  if not ack_received:\n                        retries += 1\n            \
       \            if retries < self.max_retries:\n                            print(f\"\
       [Node {self.node_id}] TX: Timeout, retry {retries}/{self.max_retries}\")\n \
       \               \n                if not ack_received:\n                   \
       \ print(f\"[Node {self.node_id}] TX: Failed to deliver packet seq={seq_num}\
-      \ after {self.max_retries} attempts\")\n                    output = \"FALSE\"\
-      \n                    msg = pmt.intern(output)\n                    self.message_port_pub(pmt.intern('feedback'),\
+      \ after {self.max_retries} attempts\")\n                    # Informing GUI\
+      \ of message acknowledgment failure\n                    output = \"FALSE\"\n\
+      \                    msg = pmt.intern(output)\n                    self.message_port_pub(pmt.intern('feedback'),\
       \ msg)\n                    \n            except Exception as e:\n         \
       \       print(f\"[Node {self.node_id}] TX handler error: {e}\")\n    \n    def\
       \ rx_handler(self):\n        \"\"\"Thread for handling packet reception\"\"\"\
@@ -818,10 +776,11 @@ blocks:
       \    ack_packet = self.create_packet(\n                            pkt['src'],\n\
       \                            pkt['seq'],\n                            self.PKT_ACK\n\
       \                        )\n                        print(f\"[Node {self.node_id}]\
-      \ RX: Sending ACK for seq={pkt['seq']}\")\n                        self.transmit_packet(ack_packet)\n\
-      \                        self.stats['acks_sent'] += 1\n                    \
-      \    \n                        # Forward to application if not duplicate\n \
-      \                       if not is_duplicate:\n                            self.forward_to_app(pkt['src'],\
+      \ RX: Sending ACK for seq={pkt['seq']}\")\n                        self.send_sync_burst()\n\
+      \                        self.transmit_packet(ack_packet)\n                \
+      \        self.stats['acks_sent'] += 1\n                        \n          \
+      \              # Forward to application if not duplicate\n                 \
+      \       if not is_duplicate:\n                            self.forward_to_app(pkt['src'],\
       \ pkt['payload'])\n                        \n                    elif pkt['type']\
       \ == self.PKT_ACK:\n                        print(f\"[Node {self.node_id}] RX:\
       \ ACK packet from node {pkt['src']}, seq={pkt['seq']}\")\n                 \
@@ -862,7 +821,7 @@ blocks:
     affinity: ''
     alias: ''
     aloha_prob: '0.6'
-    comment: User 1
+    comment: User 2
     max_retries: '100'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -870,15 +829,17 @@ blocks:
     timeout: '0.2'
   states:
     _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
-      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1),
-      ('msg_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
-      1), ('msg_out', 'message', 1)], '\nMesh Network Packet Communication Block\nHandles
-      packet transmission/reception with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries',
-      'node_id', 'timeout'])
+      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('sync_cmd', 'message',
+      1), ('pdu_in', 'message', 1), ('msg_in', 'message', 1)], [('pdu_out', 'message',
+      1), ('msg_out', 'message', 1), ('feedback', 'message', 1)], '\nEmbedded Python
+      Block for User Node \nPerforms message transmission and reception via two threads
+      using PDUs\nUses Stop and Wait ARQ to ensure packet transmission reliably\nUses
+      ALOHA backoff to avoid collisions due to simultaneous transmissions\n\n', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 280.0]
+    coordinate: [144, 432.0]
     rotation: 0
     state: enabled
 - name: epy_block_0_1
@@ -904,10 +865,11 @@ blocks:
       \ def __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n   \
       \         self,\n            name=\"Messenger GUI\",\n            in_sig=None,\n\
       \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
-      out\"))    # outgoing messages\n        self.message_port_register_in(pmt.intern(\"\
-      feedback\"))# delivery feedback\n        self.message_port_register_in(pmt.intern(\"\
-      in_msg\"))  # incoming messages from remote/devices\n\n        # Bind handlers\n\
-      \        self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      out\"))    # outgoing messages\n        self.message_port_register_out(pmt.intern(\"\
+      sync_cmd\"))\n        self.message_port_register_in(pmt.intern(\"feedback\"\
+      ))# delivery feedback\n        self.message_port_register_in(pmt.intern(\"in_msg\"\
+      ))  # incoming messages from remote/devices\n\n        # Bind handlers\n   \
+      \     self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
       \        self.set_msg_handler(pmt.intern(\"in_msg\"), self._receive_message)\n\
       \n        # Poster used to safely move messages to GUI thread\n        self._poster\
       \ = _GuiPoster()\n        self._poster.sig.connect(self._display_incoming) \
@@ -915,7 +877,7 @@ blocks:
       \ = QtWidgets.QApplication.instance()\n        if self.app is None:\n      \
       \      self.app = QtWidgets.QApplication(sys.argv)\n\n        # Main window\n\
       \        self.qt_widget = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\
-      Messenger GUI User 1\")\n        self.qt_widget.resize(640, 560)\n\n       \
+      Messenger GUI User 2\")\n        self.qt_widget.resize(640, 560)\n\n       \
       \ main_layout = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(8,\
       \ 8, 8, 8)\n        main_layout.setSpacing(6)\n        self.qt_widget.setLayout(main_layout)\n\
       \n        # Address selection bar\n        addr_layout = QtWidgets.QHBoxLayout()\n\
@@ -948,13 +910,25 @@ blocks:
       \        }\n            QPushButton:hover { background-color: #45a049; }\n \
       \       \"\"\")\n        input_layout.addWidget(self.input_box, stretch=1)\n\
       \        input_layout.addWidget(self.send_button, stretch=0)\n        main_layout.addLayout(input_layout)\n\
-      \n        # Connect GUI signals\n        self.send_button.clicked.connect(self.send_message)\n\
-      \        self.input_box.returnPressed.connect(self.send_message)\n\n       \
-      \ # Track last sent message timestamp widget (simple approach)\n        # If\
-      \ you want per-message tracking, change to a list/map of widgets per message\
-      \ id.\n        self._last_message_timestamp = None\n\n        # show window\n\
-      \        self.qt_widget.show()\n\n    def send_message(self):\n        \"\"\"\
-      Called from GUI thread when user presses Send or Enter.\"\"\"\n        text\
+      \n        self.sync_button = QtWidgets.QPushButton(\"Sync\")\n        self.sync_button.setMinimumHeight(40)\n\
+      \        self.sync_button.setStyleSheet(\"\"\"\n            QPushButton {\n\
+      \                background-color: #4CAF50;\n                color: white;\n\
+      \                border-radius: 10px;\n                padding: 8px 16px;\n\
+      \                font-weight: bold;\n                font-size: 16px;\n    \
+      \        }\n            QPushButton:hover { background-color: #45a049; }\n \
+      \       \"\"\")\n        input_layout.addWidget(self.sync_button, stretch=0)\n\
+      \        main_layout.addLayout(input_layout)\n\n        # Connect GUI signals\n\
+      \        self.send_button.clicked.connect(self.send_message)\n        self.input_box.returnPressed.connect(self.send_message)\n\
+      \        self.sync_button.clicked.connect(self.send_sync_cmd)\n\n        # Track\
+      \ last sent message timestamp widget (simple approach)\n        # If you want\
+      \ per-message tracking, change to a list/map of widgets per message id.\n  \
+      \      self._last_message_timestamp = None\n\n        # show window\n      \
+      \  self.qt_widget.show()\n\n    def send_sync_cmd(self):\n        sync_cmd_message\
+      \ = \"T\"\n        try:\n            self.message_port_pub(pmt.intern(\"sync_cmd\"\
+      ), pmt.intern(sync_cmd_message))\n        except Exception:\n            # fallback\
+      \ to generic intern\n            self.message_port_pub(pmt.intern(\"sync_cmd\"\
+      ), pmt.intern(sync_cmd_message))\n\n    def send_message(self):\n        \"\"\
+      \"Called from GUI thread when user presses Send or Enter.\"\"\"\n        text\
       \ = self.input_box.text().strip()\n        if not text:\n            return\n\
       \n        addr = self.addr_box.currentText().strip()\n        full_msg = f\"\
       {addr}:{text}\"\n\n        # Publish as PMT symbol/string on 'out' port\n  \
@@ -1065,21 +1039,22 @@ blocks:
     affinity: ''
     alias: ''
     bg_image: r"C:\Users\Oshan\Desktop\message.jpg"
-    comment: ''
+    comment: GUI
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''in_msg'',
-      ''message'', 1), (''feedback'', ''message'', 1)], [(''out'', ''message'', 1)],
-      ''\nWhatsApp-style Messenger GUI (GNU Radio embedded block).\n- Outgoing messages:
-      published on message port "out" with address prepended as "addr:body"\n- Feedback
-      port "feedback": updates delivery timestamp / failed status\n- Incoming messages:
-      received on port "in_msg" (same format "addr:body") and displayed\n  on the
-      left in a different color.\n'', [])'
+    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''feedback'',
+      ''message'', 1), (''in_msg'', ''message'', 1)], [(''sync_cmd'', ''message'',
+      1), (''out'', ''message'', 1)], ''\nWhatsApp-style Messenger GUI (GNU Radio
+      embedded block).\n- Outgoing messages: published on message port "out" with
+      address prepended as "addr:body"\n- Feedback port "feedback": updates delivery
+      timestamp / failed status\n- Incoming messages: received on port "in_msg" (same
+      format "addr:body") and displayed\n  on the left in a different color.\n'',
+      [])'
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [664, 500.0]
+    coordinate: [144, 592.0]
     rotation: 180
     state: enabled
 - name: pdu_pdu_to_tagged_stream_0
@@ -1087,7 +1062,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: Header
+    comment: Header Stream
     maxoutbuf: '0'
     minoutbuf: '0'
     tag: packet_len
@@ -1096,7 +1071,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 308.0]
+    coordinate: [752, 368.0]
     rotation: 0
     state: true
 - name: pdu_pdu_to_tagged_stream_0_0
@@ -1104,7 +1079,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: Payload
+    comment: Payload Stream
     maxoutbuf: '0'
     minoutbuf: '0'
     tag: packet_len
@@ -1113,7 +1088,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 436.0]
+    coordinate: [752, 480.0]
     rotation: 0
     state: true
 - name: pdu_tagged_stream_to_pdu_0_0
@@ -1130,7 +1105,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [664, 564.0]
+    coordinate: [144, 320.0]
     rotation: 180
     state: enabled
 - name: qtgui_const_sink_x_0
@@ -1162,7 +1137,7 @@ blocks:
     color9: '"dark green"'
     comment: ''
     grid: 'False'
-    gui_hint: ''
+    gui_hint: 1,0,1,1
     label1: ''
     label10: ''
     label2: ''
@@ -1184,7 +1159,7 @@ blocks:
     marker7: '0'
     marker8: '0'
     marker9: '0'
-    name: '""'
+    name: '"User 1 RX Constellation"'
     nconnections: '1'
     size: '1024'
     style1: '0'
@@ -1222,11 +1197,11 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [816, 844.0]
+    coordinate: [480, 1112.0]
     rotation: 180
     state: enabled
-- name: qtgui_freq_sink_x_1_0
-  id: qtgui_freq_sink_x
+- name: qtgui_const_sink_x_0_0
+  id: qtgui_const_sink_x
   parameters:
     affinity: ''
     alias: ''
@@ -1241,9 +1216,7 @@ blocks:
     alpha8: '1.0'
     alpha9: '1.0'
     autoscale: 'False'
-    average: '1.0'
     axislabels: 'True'
-    bw: samp_rate
     color1: '"blue"'
     color10: '"dark blue"'
     color2: '"red"'
@@ -1255,36 +1228,48 @@ blocks:
     color8: '"dark red"'
     color9: '"dark green"'
     comment: ''
-    ctrlpanel: 'False'
-    fc: '0'
-    fftsize: '256'
-    freqhalf: 'True'
     grid: 'False'
-    gui_hint: ''
-    label: Relative Gain
+    gui_hint: 1,1,1,1
     label1: ''
-    label10: ''''''
-    label2: ''''''
-    label3: ''''''
-    label4: ''''''
-    label5: ''''''
-    label6: ''''''
-    label7: ''''''
-    label8: ''''''
-    label9: ''''''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
     legend: 'True'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    name: RX-SPECTRUM of ACK
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: '"User 1 RX Synced Constellation"'
     nconnections: '1'
-    norm_window: 'False'
-    showports: 'False'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
     tr_chan: '0'
     tr_level: '0.0'
     tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '""'
     type: complex
-    units: dB
     update_time: '0.10'
     width1: '1'
     width10: '1'
@@ -1296,15 +1281,16 @@ blocks:
     width7: '1'
     width8: '1'
     width9: '1'
-    wintype: window.WIN_BLACKMAN_hARRIS
-    ymax: '10'
-    ymin: '-140'
+    xmax: '2'
+    xmin: '-2'
+    ymax: '2'
+    ymin: '-2'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [816, 980.0]
-    rotation: 180
+    coordinate: [1776, 840.0]
+    rotation: 0
     state: enabled
 - name: soapy_bladerf_sink_0
   id: soapy_bladerf_sink
@@ -1323,9 +1309,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2216, 288.0]
+    coordinate: [1752, 288.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: soapy_bladerf_source_0_0
   id: soapy_bladerf_source
   parameters:
@@ -1345,9 +1331,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [616, 924.0]
+    coordinate: [512, 960.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_sink_0
   id: virtual_sink
   parameters:
@@ -1358,20 +1344,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2896, 564.0]
-    rotation: 0
-    state: disabled
-- name: virtual_sink_0_0
-  id: virtual_sink
-  parameters:
-    alias: ''
-    comment: ''
-    stream_id: channel_tx
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1720, 372.0]
+    coordinate: [1984, 424.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_1
@@ -1384,21 +1357,21 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 692.0]
+    coordinate: [216, 744.0]
     rotation: 180
     state: enabled
-- name: virtual_source_0
+- name: virtual_source_1
   id: virtual_source
   parameters:
     alias: ''
     comment: ''
-    stream_id: channel_tx
+    stream_id: to_user_2
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 468.0]
-    rotation: 0
+    coordinate: [832, 1128.0]
+    rotation: 180
     state: enabled
 - name: virtual_source_2
   id: virtual_source
@@ -1410,14 +1383,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [928, 564.0]
+    coordinate: [408, 320.0]
     rotation: 180
     state: enabled
 
 connections:
 - [blocks_multiply_const_vxx_0, '0', soapy_bladerf_sink_0, '0']
 - [blocks_repack_bits_bb_1_0, '0', virtual_sink_1, '0']
-- [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
+- [blocks_tagged_stream_mux_0, '0', digital_constellation_modulator_0, '0']
 - [blocks_throttle2_0, '0', channels_channel_model_0, '0']
 - [blocks_unpack_k_bits_bb_0_0, '0', digital_correlate_access_code_xx_ts_0_0, '0']
 - [channels_channel_model_0, '0', virtual_sink_0, '0']
@@ -1426,6 +1399,7 @@ connections:
 - [digital_constellation_modulator_0, '0', blocks_throttle2_0, '0']
 - [digital_correlate_access_code_xx_ts_0_0, '0', blocks_repack_bits_bb_1_0, '0']
 - [digital_costas_loop_cc_0_0, '0', digital_constellation_decoder_cb_0_0, '0']
+- [digital_costas_loop_cc_0_0, '0', qtgui_const_sink_x_0_0, '0']
 - [digital_diff_decoder_bb_0_0, '0', digital_map_bb_0_0, '0']
 - [digital_linear_equalizer_0_0_0, '0', digital_costas_loop_cc_0_0, '0']
 - [digital_map_bb_0_0, '0', blocks_unpack_k_bits_bb_0_0, '0']
@@ -1436,13 +1410,14 @@ connections:
 - [epy_block_0_0, msg_out, epy_block_0_1, in_msg]
 - [epy_block_0_0, pdu_out, digital_protocol_formatter_async_0, in]
 - [epy_block_0_1, out, epy_block_0_0, msg_in]
+- [epy_block_0_1, sync_cmd, epy_block_0_0, sync_cmd]
 - [pdu_pdu_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_0_0, pdu_in]
 - [soapy_bladerf_source_0_0, '0', digital_symbol_sync_xx_0_0, '0']
 - [soapy_bladerf_source_0_0, '0', qtgui_const_sink_x_0, '0']
-- [soapy_bladerf_source_0_0, '0', qtgui_freq_sink_x_1_0, '0']
-- [virtual_source_0, '0', digital_constellation_modulator_0, '0']
+- [virtual_source_1, '0', digital_symbol_sync_xx_0_0, '0']
+- [virtual_source_1, '0', qtgui_const_sink_x_0, '0']
 - [virtual_source_2, '0', pdu_tagged_stream_to_pdu_0_0, '0']
 
 metadata:

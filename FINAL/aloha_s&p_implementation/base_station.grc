@@ -586,20 +586,20 @@ blocks:
       \  self.tx_queue = queue.Queue()\n        self.rx_queue = queue.Queue()\n  \
       \      self.ack_queue = queue.Queue()\n        self.pending_ack = {}\n     \
       \   self.seq_num_tx = 0\n        self.seq_num_rx = {}\n        self.rx_buffer\
-      \ = bytes()\n        \n        # Statistics\n        self.stats = {\n      \
-      \      'packets_sent': 0,\n            'packets_received': 0,\n            'acks_sent':\
-      \ 0,\n            'acks_received': 0,\n            'retransmissions': 0,\n \
-      \           'crc_errors': 0\n        }\n        \n        # Threading\n    \
-      \    self.running = True\n        self.tx_thread = threading.Thread(target=self.tx_handler)\n\
-      \        self.rx_thread = threading.Thread(target=self.rx_handler)\n       \
-      \ self.lock = threading.Lock()\n        \n        # Message ports\n        \n\
-      \        self.message_port_register_in(pmt.intern('pdu_in'))\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
-      \        self.message_port_register_in(pmt.intern('sync_cmd'))\n        \n \
-      \       self.message_port_register_out(pmt.intern('feedback'))\n        self.message_port_register_out(pmt.intern('msg_out'))\n\
-      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        # Set\
-      \ message handlers\n        self.set_msg_handler(pmt.intern('msg_in'), self.handle_msg_in)\n\
-      \        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n  \
-      \      self.set_msg_handler(pmt.intern('sync_cmd'), self.handle_sync_cmd)\n\
+      \ = bytes()\n        self.redirecting = False\n        \n        # Statistics\n\
+      \        self.stats = {\n            'packets_sent': 0,\n            'packets_received':\
+      \ 0,\n            'acks_sent': 0,\n            'acks_received': 0,\n       \
+      \     'retransmissions': 0,\n            'crc_errors': 0\n        }\n      \
+      \  \n        # Threading\n        self.running = True\n        self.tx_thread\
+      \ = threading.Thread(target=self.tx_handler)\n        self.rx_thread = threading.Thread(target=self.rx_handler)\n\
+      \        self.lock = threading.Lock()\n        \n        # Message ports\n \
+      \       \n        self.message_port_register_in(pmt.intern('pdu_in'))\n    \
+      \    self.message_port_register_in(pmt.intern('msg_in'))\n        self.message_port_register_in(pmt.intern('sync_cmd'))\n\
+      \        \n        self.message_port_register_out(pmt.intern('feedback'))\n\
+      \        self.message_port_register_out(pmt.intern('msg_out'))\n        self.message_port_register_out(pmt.intern('pdu_out'))\n\
+      \        # Set message handlers\n        self.set_msg_handler(pmt.intern('msg_in'),\
+      \ self.handle_msg_in)\n        self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)\n\
+      \        self.set_msg_handler(pmt.intern('sync_cmd'), self.handle_sync_cmd)\n\
       \        \n        # Start threads\n        self.tx_thread.start()\n       \
       \ self.rx_thread.start()\n        \n        print(f\"[Node {self.node_id}] Initialized\
       \ - Ready for communication\")\n    \n    def generate_crc_table(self):\n  \
@@ -653,14 +653,17 @@ blocks:
       \ for x in elements])\n                    self.rx_queue.put(rx_bytes)\n   \
       \                 \n        except Exception as e:\n            print(f\"[Node\
       \ {self.node_id}] Error handling pdu_in: {e}\")\n    \n    def create_packet(self,\
-      \ dst_id, seq_num, pkt_type, payload=b''):\n        \"\"\"Create a packet with\
-      \ headers and CRC\"\"\"\n        packet = bytearray()\n        \n        # Add\
-      \ preamble and sync word\n        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
-      \        \n        # Add header\n        packet.append(self.node_id)   # Source\
-      \ ID\n        packet.append(dst_id)         # Destination ID\n        packet.append(seq_num)\
-      \        # Sequence number\n        packet.append(pkt_type)       # Packet type\n\
-      \        packet.append(len(payload))   # Payload length\n        \n        #\
-      \ Add payload\n        if payload:\n            packet.extend(payload[:self.MAX_PAYLOAD])\n\
+      \ dst_id, seq_num, pkt_type, payload=b'', src_id=None):\n        \"\"\"Create\
+      \ a packet with headers and CRC\n\n        src_id: if None, default to self.node_id;\
+      \ otherwise use provided source id\n        \"\"\"\n        if src_id is None:\n\
+      \            src = self.node_id\n        else:\n            src = src_id & 0xFF\n\
+      \n        packet = bytearray()\n        \n        # Add preamble and sync word\n\
+      \        packet.extend(self.PREAMBLE)\n        packet.extend(self.SYNC_WORD)\n\
+      \        \n        # Add header\n        packet.append(src)           # Source\
+      \ ID (now param)\n        packet.append(dst_id)         # Destination ID\n \
+      \       packet.append(seq_num)        # Sequence number\n        packet.append(pkt_type)\
+      \       # Packet type\n        packet.append(len(payload))   # Payload length\n\
+      \        \n        # Add payload\n        if payload:\n            packet.extend(payload[:self.MAX_PAYLOAD])\n\
       \        \n        # Calculate and add CRC16\n        crc_data = bytes(packet[len(self.PREAMBLE)\
       \ + len(self.SYNC_WORD):])\n        crc_val = self.calculate_crc16(crc_data)\n\
       \        packet.extend(struct.pack('>H', crc_val))\n        \n        return\
@@ -699,24 +702,35 @@ blocks:
       \            try:\n                # Get message from queue (with timeout for\
       \ thread safety)\n                try:\n                    msg = self.tx_queue.get(timeout=0.1)\n\
       \                except queue.Empty:\n                    continue\n       \
-      \         \n                # ALOHA: Random backoff\n                if random.random()\
-      \ > self.aloha_prob:\n                    backoff_time = random.uniform(0.1,\
-      \ 0.5)\n                    print(f\"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\"\
-      )\n                    time.sleep(backoff_time)\n                    # Re-queue\
-      \ the message\n                    self.tx_queue.put(msg)\n                \
-      \    continue\n                \n                # Prepare packet\n        \
-      \        with self.lock:\n                    seq_num = self.seq_num_tx\n  \
-      \                  self.seq_num_tx = (self.seq_num_tx + 1) % 256\n         \
-      \       \n                packet = self.create_packet(\n                   \
-      \ msg['dst'],\n                    seq_num,\n                    msg['type'],\n\
-      \                    msg.get('data', b'')\n                )\n             \
-      \   \n                # Stop-and-Wait ARQ\n                retries = 0\n   \
-      \             ack_received = False\n\n                #self.send_sync_burst()\n\
-      \                \n                while retries < self.max_retries and not\
-      \ ack_received:\n                    # Transmit packet\n                   \
-      \ print(f\"[Node {self.node_id}] TX: Sending packet seq={seq_num} to node {msg['dst']}\
-      \ (attempt {retries + 1})\")\n                    # Attempt to sync before transmission\n\
-      \                    self.send_sync_burst()\n                    self.transmit_packet(packet)\n\
+      \         \n                # If this is a forwarded raw packet, send it once\
+      \ without ARQ\n                if msg.get('forward_raw', False):\n         \
+      \           try:\n                        raw_packet = msg['raw_packet']\n \
+      \                       print(f\"[Node {self.node_id}] TX: Forwarding raw packet\
+      \ (one-shot), length={len(raw_packet)}\")\n                        # Optionally\
+      \ sync before forwarding\n                        self.send_sync_burst()\n \
+      \                       self.transmit_packet(raw_packet)\n                 \
+      \       self.stats['packets_sent'] += 1\n                    except Exception\
+      \ as e:\n                        print(f\"[Node {self.node_id}] forward send\
+      \ error: {e}\")\n                    continue\n                \n          \
+      \      # ALOHA: Random backoff for locally-originated packets\n            \
+      \    if random.random() > self.aloha_prob:\n                    backoff_time\
+      \ = random.uniform(0.1, 0.5)\n                    print(f\"[Node {self.node_id}]\
+      \ ALOHA backoff {backoff_time:.2f}s\")\n                    time.sleep(backoff_time)\n\
+      \                    # Re-queue the message\n                    self.tx_queue.put(msg)\n\
+      \                    continue\n                \n                # Prepare packet\
+      \ for locally-originated messages\n                with self.lock:\n       \
+      \             seq_num = self.seq_num_tx\n                    self.seq_num_tx\
+      \ = (self.seq_num_tx + 1) % 256\n                \n                packet =\
+      \ self.create_packet(\n                    msg['dst'],\n                   \
+      \ seq_num,\n                    msg['type'],\n                    msg.get('data',\
+      \ b'')\n                )\n                \n                # Stop-and-Wait\
+      \ ARQ for locally-originated packets\n                retries = 0\n        \
+      \        ack_received = False\n\n                #self.send_sync_burst()\n \
+      \               \n                while retries < self.max_retries and not ack_received:\n\
+      \                    # Transmit packet\n                    print(f\"[Node {self.node_id}]\
+      \ TX: Sending packet seq={seq_num} to node {msg['dst']} (attempt {retries +\
+      \ 1})\")\n                    # Attempt to sync before transmission\n      \
+      \              self.send_sync_burst()\n                    self.transmit_packet(packet)\n\
       \                    self.stats['packets_sent'] += 1\n                    \n\
       \                    if retries > 0:\n                        self.stats['retransmissions']\
       \ += 1\n                    \n                    # Wait for ACK\n         \
@@ -760,36 +774,56 @@ blocks:
       \ = self.rx_buffer[pkt['consumed']:]\n                    \n               \
       \     # Check if packet is for this node or broadcast\n                    if\
       \ pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:\n                     \
-      \   print(f\"[Node {self.node_id}] RX: Packet not for us (dst={pkt['dst']})\"\
-      )\n                        continue\n                    \n                \
-      \    # Handle based on packet type\n                    if pkt['type'] == self.PKT_DATA:\n\
-      \                        self.stats['packets_received'] += 1\n             \
-      \           print(f\"[Node {self.node_id}] RX: Data packet from node {pkt['src']},\
-      \ seq={pkt['seq']}\")\n                        \n                        # Check\
-      \ for duplicate\n                        is_duplicate = False\n            \
-      \            if pkt['src'] in self.seq_num_rx:\n                           \
-      \ if self.seq_num_rx[pkt['src']] == pkt['seq']:\n                          \
-      \      print(f\"[Node {self.node_id}] RX: Duplicate packet detected\")\n   \
-      \                             is_duplicate = True\n                        \n\
-      \                        self.seq_num_rx[pkt['src']] = pkt['seq']\n        \
-      \                \n                        # Send ACK\n                    \
-      \    ack_packet = self.create_packet(\n                            pkt['src'],\n\
-      \                            pkt['seq'],\n                            self.PKT_ACK\n\
-      \                        )\n                        print(f\"[Node {self.node_id}]\
-      \ RX: Sending ACK for seq={pkt['seq']}\")\n                        self.send_sync_burst()\n\
-      \                        self.transmit_packet(ack_packet)\n                \
-      \        self.stats['acks_sent'] += 1\n                        \n          \
-      \              # Forward to application if not duplicate\n                 \
-      \       if not is_duplicate:\n                            self.forward_to_app(pkt['src'],\
+      \   # Forward the packet transparently (preserve original src and seq)\n   \
+      \                     print(f\"[Node {self.node_id}] RX: Forwarding packet from\
+      \ {pkt['src']} to {pkt['dst']}, seq={pkt['seq']}\")\n                      \
+      \  forward_packet = self.create_packet(\n                            dst_id\
+      \ = pkt['dst'],\n                            seq_num = pkt['seq'],\n       \
+      \                     pkt_type = pkt['type'],\n                            payload\
+      \ = pkt['payload'],\n                            src_id = pkt['src']   # preserve\
+      \ original source ID\n                        )\n                        # enqueue\
+      \ as a one-shot forward (no ARQ)\n                        self.tx_queue.put({'forward_raw':\
+      \ True, 'raw_packet': forward_packet})\n                        continue\n \
+      \                       \n                    \n                    # Handle\
+      \ based on packet type (packet is for this node or broadcast)\n            \
+      \        if pkt['type'] == self.PKT_DATA:\n                        self.stats['packets_received']\
+      \ += 1\n                        print(f\"[Node {self.node_id}] RX: Data packet\
+      \ from node {pkt['src']}, seq={pkt['seq']}\")\n                        \n  \
+      \                      # Check for duplicate\n                        is_duplicate\
+      \ = False\n                        if pkt['src'] in self.seq_num_rx:\n     \
+      \                       if self.seq_num_rx[pkt['src']] == pkt['seq']:\n    \
+      \                            print(f\"[Node {self.node_id}] RX: Duplicate packet\
+      \ detected\")\n                                is_duplicate = True\n       \
+      \                 \n                        self.seq_num_rx[pkt['src']] = pkt['seq']\n\
+      \                        \n                        # Send ACK only if this packet\
+      \ is addressed to this node\n                        ack_packet = self.create_packet(\n\
+      \                            pkt['src'],\n                            pkt['seq'],\n\
+      \                            self.PKT_ACK\n                        )\n     \
+      \                   print(f\"[Node {self.node_id}] RX: Sending ACK for seq={pkt['seq']}\"\
+      )\n                        self.send_sync_burst()\n                        self.transmit_packet(ack_packet)\n\
+      \                        self.stats['acks_sent'] += 1\n                    \
+      \    \n                        # Forward to application if not duplicate\n \
+      \                       if not is_duplicate:\n                            self.forward_to_app(pkt['src'],\
       \ pkt['payload'])\n                        \n                    elif pkt['type']\
-      \ == self.PKT_ACK:\n                        print(f\"[Node {self.node_id}] RX:\
-      \ ACK packet from node {pkt['src']}, seq={pkt['seq']}\")\n                 \
-      \       # Process ACK\n                        ack_key = f\"{pkt['src']}_{pkt['seq']}\"\
-      \n                        self.ack_queue.put({'key': ack_key})\n           \
-      \             \n            except Exception as e:\n                print(f\"\
-      [Node {self.node_id}] RX handler error: {e}\")\n    \n    def transmit_packet(self,\
-      \ packet):\n        \"\"\"Send packet to physical layer\"\"\"\n        try:\n\
-      \            # Convert to PDU format\n            vec = pmt.init_u8vector(len(packet),\
+      \ == self.PKT_ACK:\n                        # If ACK is for this node, consume\
+      \ it for locally-originated ARQ\n                        if pkt['dst'] == self.node_id:\n\
+      \                            print(f\"[Node {self.node_id}] RX: ACK packet from\
+      \ node {pkt['src']}, seq={pkt['seq']} (for me)\")\n                        \
+      \    ack_key = f\"{pkt['src']}_{pkt['seq']}\"\n                            self.ack_queue.put({'key':\
+      \ ack_key})\n                        else:\n                            # ACK\
+      \ is meant for someone else; forward unchanged toward its destination\n    \
+      \                        print(f\"[Node {self.node_id}] RX: ACK for node {pkt['dst']}\
+      \ \u2014 forwarding\")\n                            forward_packet = self.create_packet(\n\
+      \                                dst_id = pkt['dst'],\n                    \
+      \            seq_num = pkt['seq'],\n                                pkt_type\
+      \ = pkt['type'],\n                                payload = b'',\n         \
+      \                       src_id = pkt['src']   # preserve ACK's src (the node\
+      \ that generated the ACK)\n                            )\n                 \
+      \           self.tx_queue.put({'forward_raw': True, 'raw_packet': forward_packet})\n\
+      \                        \n            except Exception as e:\n            \
+      \    print(f\"[Node {self.node_id}] RX handler error: {e}\")\n    \n    def\
+      \ transmit_packet(self, packet):\n        \"\"\"Send packet to physical layer\"\
+      \"\"\n        try:\n            # Convert to PDU format\n            vec = pmt.init_u8vector(len(packet),\
       \ list(packet))\n            pdu = pmt.cons(pmt.PMT_NIL, vec)\n            \n\
       \            # Send to modulator\n            self.message_port_pub(pmt.intern('pdu_out'),\
       \ pdu)\n            \n        except Exception as e:\n            print(f\"\

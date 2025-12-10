@@ -35,7 +35,7 @@ import user_1_epy_block_0_1 as epy_block_0_1  # embedded python block
 
 class user_1(gr.top_block, Qt.QWidget):
 
-    def __init__(self, MTU=1500):
+    def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
         Qt.QWidget.__init__(self)
         self.setWindowTitle("Not titled yet")
@@ -67,11 +67,6 @@ class user_1(gr.top_block, Qt.QWidget):
         self.flowgraph_started = threading.Event()
 
         ##################################################
-        # Parameters
-        ##################################################
-        self.MTU = MTU
-
-        ##################################################
         # Variables
         ##################################################
         self.sps = sps = 4
@@ -97,24 +92,13 @@ class user_1(gr.top_block, Qt.QWidget):
         # Blocks
         ##################################################
 
-        self.controls = Qt.QTabWidget()
-        self.controls_widget_0 = Qt.QWidget()
-        self.controls_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.controls_widget_0)
-        self.controls_grid_layout_0 = Qt.QGridLayout()
-        self.controls_layout_0.addLayout(self.controls_grid_layout_0)
-        self.controls.addTab(self.controls_widget_0, 'Reciever Sync Settings')
-        self.top_grid_layout.addWidget(self.controls, 0, 0, 1, 1)
+        self._phase_bw_range = qtgui.Range(0.0, 1.0, 0.01, 6.28/100.0, 200)
+        self._phase_bw_win = qtgui.RangeWidget(self._phase_bw_range, self.set_phase_bw, "Phase: Bandwidth", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.top_grid_layout.addWidget(self._phase_bw_win, 0, 0, 1, 1)
         for r in range(0, 1):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
             self.top_grid_layout.setColumnStretch(c, 1)
-        self._phase_bw_range = qtgui.Range(0.0, 1.0, 0.01, 6.28/100.0, 200)
-        self._phase_bw_win = qtgui.RangeWidget(self._phase_bw_range, self.set_phase_bw, "Phase: Bandwidth", "slider", float, QtCore.Qt.Horizontal)
-        self.controls_grid_layout_0.addWidget(self._phase_bw_win, 0, 0, 1, 1)
-        for r in range(0, 1):
-            self.controls_grid_layout_0.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.controls_grid_layout_0.setColumnStretch(c, 1)
         self.qtgui_const_sink_x_0_0 = qtgui.const_sink_c(
             1024, #size
             "User 1 RX Synced Constellation", #name
@@ -209,12 +193,12 @@ class user_1(gr.top_block, Qt.QWidget):
         self.pdu_pdu_to_tagged_stream_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self._eq_gain_range = qtgui.Range(0.0, 0.1, 0.001, 0.01, 200)
-        self._eq_gain_win = qtgui.RangeWidget(self._eq_gain_range, self.set_eq_gain, "Equalizer: rate", "slider", float, QtCore.Qt.Horizontal)
-        self.controls_grid_layout_0.addWidget(self._eq_gain_win, 0, 1, 1, 1)
+        self._eq_gain_win = qtgui.RangeWidget(self._eq_gain_range, self.set_eq_gain, "Equalizer: rate", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.top_grid_layout.addWidget(self._eq_gain_win, 0, 1, 1, 1)
         for r in range(0, 1):
-            self.controls_grid_layout_0.setRowStretch(r, 1)
+            self.top_grid_layout.setRowStretch(r, 1)
         for c in range(1, 2):
-            self.controls_grid_layout_0.setColumnStretch(c, 1)
+            self.top_grid_layout.setColumnStretch(c, 1)
         self.epy_block_0_1 = epy_block_0_1.messenger_gui(bg_image=r"C:\Users\Oshan\Desktop\message.jpg")
         self.epy_block_0_0 = epy_block_0_0.blk(node_id=1, aloha_prob=0.6, timeout=0.2, max_retries=100)
         self.digital_symbol_sync_xx_0_0 = digital.symbol_sync_cc(
@@ -224,14 +208,14 @@ class user_1(gr.top_block, Qt.QWidget):
             1.0,
             1.0,
             1.5,
-            4,
+            2,
             digital.constellation_bpsk().base(),
             digital.IR_PFB_MF,
             32,
             rrc_taps)
         self.digital_protocol_formatter_async_0 = digital.protocol_formatter_async(hdr_format)
         self.digital_map_bb_0_0 = digital.map_bb([0,1,2,3])
-        self.digital_linear_equalizer_0_0_0 = digital.linear_equalizer(15, 4, variable_adaptive_algorithm_0, True, [ ], 'corr_est')
+        self.digital_linear_equalizer_0_0_0 = digital.linear_equalizer(15, 2, variable_adaptive_algorithm_0, True, [ ], 'corr_est')
         self.digital_diff_decoder_bb_0_0 = digital.diff_decoder_bb(4, digital.DIFF_DIFFERENTIAL)
         self.digital_costas_loop_cc_0_0 = digital.costas_loop_cc(phase_bw, arity, False)
         self.digital_correlate_access_code_xx_ts_0_0 = digital.correlate_access_code_bb_ts('11100001010110101110100010010011',
@@ -265,8 +249,8 @@ class user_1(gr.top_block, Qt.QWidget):
         self.msg_connect((self.digital_protocol_formatter_async_0, 'header'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
         self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
-        self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.epy_block_0_1, 'in_msg'))
         self.msg_connect((self.epy_block_0_0, 'feedback'), (self.epy_block_0_1, 'feedback'))
+        self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.epy_block_0_1, 'in_msg'))
         self.msg_connect((self.epy_block_0_1, 'sync_cmd'), (self.epy_block_0_0, 'sync_cmd'))
         self.msg_connect((self.epy_block_0_1, 'out'), (self.epy_block_0_0, 'msg_in'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_0_0, 'pdu_in'))
@@ -296,12 +280,6 @@ class user_1(gr.top_block, Qt.QWidget):
         self.wait()
 
         event.accept()
-
-    def get_MTU(self):
-        return self.MTU
-
-    def set_MTU(self, MTU):
-        self.MTU = MTU
 
     def get_sps(self):
         return self.sps
@@ -413,21 +391,12 @@ class user_1(gr.top_block, Qt.QWidget):
 
 
 
-def argument_parser():
-    parser = ArgumentParser()
-    parser.add_argument(
-        "--MTU", dest="MTU", type=intx, default=1500,
-        help="Set MTU [default=%(default)r]")
-    return parser
-
 
 def main(top_block_cls=user_1, options=None):
-    if options is None:
-        options = argument_parser().parse_args()
 
     qapp = Qt.QApplication(sys.argv)
 
-    tb = top_block_cls(MTU=options.MTU)
+    tb = top_block_cls()
 
     tb.start()
     tb.flowgraph_started.set()
