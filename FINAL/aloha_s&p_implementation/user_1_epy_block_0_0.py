@@ -1,9 +1,3 @@
-"""
-Embedded Python Block for GNU Radio - Mesh Network Packet Communication
-Implements packetization, Stop-and-Wait ARQ, and ALOHA collision avoidance
-No external CRC module required - implements CRC-16 CCITT manually
-"""
-
 import numpy as np
 from gnuradio import gr
 import pmt
@@ -15,8 +9,11 @@ import struct
 
 class blk(gr.sync_block):
     """
-    Mesh Network Packet Communication Block
-    Handles packet transmission/reception with Stop-and-Wait ARQ
+    Embedded Python Block for User Node 
+    Performs message transmission and reception via two threads using PDUs
+    Uses Stop and Wait ARQ to ensure packet transmission reliably
+    Uses ALOHA backoff to avoid collisions due to simultaneous transmissions
+
     """
     
     def __init__(self, node_id=1, aloha_prob=0.3, timeout=1.0, max_retries=3):
@@ -42,8 +39,6 @@ class blk(gr.sync_block):
         
         # Packet parameters
         self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])
-        # b = random.getrandbits(8)
-        # self.PREAMBLE = bytes([b] * 32)
         self.SYNC_WORD = bytes([0x2D, 0xD4])
         self.MAX_PAYLOAD = 255
         self.HEADER_SIZE = 8  # preamble(4) + sync(2) + src(1) + dst(1)
@@ -84,13 +79,16 @@ class blk(gr.sync_block):
         # Message ports
         self.message_port_register_in(pmt.intern('msg_in'))
         self.message_port_register_in(pmt.intern('pdu_in'))
+        self.message_port_register_in(pmt.intern('sync_cmd'))
         self.message_port_register_out(pmt.intern('msg_out'))
         self.message_port_register_out(pmt.intern('pdu_out'))
         self.message_port_register_out(pmt.intern('feedback'))
         
+        
         # Set message handlers
         self.set_msg_handler(pmt.intern('msg_in'), self.handle_msg_in)
         self.set_msg_handler(pmt.intern('pdu_in'), self.handle_pdu_in)
+        self.set_msg_handler(pmt.intern('sync_cmd'), self.handle_sync_cmd)
         
         # Start threads
         self.tx_thread.start()
@@ -121,8 +119,9 @@ class blk(gr.sync_block):
         return crc
     
     def handle_msg_in(self, msg):
-        """Handle incoming messages from GUI/application"""
+        """Handle incoming messages from GUI"""
         try:
+            #redundant
             # Handle string messages directly
             if pmt.is_symbol(msg):
                 # Simple text message format: "dst_id:message"
@@ -137,6 +136,7 @@ class blk(gr.sync_block):
                     except ValueError:
                         print(f"[Node {self.node_id}] Invalid destination ID")
             
+            #redundant
             # Handle dictionary messages
             elif pmt.is_dict(msg):
                 meta = pmt.to_python(msg)
@@ -172,7 +172,7 @@ class blk(gr.sync_block):
                 
                 # Convert to bytes
                 if pmt.is_u8vector(data):
-                    print("loop run")	
+                    print(f"User Port {self.node_id} activated")	
                     rx_bytes = bytes(pmt.u8vector_elements(data))	
                     self.rx_queue.put(rx_bytes)
                 elif pmt.is_uniform_vector(data):
@@ -194,7 +194,7 @@ class blk(gr.sync_block):
         packet.extend(self.SYNC_WORD)
         
         # Add header
-        packet.append(self.node_id)  # Source ID
+        packet.append(self.node_id)   # Source ID
         packet.append(dst_id)         # Destination ID
         packet.append(seq_num)        # Sequence number
         packet.append(pkt_type)       # Packet type
@@ -262,6 +262,12 @@ class blk(gr.sync_block):
             return None
     
     def send_sync_burst(self):
+        """Sync Bursts are used before packet transmission to help syncing the SDRs"""
+        burst = bytes(random.getrandbits(8) for _ in range(100))
+        self.transmit_packet(burst)
+
+    def handle_sync_cmd(self, cmd):
+        """Allows for manual syncing if necessary via sync button in GUI"""
         burst = bytes(random.getrandbits(8) for _ in range(1000))
         self.transmit_packet(burst)
 
@@ -300,11 +306,13 @@ class blk(gr.sync_block):
                 retries = 0
                 ack_received = False
 
-                self.send_sync_burst()
+                #self.send_sync_burst()
                 
                 while retries < self.max_retries and not ack_received:
                     # Transmit packet
                     print(f"[Node {self.node_id}] TX: Sending packet seq={seq_num} to node {msg['dst']} (attempt {retries + 1})")
+                    # Attempt to sync before transmission
+                    self.send_sync_burst()
                     self.transmit_packet(packet)
                     self.stats['packets_sent'] += 1
                     
@@ -322,6 +330,7 @@ class blk(gr.sync_block):
                                 ack_received = True
                                 self.stats['acks_received'] += 1
                                 print(f"[Node {self.node_id}] TX: ACK received for seq={seq_num}")
+                                # Informing GUI of message acknowledgment success
                                 output = "TRUE"
                                 msg = pmt.intern(output)
                                 self.message_port_pub(pmt.intern('feedback'), msg)
@@ -336,6 +345,7 @@ class blk(gr.sync_block):
                 
                 if not ack_received:
                     print(f"[Node {self.node_id}] TX: Failed to deliver packet seq={seq_num} after {self.max_retries} attempts")
+                    # Informing GUI of message acknowledgment failure
                     output = "FALSE"
                     msg = pmt.intern(output)
                     self.message_port_pub(pmt.intern('feedback'), msg)
@@ -397,6 +407,7 @@ class blk(gr.sync_block):
                             self.PKT_ACK
                         )
                         print(f"[Node {self.node_id}] RX: Sending ACK for seq={pkt['seq']}")
+                        self.send_sync_burst()
                         self.transmit_packet(ack_packet)
                         self.stats['acks_sent'] += 1
                         

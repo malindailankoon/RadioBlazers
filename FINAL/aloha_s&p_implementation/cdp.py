@@ -8,7 +8,7 @@
 # Title: cdp
 # Author: BellLabz
 # Description: cdp project
-# GNU Radio version: 3.10.9.2
+# GNU Radio version: 3.10.12.0
 
 from PyQt5 import Qt
 from gnuradio import qtgui
@@ -32,6 +32,7 @@ import cdp_epy_block_0_0_2 as epy_block_0_0_2  # embedded python block
 import cdp_epy_block_0_1 as epy_block_0_1  # embedded python block
 import cdp_epy_block_0_1_0 as epy_block_0_1_0  # embedded python block
 import sip
+import threading
 
 
 
@@ -58,7 +59,7 @@ class cdp(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "cdp")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "cdp")
 
         try:
             geometry = self.settings.value("geometry")
@@ -66,6 +67,7 @@ class cdp(gr.top_block, Qt.QWidget):
                 self.restoreGeometry(geometry)
         except BaseException as exc:
             print(f"Qt GUI: Could not restore geometry: {str(exc)}", file=sys.stderr)
+        self.flowgraph_started = threading.Event()
 
         ##################################################
         # Parameters
@@ -608,7 +610,7 @@ class cdp(gr.top_block, Qt.QWidget):
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "cdp")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "cdp")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -745,6 +747,7 @@ def main(top_block_cls=cdp, options=None):
     tb = top_block_cls(MTU=options.MTU)
 
     tb.start()
+    tb.flowgraph_started.set()
 
     tb.show()
 

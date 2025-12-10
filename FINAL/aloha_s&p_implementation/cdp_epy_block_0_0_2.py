@@ -133,7 +133,7 @@ class blk(gr.sync_block):
                         dst_id = int(parts[0])
                         data = parts[1].encode()
                         self.tx_queue.put({'dst': dst_id, 'data': data, 'type': self.PKT_DATA})
-                        print(f"[Node {self.node_id}] Queued message to {dst_id}: {parts[1]}")
+                        print(f"[Node {self.node_id}] 1Queued message to {dst_id}: {parts[1]}")
                     except ValueError:
                         print(f"[Node {self.node_id}] Invalid destination ID")
             
@@ -144,7 +144,7 @@ class blk(gr.sync_block):
                     dst_id = meta['dst']
                     data = meta['data'].encode() if isinstance(meta['data'], str) else meta['data']
                     self.tx_queue.put({'dst': dst_id, 'data': data, 'type': self.PKT_DATA})
-                    print(f"[Node {self.node_id}] Queued message to {dst_id}")
+                    print(f"[Node {self.node_id}] 2Queued message to {dst_id}")
             
             # Handle pair messages (PDU format)
             elif pmt.is_pair(msg):
@@ -157,7 +157,7 @@ class blk(gr.sync_block):
                     elif isinstance(data, list):
                         data = bytes(data)
                     self.tx_queue.put({'dst': dst_id, 'data': data, 'type': self.PKT_DATA})
-                    print(f"[Node {self.node_id}] Queued message to {dst_id}")
+                    print(f"[Node {self.node_id}] 3Queued message to {dst_id}")
                     
         except Exception as e:
             print(f"[Node {self.node_id}] Error handling msg_in: {e}")

@@ -48,6 +48,7 @@ class messenger_gui(gr.basic_block):
 
         # Message ports
         self.message_port_register_out(pmt.intern("out"))    # outgoing messages
+        self.message_port_register_out(pmt.intern("sync_cmd"))
         self.message_port_register_in(pmt.intern("feedback"))# delivery feedback
         self.message_port_register_in(pmt.intern("in_msg"))  # incoming messages from remote/devices
 
@@ -134,9 +135,26 @@ class messenger_gui(gr.basic_block):
         input_layout.addWidget(self.send_button, stretch=0)
         main_layout.addLayout(input_layout)
 
+        self.sync_button = QtWidgets.QPushButton("Sync")
+        self.sync_button.setMinimumHeight(40)
+        self.sync_button.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border-radius: 10px;
+                padding: 8px 16px;
+                font-weight: bold;
+                font-size: 16px;
+            }
+            QPushButton:hover { background-color: #45a049; }
+        """)
+        input_layout.addWidget(self.sync_button, stretch=0)
+        main_layout.addLayout(input_layout)
+
         # Connect GUI signals
         self.send_button.clicked.connect(self.send_message)
         self.input_box.returnPressed.connect(self.send_message)
+        self.sync_button.clicked.connect(self.send_sync_cmd)
 
         # Track last sent message timestamp widget (simple approach)
         # If you want per-message tracking, change to a list/map of widgets per message id.
@@ -144,6 +162,14 @@ class messenger_gui(gr.basic_block):
 
         # show window
         self.qt_widget.show()
+
+    def send_sync_cmd(self):
+        sync_cmd_message = "T"
+        try:
+            self.message_port_pub(pmt.intern("sync_cmd"), pmt.intern(sync_cmd_message))
+        except Exception:
+            # fallback to generic intern
+            self.message_port_pub(pmt.intern("sync_cmd"), pmt.intern(sync_cmd_message))
 
     def send_message(self):
         """Called from GUI thread when user presses Send or Enter."""

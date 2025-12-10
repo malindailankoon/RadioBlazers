@@ -1133,11 +1133,10 @@ blocks:
     timeout: '0.2'
   states:
     _io_cache: ('Mesh Packet Comm', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
-      ('timeout', '1.0'), ('max_retries', '3')], [('msg_in', 'message', 1), ('pdu_in',
+      ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1), ('msg_in',
       'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
-      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
-      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
-      'max_retries', 'node_id', 'timeout'])
+      'message', 1)], '\nMesh Network Packet Communication Block\nHandles packet transmission/reception
+      with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1400,11 +1399,10 @@ blocks:
     timeout: '0.2'
   states:
     _io_cache: ('Mesh Packet Comm', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
-      ('timeout', '1.0'), ('max_retries', '3')], [('msg_in', 'message', 1), ('pdu_in',
+      ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1), ('msg_in',
       'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
-      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
-      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
-      'max_retries', 'node_id', 'timeout'])
+      'message', 1)], '\nMesh Network Packet Communication Block\nHandles packet transmission/reception
+      with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1670,11 +1668,11 @@ blocks:
     timeout: '0.2'
   states:
     _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
-      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('msg_in', 'message', 1),
-      ('pdu_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
-      1), ('msg_out', 'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
-      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
-      'max_retries', 'node_id', 'timeout'])
+      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1),
+      ('msg_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
+      1), ('msg_out', 'message', 1)], '\nMesh Network Packet Communication Block\nHandles
+      packet transmission/reception with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries',
+      'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1741,30 +1739,31 @@ blocks:
       \ 1)\n                    try:\n                        dst_id = int(parts[0])\n\
       \                        data = parts[1].encode()\n                        self.tx_queue.put({'dst':\
       \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                        print(f\"\
-      [Node {self.node_id}] Queued message to {dst_id}: {parts[1]}\")\n          \
-      \          except ValueError:\n                        print(f\"[Node {self.node_id}]\
+      [Node {self.node_id}] 1Queued message to {dst_id}: {parts[1]}\")\n         \
+      \           except ValueError:\n                        print(f\"[Node {self.node_id}]\
       \ Invalid destination ID\")\n            \n            # Handle dictionary messages\n\
       \            elif pmt.is_dict(msg):\n                meta = pmt.to_python(msg)\n\
       \                if 'dst' in meta and 'data' in meta:\n                    dst_id\
       \ = meta['dst']\n                    data = meta['data'].encode() if isinstance(meta['data'],\
       \ str) else meta['data']\n                    self.tx_queue.put({'dst': dst_id,\
       \ 'data': data, 'type': self.PKT_DATA})\n                    print(f\"[Node\
-      \ {self.node_id}] Queued message to {dst_id}\")\n            \n            #\
-      \ Handle pair messages (PDU format)\n            elif pmt.is_pair(msg):\n  \
-      \              meta = pmt.to_python(pmt.car(msg))\n                data = pmt.to_python(pmt.cdr(msg))\n\
-      \                if isinstance(meta, dict) and 'dst' in meta:\n            \
-      \        dst_id = meta['dst']\n                    if isinstance(data, str):\n\
-      \                        data = data.encode()\n                    elif isinstance(data,\
-      \ list):\n                        data = bytes(data)\n                    self.tx_queue.put({'dst':\
-      \ dst_id, 'data': data, 'type': self.PKT_DATA})\n                    print(f\"\
-      [Node {self.node_id}] Queued message to {dst_id}\")\n                    \n\
-      \        except Exception as e:\n            print(f\"[Node {self.node_id}]\
-      \ Error handling msg_in: {e}\")\n    \n    def handle_pdu_in(self, pdu):\n \
-      \       \"\"\"Handle incoming PDUs from demodulator\"\"\"\n        try:\n  \
-      \          # Extract PDU data\n            if pmt.is_pair(pdu):\n          \
-      \      meta = pmt.car(pdu)\n                data = pmt.cdr(pdu)\n          \
-      \      \n                # Convert to bytes\n                if pmt.is_u8vector(data):\n\
-      \                    print(\"loop run\")\t\n                    rx_bytes = bytes(pmt.u8vector_elements(data))\t\
+      \ {self.node_id}] 2Queued message to {dst_id}\")\n            \n           \
+      \ # Handle pair messages (PDU format)\n            elif pmt.is_pair(msg):\n\
+      \                meta = pmt.to_python(pmt.car(msg))\n                data =\
+      \ pmt.to_python(pmt.cdr(msg))\n                if isinstance(meta, dict) and\
+      \ 'dst' in meta:\n                    dst_id = meta['dst']\n               \
+      \     if isinstance(data, str):\n                        data = data.encode()\n\
+      \                    elif isinstance(data, list):\n                        data\
+      \ = bytes(data)\n                    self.tx_queue.put({'dst': dst_id, 'data':\
+      \ data, 'type': self.PKT_DATA})\n                    print(f\"[Node {self.node_id}]\
+      \ 3Queued message to {dst_id}\")\n                    \n        except Exception\
+      \ as e:\n            print(f\"[Node {self.node_id}] Error handling msg_in: {e}\"\
+      )\n    \n    def handle_pdu_in(self, pdu):\n        \"\"\"Handle incoming PDUs\
+      \ from demodulator\"\"\"\n        try:\n            # Extract PDU data\n   \
+      \         if pmt.is_pair(pdu):\n                meta = pmt.car(pdu)\n      \
+      \          data = pmt.cdr(pdu)\n                \n                # Convert\
+      \ to bytes\n                if pmt.is_u8vector(data):\n                    print(\"\
+      loop run\")\t\n                    rx_bytes = bytes(pmt.u8vector_elements(data))\t\
       \n                    self.rx_queue.put(rx_bytes)\n                elif pmt.is_uniform_vector(data):\n\
       \                    # Handle float32 or other vector types\n              \
       \      elements = pmt.to_python(data)\n                    # Convert to bytes\
@@ -1940,11 +1939,11 @@ blocks:
     timeout: '0.2'
   states:
     _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
-      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('msg_in', 'message', 1),
-      ('pdu_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
-      1), ('msg_out', 'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
-      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
-      'max_retries', 'node_id', 'timeout'])
+      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1),
+      ('msg_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
+      1), ('msg_out', 'message', 1)], '\nMesh Network Packet Communication Block\nHandles
+      packet transmission/reception with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries',
+      'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -2139,13 +2138,13 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''in_msg'',
-      ''message'', 1), (''feedback'', ''message'', 1)], [(''out'', ''message'', 1)],
-      ''\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing
-      messages: published on message port "out" with address prepended as "addr:body"\n    -
-      Feedback port "feedback": updates delivery timestamp / failed status\n    -
-      Incoming messages: received on port "in_msg" (same format "addr:body") and displayed\n      on
-      the left in a different color.\n    '', [])'
+    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''feedback'',
+      ''message'', 1), (''in_msg'', ''message'', 1)], [(''out'', ''message'', 1)],
+      ''\nWhatsApp-style Messenger GUI (GNU Radio embedded block).\n- Outgoing messages:
+      published on message port "out" with address prepended as "addr:body"\n- Feedback
+      port "feedback": updates delivery timestamp / failed status\n- Incoming messages:
+      received on port "in_msg" (same format "addr:body") and displayed\n  on the
+      left in a different color.\n'', [])'
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -2340,13 +2339,13 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''in_msg'',
-      ''message'', 1), (''feedback'', ''message'', 1)], [(''out'', ''message'', 1)],
-      ''\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing
-      messages: published on message port "out" with address prepended as "addr:body"\n    -
-      Feedback port "feedback": updates delivery timestamp / failed status\n    -
-      Incoming messages: received on port "in_msg" (same format "addr:body") and displayed\n      on
-      the left in a different color.\n    '', [])'
+    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''feedback'',
+      ''message'', 1), (''in_msg'', ''message'', 1)], [(''out'', ''message'', 1)],
+      ''\nWhatsApp-style Messenger GUI (GNU Radio embedded block).\n- Outgoing messages:
+      published on message port "out" with address prepended as "addr:body"\n- Feedback
+      port "feedback": updates delivery timestamp / failed status\n- Incoming messages:
+      received on port "in_msg" (same format "addr:body") and displayed\n  on the
+      left in a different color.\n'', [])'
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -3472,4 +3471,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.9.2
+  grc_version: 3.10.12.0
