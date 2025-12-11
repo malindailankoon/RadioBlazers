@@ -558,6 +558,443 @@ blocks:
     coordinate: [832, 892.0]
     rotation: 0
     state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\nfrom gnuradio\
+      \ import gr\nfrom PyQt5 import QtWidgets, QtCore, QtGui\nimport sys\nimport\
+      \ pmt\nfrom datetime import datetime\nimport os\n\n# For sound effects\ntry:\n\
+      \    import pygame\n    pygame.mixer.init()\n    SOUND_ENABLED = True\nexcept:\n\
+      \    SOUND_ENABLED = False\n    print(\"Sound disabled: pygame not installed\"\
+      )\n\nclass WallpaperScrollArea(QtWidgets.QScrollArea):\n    def __init__(self,\
+      \ bg_image=\"\", parent=None):\n        super().__init__(parent)\n        self.setWidgetResizable(True)\n\
+      \        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n \
+      \       self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n    \
+      \    \n        # Hospital-themed background gradient\n        self.bg_color1\
+      \ = QtGui.QColor(240, 248, 255)  # Alice Blue\n        self.bg_color2 = QtGui.QColor(230,\
+      \ 240, 255)  # Lighter blue\n        \n    def paintEvent(self, event):\n  \
+      \      painter = QtGui.QPainter(self.viewport())\n        \n        # Draw gradient\
+      \ background\n        gradient = QtGui.QLinearGradient(0, 0, 0, self.height())\n\
+      \        gradient.setColorAt(0, self.bg_color1)\n        gradient.setColorAt(1,\
+      \ self.bg_color2)\n        painter.fillRect(self.rect(), gradient)\n       \
+      \ \n        # Draw subtle grid lines (like hospital forms)\n        painter.setPen(QtGui.QPen(QtGui.QColor(220,\
+      \ 230, 240), 1))\n        for i in range(0, self.height(), 20):\n          \
+      \  painter.drawLine(0, i, self.width(), i)\n        \n        super().paintEvent(event)\n\
+      \n\nclass AnimatedButton(QtWidgets.QPushButton):\n    \"\"\"Button with smooth\
+      \ animation for hospital theme\"\"\"\n    def __init__(self, text, parent=None):\n\
+      \        super().__init__(text, parent)\n        self.animation = QtCore.QPropertyAnimation(self,\
+      \ b\"geometry\")\n        self.animation.setDuration(150)\n        self.default_style\
+      \ = \"\"\n        \n    def enterEvent(self, event):\n        self.animation.stop()\n\
+      \        self.animation.setStartValue(self.geometry())\n        self.animation.setEndValue(QtCore.QRect(\n\
+      \            self.x() - 1, self.y() - 1,\n            self.width() + 2, self.height()\
+      \ + 2\n        ))\n        self.animation.start()\n        super().enterEvent(event)\n\
+      \        \n    def leaveEvent(self, event):\n        self.animation.stop()\n\
+      \        self.animation.setStartValue(self.geometry())\n        self.animation.setEndValue(QtCore.QRect(\n\
+      \            self.x() + 1, self.y() + 1,\n            self.width() - 2, self.height()\
+      \ - 2\n        ))\n        self.animation.start()\n        super().leaveEvent(event)\n\
+      \n\nclass CharacterCounter(QtWidgets.QLabel):\n    \"\"\"Character counter widget\
+      \ that changes color based on remaining characters\"\"\"\n    def __init__(self,\
+      \ max_chars=255, parent=None):\n        super().__init__(parent)\n        self.max_chars\
+      \ = max_chars\n        self.current_chars = 0\n        self.update_display()\n\
+      \        \n    def update_count(self, text):\n        \"\"\"Update the counter\
+      \ with new text length\"\"\"\n        self.current_chars = len(text)\n     \
+      \   self.update_display()\n        \n    def update_display(self):\n       \
+      \ \"\"\"Update the display with current count and appropriate color\"\"\"\n\
+      \        remaining = self.max_chars - self.current_chars\n        percentage\
+      \ = (self.current_chars / self.max_chars) * 100\n        \n        # Set text\n\
+      \        self.setText(f\"{self.current_chars}/{self.max_chars}\")\n        \n\
+      \        # Change color based on remaining characters\n        if remaining\
+      \ < 0:\n            # Over limit - red\n            self.setStyleSheet(\"\"\"\
+      \n                QLabel {\n                    color: #E53E3E;\n          \
+      \          font-weight: bold;\n                    font-size: 12px;\n      \
+      \          }\n            \"\"\")\n        elif remaining <= 25:  # Less than\
+      \ 25 characters left\n            # Warning - orange\n            self.setStyleSheet(\"\
+      \"\"\n                QLabel {\n                    color: #D69E2E;\n      \
+      \              font-weight: bold;\n                    font-size: 12px;\n  \
+      \              }\n            \"\"\")\n        elif percentage >= 75:  # Over\
+      \ 75% used\n            # Caution - yellow\n            self.setStyleSheet(\"\
+      \"\"\n                QLabel {\n                    color: #ECC94B;\n      \
+      \              font-weight: bold;\n                    font-size: 12px;\n  \
+      \              }\n            \"\"\")\n        else:\n            # Normal -\
+      \ green/blue\n            self.setStyleSheet(\"\"\"\n                QLabel\
+      \ {\n                    color: #38A169;\n                    font-weight: bold;\n\
+      \                    font-size: 12px;\n                }\n            \"\"\"\
+      )\n            \n    def is_valid(self):\n        \"\"\"Check if current text\
+      \ length is within limit\"\"\"\n        return self.current_chars <= self.max_chars\
+      \ and self.current_chars > 0\n\n\nclass MessageBubble(QtWidgets.QFrame):\n \
+      \   \"\"\"Individual message bubble for hospital paging system\"\"\"\n    def\
+      \ __init__(self, text, is_outgoing=True, address=\"\", numeric_address=\"\"\
+      , parent=None):\n        super().__init__(parent)\n        self.is_outgoing\
+      \ = is_outgoing\n        self.address = address  # Display address (e.g., \"\
+      Station 1\")\n        self.numeric_address = numeric_address  # Actual numeric\
+      \ address (e.g., \"1\")\n        \n        self.setFrameStyle(QtWidgets.QFrame.NoFrame)\n\
+      \        self.setFixedWidth(400)\n        \n        main_layout = QtWidgets.QVBoxLayout(self)\n\
+      \        main_layout.setContentsMargins(10, 8, 10, 8)\n        main_layout.setSpacing(4)\n\
+      \        \n        # Header with address and time\n        header_layout = QtWidgets.QHBoxLayout()\n\
+      \        \n        if is_outgoing:\n            header_label = QtWidgets.QLabel(f\"\
+      TO: {address}\")\n            header_label.setStyleSheet(\"\"\"\n          \
+      \      QLabel {\n                    color: #2C5282;\n                    font-weight:\
+      \ bold;\n                    font-size: 11px;\n                }\n         \
+      \   \"\"\")\n            header_layout.addWidget(header_label, alignment=QtCore.Qt.AlignRight)\n\
+      \        else:\n            header_label = QtWidgets.QLabel(f\"FROM: {address}\"\
+      )\n            header_label.setStyleSheet(\"\"\"\n                QLabel {\n\
+      \                    color: #234E52;\n                    font-weight: bold;\n\
+      \                    font-size: 11px;\n                }\n            \"\"\"\
+      )\n            header_layout.addWidget(header_label, alignment=QtCore.Qt.AlignLeft)\n\
+      \        \n        time_label = QtWidgets.QLabel(datetime.now().strftime(\"\
+      %H:%M\"))\n        time_label.setStyleSheet(\"\"\"\n            QLabel {\n \
+      \               color: #718096;\n                font-size: 10px;\n        \
+      \    }\n        \"\"\")\n        header_layout.addWidget(time_label, alignment=QtCore.Qt.AlignRight\
+      \ if is_outgoing else QtCore.Qt.AlignLeft)\n        main_layout.addLayout(header_layout)\n\
+      \        \n        # Message text\n        text_label = QtWidgets.QLabel(text)\n\
+      \        text_label.setWordWrap(True)\n        text_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)\n\
+      \        \n        if is_outgoing:\n            # Outgoing: doctor/nurse sending\n\
+      \            self.setStyleSheet(\"\"\"\n                MessageBubble {\n  \
+      \                  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n\
+      \                        stop:0 #BEE3F8, stop:1 #90CDF4);\n                \
+      \    border: 2px solid #4299E1;\n                    border-radius: 8px;\n \
+      \               }\n            \"\"\")\n            text_label.setStyleSheet(\"\
+      \"\"\n                QLabel {\n                    color: #2D3748;\n      \
+      \              font-size: 13px;\n                    font-weight: 500;\n   \
+      \                 padding: 8px;\n                }\n            \"\"\")\n  \
+      \      else:\n            # Incoming: patient/other staff\n            self.setStyleSheet(\"\
+      \"\"\n                MessageBubble {\n                    background-color:\
+      \ qlineargradient(x1:0, y1:0, x2:1, y2:1,\n                        stop:0 #F0FFF4,\
+      \ stop:1 #C6F6D5);\n                    border: 2px solid #48BB78;\n       \
+      \             border-radius: 8px;\n                }\n            \"\"\")\n\
+      \            text_label.setStyleSheet(\"\"\"\n                QLabel {\n   \
+      \                 color: #22543D;\n                    font-size: 13px;\n  \
+      \                  font-weight: 500;\n                    padding: 8px;\n  \
+      \              }\n            \"\"\")\n        \n        main_layout.addWidget(text_label)\n\
+      \        \n        # Status indicator (only for outgoing messages)\n       \
+      \ if is_outgoing:\n            self.status_label = QtWidgets.QLabel(\"\u23F3\
+      \ Sending...\")\n            self.status_label.setStyleSheet(\"\"\"\n      \
+      \          QLabel {\n                    color: #D69E2E;\n                 \
+      \   font-size: 10px;\n                    font-weight: bold;\n             \
+      \   }\n            \"\"\")\n            main_layout.addWidget(self.status_label,\
+      \ alignment=QtCore.Qt.AlignRight)\n        \n        # Small label showing actual\
+      \ numeric address (subtle, for debugging)\n        if numeric_address and numeric_address\
+      \ != address:\n            numeric_label = QtWidgets.QLabel(f\"[ID: {numeric_address}]\"\
+      )\n            numeric_label.setStyleSheet(\"\"\"\n                QLabel {\n\
+      \                    color: #A0AEC0;\n                    font-size: 9px;\n\
+      \                    font-style: italic;\n                }\n            \"\"\
+      \")\n            if is_outgoing:\n                main_layout.addWidget(numeric_label,\
+      \ alignment=QtCore.Qt.AlignRight)\n            else:\n                main_layout.addWidget(numeric_label,\
+      \ alignment=QtCore.Qt.AlignLeft)\n        \n        # Animation for new messages\n\
+      \        self.fade_animation = QtCore.QPropertyAnimation(self, b\"windowOpacity\"\
+      )\n        self.fade_animation.setDuration(500)\n        self.fade_animation.setStartValue(0)\n\
+      \        self.fade_animation.setEndValue(1)\n        self.fade_animation.start()\n\
+      \n\nclass _GuiPoster(QtCore.QObject):\n    \"\"\"Helper QObject to post strings\
+      \ into the Qt thread safely.\"\"\"\n    sig = QtCore.pyqtSignal(str)  # emits\
+      \ text payload\n\n    def __init__(self):\n        super().__init__()\n\n\n\
+      class messenger_gui(gr.basic_block):\n    \"\"\"\n    Hospital Paging System\
+      \ GUI (GNU Radio embedded block).\n    - Outgoing messages: published on message\
+      \ port \"out\" with numeric address prepended as \"addr:body\"\n    - Feedback\
+      \ port \"feedback\": updates delivery status\n    - Incoming messages: received\
+      \ on port \"in_msg\" (same numeric format \"addr:body\")\n    \"\"\"\n\n   \
+      \ def __init__(self, bg_image=\"\"):\n        gr.basic_block.__init__(\n   \
+      \         self,\n            name=\"Hospital Paging System\",\n            in_sig=None,\n\
+      \            out_sig=None,\n        )\n\n        # Message ports\n        self.message_port_register_out(pmt.intern(\"\
+      out\"))    # outgoing messages\n        self.message_port_register_out(pmt.intern(\"\
+      sync_cmd\"))\n        self.message_port_register_in(pmt.intern(\"feedback\"\
+      ))# delivery feedback\n        self.message_port_register_in(pmt.intern(\"in_msg\"\
+      ))  # incoming messages from remote/devices\n\n        # Bind handlers\n   \
+      \     self.set_msg_handler(pmt.intern(\"feedback\"), self._process_feedback)\n\
+      \        self.set_msg_handler(pmt.intern(\"in_msg\"), self._receive_message)\n\
+      \n        # Poster used to safely move messages to GUI thread\n        self._poster\
+      \ = _GuiPoster()\n        self._poster.sig.connect(self._display_incoming) \
+      \ # connect to GUI-thread handler\n\n        # Message tracking\n        self.message_widgets\
+      \ = {}  # Store message widgets for feedback\n        self.message_counter =\
+      \ 0\n        self.MAX_CHARS = 255  # Maximum characters allowed\n\n        #\
+      \ Qt Application\n        self.app = QtWidgets.QApplication.instance()\n   \
+      \     if self.app is None:\n            self.app = QtWidgets.QApplication(sys.argv)\n\
+      \n        # Set hospital-like font\n        font = QtGui.QFont(\"Arial\", 10)\n\
+      \        self.app.setFont(font)\n\n        # Main window\n        self.qt_widget\
+      \ = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\U0001F3E5\
+      \ Hospital Paging System - Station 1\")\n        self.qt_widget.resize(1000,\
+      \ 800)\n        self.qt_widget.setStyleSheet(\"\"\"\n            QWidget {\n\
+      \                background-color: #F7FAFC;\n            }\n        \"\"\")\n\
+      \n        main_layout = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(20,\
+      \ 20, 20, 20)\n        main_layout.setSpacing(15)\n        self.qt_widget.setLayout(main_layout)\n\
+      \n        # Title Bar\n        title_layout = QtWidgets.QHBoxLayout()\n    \
+      \    \n        # Hospital logo/icon\n        icon_label = QtWidgets.QLabel(\"\
+      \U0001F3E5\")\n        icon_label.setStyleSheet(\"\"\"\n            QLabel {\n\
+      \                font-size: 36px;\n            }\n        \"\"\")\n        title_layout.addWidget(icon_label)\n\
+      \        \n        title_label = QtWidgets.QLabel(\"HOSPITAL PAGING SYSTEM\"\
+      )\n        title_label.setStyleSheet(\"\"\"\n            QLabel {\n        \
+      \        color: #2C5282;\n                font-size: 24px;\n               \
+      \ font-weight: bold;\n                font-family: 'Arial Black';\n        \
+      \    }\n        \"\"\")\n        title_layout.addWidget(title_label)\n     \
+      \   title_layout.addStretch()\n        \n        # System status\n        status_label\
+      \ = QtWidgets.QLabel(\"\U0001F7E2 ONLINE\")\n        status_label.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                color: #38A169;\n              \
+      \  font-size: 14px;\n                font-weight: bold;\n                background-color:\
+      \ #C6F6D5;\n                padding: 4px 12px;\n                border-radius:\
+      \ 12px;\n                border: 1px solid #38A169;\n            }\n       \
+      \ \"\"\")\n        title_layout.addWidget(status_label)\n        \n        main_layout.addLayout(title_layout)\n\
+      \n        # Control Panel\n        control_frame = QtWidgets.QFrame()\n    \
+      \    control_frame.setStyleSheet(\"\"\"\n            QFrame {\n            \
+      \    background-color: #EDF2F7;\n                border: 2px solid #CBD5E0;\n\
+      \                border-radius: 10px;\n            }\n        \"\"\")\n    \
+      \    control_frame.setFixedHeight(150)\n        \n        control_layout = QtWidgets.QHBoxLayout(control_frame)\n\
+      \        control_layout.setContentsMargins(20, 15, 20, 15)\n        \n     \
+      \   # Recipient Selection - GUI shows \"Station X\" but uses numeric address\
+      \ internally\n        recipient_group = QtWidgets.QGroupBox(\"PAGE RECIPIENT\"\
+      )\n        recipient_group.setStyleSheet(\"\"\"\n            QGroupBox {\n \
+      \               color: #4A5568;\n                font-weight: bold;\n      \
+      \          font-size: 12px;\n                border: 2px solid #A0AEC0;\n  \
+      \              border-radius: 6px;\n                margin-top: 12px;\n    \
+      \            padding-top: 10px;\n            }\n            QGroupBox::title\
+      \ {\n                subcontrol-origin: margin;\n                left: 10px;\n\
+      \                padding: 0 10px 0 10px;\n            }\n        \"\"\")\n \
+      \       recipient_layout = QtWidgets.QHBoxLayout(recipient_group)\n        \n\
+      \        # Create stations 1-10 for display, but we'll use numeric addresses\n\
+      \        self.addr_box = QtWidgets.QComboBox()\n        # Add stations 1-10\
+      \ with display names\n        for i in range(1, 11):\n            self.addr_box.addItem(f\"\
+      Station {i}\", userData=str(i))  # Display: \"Station 1\", Data: \"1\"\n   \
+      \     \n        # Add some special stations with their numeric IDs\n       \
+      \ self.addr_box.addItem(\"Emergency Room\", userData=\"11\")\n        self.addr_box.addItem(\"\
+      Pharmacy\", userData=\"12\")\n        self.addr_box.addItem(\"Lab\", userData=\"\
+      13\")\n        self.addr_box.addItem(\"Radiology\", userData=\"14\")\n     \
+      \   \n        self.addr_box.setFixedWidth(180)\n        self.addr_box.setStyleSheet(\"\
+      \"\"\n            QComboBox {\n                background-color: white;\n  \
+      \              border: 2px solid #4299E1;\n                border-radius: 6px;\n\
+      \                padding: 8px;\n                font-size: 14px;\n         \
+      \       font-weight: bold;\n            }\n            QComboBox:hover {\n \
+      \               border-color: #3182CE;\n            }\n            QComboBox::drop-down\
+      \ {\n                border: none;\n            }\n        \"\"\")\n       \
+      \ recipient_layout.addWidget(self.addr_box)\n        control_layout.addWidget(recipient_group)\n\
+      \n        control_layout.addSpacing(20)\n\n        # Message Input with character\
+      \ counter\n        input_group = QtWidgets.QGroupBox(\"MESSAGE\")\n        input_group.setStyleSheet(\"\
+      \"\"\n            QGroupBox {\n                color: #4A5568;\n           \
+      \     font-weight: bold;\n                font-size: 12px;\n               \
+      \ border: 2px solid #A0AEC0;\n                border-radius: 6px;\n        \
+      \        margin-top: 12px;\n                padding-top: 10px;\n           \
+      \ }\n            QGroupBox::title {\n                subcontrol-origin: margin;\n\
+      \                left: 10px;\n                padding: 0 10px 0 10px;\n    \
+      \        }\n        \"\"\")\n        input_layout = QtWidgets.QVBoxLayout(input_group)\n\
+      \        \n        # Character counter at the top\n        counter_layout =\
+      \ QtWidgets.QHBoxLayout()\n        counter_label = QtWidgets.QLabel(\"Characters:\"\
+      )\n        counter_label.setStyleSheet(\"\"\"\n            QLabel {\n      \
+      \          color: #4A5568;\n                font-size: 11px;\n             \
+      \   font-weight: bold;\n            }\n        \"\"\")\n        counter_layout.addWidget(counter_label)\n\
+      \        \n        self.char_counter = CharacterCounter(max_chars=self.MAX_CHARS)\n\
+      \        counter_layout.addWidget(self.char_counter)\n        counter_layout.addStretch()\n\
+      \        \n        # Add limit info\n        limit_label = QtWidgets.QLabel(f\"\
+      (Max: {self.MAX_CHARS} characters)\")\n        limit_label.setStyleSheet(\"\"\
+      \"\n            QLabel {\n                color: #718096;\n                font-size:\
+      \ 10px;\n                font-style: italic;\n            }\n        \"\"\"\
+      )\n        counter_layout.addWidget(limit_label)\n        input_layout.addLayout(counter_layout)\n\
+      \        \n        # Message input box\n        input_box_layout = QtWidgets.QHBoxLayout()\n\
+      \        self.input_box = QtWidgets.QLineEdit()\n        self.input_box.setPlaceholderText(f\"\
+      Type your message here (max {self.MAX_CHARS} characters)...\")\n        self.input_box.setFixedHeight(40)\n\
+      \        self.input_box.setStyleSheet(\"\"\"\n            QLineEdit {\n    \
+      \            background-color: white;\n                border: 2px solid #CBD5E0;\n\
+      \                border-radius: 8px;\n                padding: 8px 12px;\n \
+      \               font-size: 14px;\n            }\n            QLineEdit:focus\
+      \ {\n                border-color: #4299E1;\n            }\n            QLineEdit[invalid=\"\
+      true\"] {\n                border-color: #E53E3E;\n                background-color:\
+      \ #FFF5F5;\n            }\n        \"\"\")\n        self.input_box.textChanged.connect(self.update_character_counter)\n\
+      \        input_box_layout.addWidget(self.input_box)\n        input_layout.addLayout(input_box_layout)\n\
+      \        \n        control_layout.addWidget(input_group)\n\n        control_layout.addSpacing(20)\n\
+      \n        # Action Buttons\n        button_layout = QtWidgets.QVBoxLayout()\n\
+      \        button_layout.setSpacing(10)\n        \n        self.send_button =\
+      \ AnimatedButton(\"\U0001F4E4 SEND PAGE\")\n        self.send_button.setFixedSize(120,\
+      \ 40)\n        self.send_button.setStyleSheet(\"\"\"\n            QPushButton\
+      \ {\n                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n\
+      \                    stop:0 #4299E1, stop:1 #3182CE);\n                color:\
+      \ white;\n                font-weight: bold;\n                font-size: 13px;\n\
+      \                border: none;\n                border-radius: 8px;\n      \
+      \          padding: 8px;\n            }\n            QPushButton:hover {\n \
+      \               background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n\
+      \                    stop:0 #3182CE, stop:1 #2B6CB0);\n            }\n     \
+      \       QPushButton:pressed {\n                background-color: #2C5282;\n\
+      \            }\n            QPushButton:disabled {\n                background-color:\
+      \ #CBD5E0;\n                color: #718096;\n            }\n        \"\"\")\n\
+      \        \n        self.sync_button = AnimatedButton(\"\U0001F504 SYNC\")\n\
+      \        self.sync_button.setFixedSize(120, 40)\n        self.sync_button.setStyleSheet(\"\
+      \"\"\n            QPushButton {\n                background-color: qlineargradient(x1:0,\
+      \ y1:0, x2:1, y2:1,\n                    stop:0 #38A169, stop:1 #2F855A);\n\
+      \                color: white;\n                font-weight: bold;\n       \
+      \         font-size: 13px;\n                border: none;\n                border-radius:\
+      \ 8px;\n                padding: 8px;\n            }\n            QPushButton:hover\
+      \ {\n                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n\
+      \                    stop:0 #2F855A, stop:1 #276749);\n            }\n     \
+      \       QPushButton:pressed {\n                background-color: #22543D;\n\
+      \            }\n        \"\"\")\n        \n        button_layout.addWidget(self.send_button)\n\
+      \        button_layout.addWidget(self.sync_button)\n        control_layout.addLayout(button_layout)\n\
+      \        \n        main_layout.addWidget(control_frame)\n\n        # Messages\
+      \ Display Area\n        messages_frame = QtWidgets.QFrame()\n        messages_frame.setStyleSheet(\"\
+      \"\"\n            QFrame {\n                background-color: #F7FAFC;\n   \
+      \             border: 2px solid #CBD5E0;\n                border-radius: 10px;\n\
+      \            }\n        \"\"\")\n        \n        messages_layout = QtWidgets.QVBoxLayout(messages_frame)\n\
+      \        messages_layout.setContentsMargins(15, 15, 15, 15)\n        \n    \
+      \    # Messages header\n        messages_header = QtWidgets.QLabel(\"\U0001F4E8\
+      \ MESSAGE LOG\")\n        messages_header.setStyleSheet(\"\"\"\n           \
+      \ QLabel {\n                color: #4A5568;\n                font-size: 16px;\n\
+      \                font-weight: bold;\n                padding-bottom: 10px;\n\
+      \                border-bottom: 2px solid #E2E8F0;\n            }\n        \"\
+      \"\")\n        messages_layout.addWidget(messages_header)\n        \n      \
+      \  # Scroll area for messages\n        self.scroll_area = WallpaperScrollArea()\n\
+      \        self.scroll_area.setWidgetResizable(True)\n        \n        # Chat\
+      \ container\n        self.chat_container = QtWidgets.QWidget()\n        self.chat_layout\
+      \ = QtWidgets.QVBoxLayout(self.chat_container)\n        self.chat_layout.setAlignment(QtCore.Qt.AlignTop)\n\
+      \        self.chat_layout.setSpacing(12)\n        self.chat_container.setLayout(self.chat_layout)\n\
+      \        self.scroll_area.setWidget(self.chat_container)\n        \n       \
+      \ messages_layout.addWidget(self.scroll_area)\n        main_layout.addWidget(messages_frame,\
+      \ stretch=1)\n\n        # Footer\n        footer_layout = QtWidgets.QHBoxLayout()\n\
+      \        footer_label = QtWidgets.QLabel(\"\xA9 RadioBlazers | EN2130 Communication\
+      \ Design Project | Hospital Paging System\")\n        footer_label.setStyleSheet(\"\
+      \"\"\n            QLabel {\n                color: #718096;\n              \
+      \  font-size: 11px;\n                font-style: italic;\n            }\n  \
+      \      \"\"\")\n        footer_layout.addWidget(footer_label)\n        main_layout.addLayout(footer_layout)\n\
+      \n        # Connect GUI signals\n        self.send_button.clicked.connect(self.send_message)\n\
+      \        self.input_box.returnPressed.connect(self.send_message)\n        self.sync_button.clicked.connect(self.send_sync_cmd)\n\
+      \        \n        # Initial button state\n        self.update_send_button_state()\n\
+      \n        # Show window\n        self.qt_widget.show()\n        \n    def update_character_counter(self):\n\
+      \        \"\"\"Update the character counter when text changes\"\"\"\n      \
+      \  text = self.input_box.text()\n        self.char_counter.update_count(text)\n\
+      \        self.update_send_button_state()\n        \n        # Update input box\
+      \ style based on character count\n        if len(text) > self.MAX_CHARS:\n \
+      \           self.input_box.setProperty(\"invalid\", True)\n        else:\n \
+      \           self.input_box.setProperty(\"invalid\", False)\n        self.input_box.style().polish(self.input_box)\n\
+      \        \n    def update_send_button_state(self):\n        \"\"\"Enable/disable\
+      \ send button based on character count\"\"\"\n        text = self.input_box.text().strip()\n\
+      \        char_count = len(text)\n        \n        # Disable if text is empty\
+      \ or exceeds max characters\n        if not text or char_count > self.MAX_CHARS:\n\
+      \            self.send_button.setEnabled(False)\n        else:\n           \
+      \ self.send_button.setEnabled(True)\n            \n    def play_sound(self,\
+      \ sound_type):\n        \"\"\"Play sound effects for interactions\"\"\"\n  \
+      \      if not SOUND_ENABLED:\n            return\n            \n        try:\n\
+      \            if sound_type == \"send\":\n                # Generate a beep sound\n\
+      \                pygame.mixer.Sound(buffer=bytes([128 + int(127 * (i % 255)\
+      \ / 255) \n                    for i in range(44100 // 4)])).play()\n      \
+      \      elif sound_type == \"button\":\n                pygame.mixer.Sound(buffer=bytes([128\
+      \ + int(127 * (i % 128) / 127) \n                    for i in range(44100 //\
+      \ 8)])).play()\n            elif sound_type == \"receive\":\n              \
+      \  pygame.mixer.Sound(buffer=bytes([128 + int(127 * (i % 512) / 511) \n    \
+      \                for i in range(44100 // 2)])).play()\n            elif sound_type\
+      \ == \"error\":\n                pygame.mixer.Sound(buffer=bytes([128 + int(127\
+      \ * (i % 64) / 63) \n                    for i in range(44100 // 16)])).play()\n\
+      \        except:\n            pass\n\n    def send_sync_cmd(self):\n       \
+      \ \"\"\"Send synchronization command\"\"\"\n        self.play_sound(\"button\"\
+      )\n        sync_cmd_message = \"T\"\n        try:\n            self.message_port_pub(pmt.intern(\"\
+      sync_cmd\"), pmt.intern(sync_cmd_message))\n        except Exception:\n    \
+      \        self.message_port_pub(pmt.intern(\"sync_cmd\"), pmt.intern(sync_cmd_message))\n\
+      \        \n        # Show sync animation\n        self.sync_button.setText(\"\
+      \U0001F504 SYNCING...\")\n        QtCore.QTimer.singleShot(1000, lambda: self.sync_button.setText(\"\
+      \U0001F504 SYNC\"))\n\n    def send_message(self):\n        \"\"\"Called from\
+      \ GUI thread when user sends a message.\"\"\"\n        text = self.input_box.text().strip()\n\
+      \        if not text:\n            return\n            \n        # Check character\
+      \ limit\n        if len(text) > self.MAX_CHARS:\n            self.play_sound(\"\
+      error\")\n            # Show error animation\n            self.input_box.setStyleSheet(\"\
+      \"\"\n                QLineEdit {\n                    background-color: #FFF5F5;\n\
+      \                    border: 2px solid #E53E3E;\n                    border-radius:\
+      \ 8px;\n                    padding: 8px 12px;\n                    font-size:\
+      \ 14px;\n                }\n            \"\"\")\n            QtCore.QTimer.singleShot(500,\
+      \ lambda: self.input_box.setStyleSheet(\"\"\"\n                QLineEdit {\n\
+      \                    background-color: white;\n                    border: 2px\
+      \ solid #CBD5E0;\n                    border-radius: 8px;\n                \
+      \    padding: 8px 12px;\n                    font-size: 14px;\n            \
+      \    }\n                QLineEdit:focus {\n                    border-color:\
+      \ #4299E1;\n                }\n            \"\"\"))\n            return\n\n\
+      \        self.play_sound(\"send\")\n        \n        # Get the numeric address\
+      \ from the selected item's userData\n        selected_index = self.addr_box.currentIndex()\n\
+      \        numeric_address = self.addr_box.itemData(selected_index)\n        \n\
+      \        if not numeric_address:\n            # Fallback: extract number from\
+      \ display text\n            display_text = self.addr_box.currentText()\n   \
+      \         # Try to extract number from \"Station X\" format\n            import\
+      \ re\n            match = re.search(r'(\\d+)', display_text)\n            if\
+      \ match:\n                numeric_address = match.group(1)\n            else:\n\
+      \                # Default to station 1\n                numeric_address = \"\
+      1\"\n        \n        # Create the message in \"addr:body\" format with numeric\
+      \ address\n        full_msg = f\"{numeric_address}:{text}\"\n        \n    \
+      \    # Get display text for GUI\n        display_address = self.addr_box.currentText()\n\
+      \n        # Publish as PMT symbol/string on 'out' port\n        try:\n     \
+      \       self.message_port_pub(pmt.intern(\"out\"), pmt.intern(full_msg))\n \
+      \       except Exception:\n            self.message_port_pub(pmt.intern(\"out\"\
+      ), pmt.intern(full_msg))\n\n        # Create and display message bubble\n  \
+      \      message_widget = MessageBubble(\n            text, \n            is_outgoing=True,\
+      \ \n            address=display_address,\n            numeric_address=numeric_address\n\
+      \        )\n        self.chat_layout.addWidget(message_widget, alignment=QtCore.Qt.AlignRight)\n\
+      \        \n        # Store widget reference for feedback\n        self.message_counter\
+      \ += 1\n        msg_id = f\"msg_{self.message_counter}\"\n        self.message_widgets[msg_id]\
+      \ = message_widget\n\n        # Clear input and scroll to bottom\n        self.input_box.clear()\n\
+      \        QtCore.QTimer.singleShot(100, lambda: self.scroll_area.verticalScrollBar().setValue(\n\
+      \            self.scroll_area.verticalScrollBar().maximum()\n        ))\n\n\
+      \    def _process_feedback(self, msg_pmt):\n        \"\"\"\n        Handler\
+      \ for 'feedback' port. Expected feedback values:\n          - \"TRUE\" => message\
+      \ delivered\n          - \"FALSE\" => delivery failed\n        \"\"\"\n    \
+      \    try:\n            if pmt.is_symbol(msg_pmt) or pmt.is_string(msg_pmt):\n\
+      \                fb = pmt.symbol_to_string(msg_pmt)\n            else:\n   \
+      \             py = pmt.to_python(msg_pmt)\n                fb = str(py)\n  \
+      \      except Exception:\n            fb = \"<unreadable feedback>\"\n\n   \
+      \     # Update the most recent outgoing message's status\n        if self.message_widgets:\n\
+      \            # Get the most recent message\n            msg_id = f\"msg_{self.message_counter}\"\
+      \n            if msg_id in self.message_widgets:\n                msg_widget\
+      \ = self.message_widgets[msg_id]\n                if fb == \"TRUE\":\n     \
+      \               msg_widget.status_label.setText(\"\u2705 Delivered\")\n    \
+      \                msg_widget.status_label.setStyleSheet(\"\"\"\n            \
+      \            QLabel {\n                            color: #38A169;\n       \
+      \                     font-size: 10px;\n                            font-weight:\
+      \ bold;\n                        }\n                    \"\"\")\n          \
+      \      elif fb == \"FALSE\":\n                    msg_widget.status_label.setText(\"\
+      \u274C Failed\")\n                    msg_widget.status_label.setStyleSheet(\"\
+      \"\"\n                        QLabel {\n                            color: #E53E3E;\n\
+      \                            font-size: 10px;\n                            font-weight:\
+      \ bold;\n                        }\n                    \"\"\")\n\n    def _receive_message(self,\
+      \ msg_pmt):\n        \"\"\"\n        Handler for 'in_msg' port. Extracts string\
+      \ and posts it to GUI thread.\n        \"\"\"\n        try:\n            if\
+      \ pmt.is_symbol(msg_pmt) or pmt.is_string(msg_pmt):\n                s = pmt.symbol_to_string(msg_pmt)\n\
+      \            else:\n                py = pmt.to_python(msg_pmt)\n          \
+      \      s = str(py)\n        except Exception:\n            s = \"<unreadable\
+      \ message>\"\n\n        # Post to GUI-thread handler\n        try:\n       \
+      \     self._poster.sig.emit(s)\n        except Exception:\n            try:\n\
+      \                self._display_incoming(s)\n            except Exception:\n\
+      \                print(\"[Hospital Paging] failed to deliver incoming message\
+      \ to GUI:\", s)\n\n    def _display_incoming(self, full_msg):\n        \"\"\"\
+      \n        Display incoming message bubble.\n        full_msg expected in \"\
+      addr:body\" format with numeric address.\n        \"\"\"\n        self.play_sound(\"\
+      receive\")\n        \n        # Parse numeric address and body\n        if \"\
+      :\" in full_msg:\n            numeric_address, body = full_msg.split(\":\",\
+      \ 1)\n            \n            # Convert numeric address to display name\n\
+      \            try:\n                addr_num = int(numeric_address)\n       \
+      \         if 1 <= addr_num <= 10:\n                    display_address = f\"\
+      Station {addr_num}\"\n                elif addr_num == 11:\n               \
+      \     display_address = \"Emergency Room\"\n                elif addr_num ==\
+      \ 12:\n                    display_address = \"Pharmacy\"\n                elif\
+      \ addr_num == 13:\n                    display_address = \"Lab\"\n         \
+      \       elif addr_num == 14:\n                    display_address = \"Radiology\"\
+      \n                else:\n                    display_address = f\"Station {addr_num}\"\
+      \n            except ValueError:\n                display_address = f\"Station\
+      \ {numeric_address}\"\n        else:\n            display_address = \"Unknown\
+      \ Station\"\n            numeric_address = \"?\"\n            body = full_msg\n\
+      \n        # Create and display message bubble\n        message_widget = MessageBubble(\n\
+      \            body, \n            is_outgoing=False, \n            address=display_address,\n\
+      \            numeric_address=numeric_address\n        )\n        self.chat_layout.addWidget(message_widget,\
+      \ alignment=QtCore.Qt.AlignLeft)\n\n        # Scroll to bottom\n        QtCore.QTimer.singleShot(100,\
+      \ lambda: self.scroll_area.verticalScrollBar().setValue(\n            self.scroll_area.verticalScrollBar().maximum()\n\
+      \        ))"
+    affinity: ''
+    alias: ''
+    bg_image: r"C:\Users\Oshan\Desktop\message.jpg"
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: '(''Hospital Paging System'', ''messenger_gui'', [(''bg_image'', "''''")],
+      [(''feedback'', ''message'', 1), (''in_msg'', ''message'', 1)], [(''sync_cmd'',
+      ''message'', 1), (''out'', ''message'', 1)], ''\nHospital Paging System GUI
+      (GNU Radio embedded block).\n- Outgoing messages: published on message port
+      "out" with numeric address prepended as "addr:body"\n- Feedback port "feedback":
+      updates delivery status\n- Incoming messages: received on port "in_msg" (same
+      numeric format "addr:body")\n'', [])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [480, 600.0]
+    rotation: 0
+    state: enabled
 - name: epy_block_0_0
   id: epy_block
   parameters:
@@ -830,7 +1267,7 @@ blocks:
   states:
     _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
       '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('sync_cmd', 'message',
-      1), ('pdu_in', 'message', 1), ('msg_in', 'message', 1)], [('pdu_out', 'message',
+      1), ('msg_in', 'message', 1), ('pdu_in', 'message', 1)], [('pdu_out', 'message',
       1), ('msg_out', 'message', 1), ('feedback', 'message', 1)], '\nEmbedded Python
       Block for User Node \nPerforms message transmission and reception via two threads
       using PDUs\nUses Stop and Wait ARQ to ensure packet transmission reliably\nUses
@@ -1056,7 +1493,7 @@ blocks:
     bus_structure: null
     coordinate: [144, 592.0]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1406,7 +1843,11 @@ connections:
 - [digital_protocol_formatter_async_0, header, pdu_pdu_to_tagged_stream_0, pdus]
 - [digital_protocol_formatter_async_0, payload, pdu_pdu_to_tagged_stream_0_0, pdus]
 - [digital_symbol_sync_xx_0_0, '0', digital_linear_equalizer_0_0_0, '0']
+- [epy_block_0, out, epy_block_0_0, msg_in]
+- [epy_block_0, sync_cmd, epy_block_0_0, sync_cmd]
+- [epy_block_0_0, feedback, epy_block_0, feedback]
 - [epy_block_0_0, feedback, epy_block_0_1, feedback]
+- [epy_block_0_0, msg_out, epy_block_0, in_msg]
 - [epy_block_0_0, msg_out, epy_block_0_1, in_msg]
 - [epy_block_0_0, pdu_out, digital_protocol_formatter_async_0, in]
 - [epy_block_0_1, out, epy_block_0_0, msg_in]

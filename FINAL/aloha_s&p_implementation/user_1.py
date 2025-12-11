@@ -28,8 +28,8 @@ from gnuradio import eng_notation
 from gnuradio import gr, pdu
 import sip
 import threading
+import user_1_epy_block_0 as epy_block_0  # embedded python block
 import user_1_epy_block_0_0 as epy_block_0_0  # embedded python block
-import user_1_epy_block_0_1 as epy_block_0_1  # embedded python block
 
 
 
@@ -199,8 +199,8 @@ class user_1(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(1, 2):
             self.top_grid_layout.setColumnStretch(c, 1)
-        self.epy_block_0_1 = epy_block_0_1.messenger_gui(bg_image=r"C:\Users\Oshan\Desktop\message.jpg")
-        self.epy_block_0_0 = epy_block_0_0.blk(node_id=1, aloha_prob=0.6, timeout=0.2, max_retries=100)
+        self.epy_block_0_0 = epy_block_0_0.blk(node_id=2, aloha_prob=0.6, timeout=0.2, max_retries=100)
+        self.epy_block_0 = epy_block_0.messenger_gui(bg_image=r"C:\Users\Oshan\Desktop\message.jpg")
         self.digital_symbol_sync_xx_0_0 = digital.symbol_sync_cc(
             digital.TED_SIGNAL_TIMES_SLOPE_ML,
             sps,
@@ -248,11 +248,11 @@ class user_1(gr.top_block, Qt.QWidget):
         ##################################################
         self.msg_connect((self.digital_protocol_formatter_async_0, 'header'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
+        self.msg_connect((self.epy_block_0, 'sync_cmd'), (self.epy_block_0_0, 'sync_cmd'))
+        self.msg_connect((self.epy_block_0, 'out'), (self.epy_block_0_0, 'msg_in'))
         self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
-        self.msg_connect((self.epy_block_0_0, 'feedback'), (self.epy_block_0_1, 'feedback'))
-        self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.epy_block_0_1, 'in_msg'))
-        self.msg_connect((self.epy_block_0_1, 'sync_cmd'), (self.epy_block_0_0, 'sync_cmd'))
-        self.msg_connect((self.epy_block_0_1, 'out'), (self.epy_block_0_0, 'msg_in'))
+        self.msg_connect((self.epy_block_0_0, 'feedback'), (self.epy_block_0, 'feedback'))
+        self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.epy_block_0, 'in_msg'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_0_0, 'pdu_in'))
         self.connect((self.blocks_repack_bits_bb_1_0, 0), (self.pdu_tagged_stream_to_pdu_0_0, 0))
         self.connect((self.blocks_tagged_stream_mux_0, 0), (self.digital_constellation_modulator_0, 0))

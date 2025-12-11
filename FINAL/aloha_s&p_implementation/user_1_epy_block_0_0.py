@@ -59,7 +59,6 @@ class blk(gr.sync_block):
         self.seq_num_tx = 0
         self.seq_num_rx = {}
         self.rx_buffer = bytes()
-        self.redirecting = False
         
         # Statistics
         self.stats = {
@@ -186,16 +185,8 @@ class blk(gr.sync_block):
         except Exception as e:
             print(f"[Node {self.node_id}] Error handling pdu_in: {e}")
     
-    def create_packet(self, dst_id, seq_num, pkt_type, payload=b'', src_id=None):
-        """Create a packet with headers and CRC
-
-        src_id: if None, default to self.node_id; otherwise use provided source id
-        """
-        if src_id is None:
-            src = self.node_id
-        else:
-            src = src_id & 0xFF
-
+    def create_packet(self, dst_id, seq_num, pkt_type, payload=b''):
+        """Create a packet with headers and CRC"""
         packet = bytearray()
         
         # Add preamble and sync word
@@ -203,7 +194,7 @@ class blk(gr.sync_block):
         packet.extend(self.SYNC_WORD)
         
         # Add header
-        packet.append(src)           # Source ID (now param)
+        packet.append(self.node_id)   # Source ID
         packet.append(dst_id)         # Destination ID
         packet.append(seq_num)        # Sequence number
         packet.append(pkt_type)       # Packet type
@@ -290,20 +281,7 @@ class blk(gr.sync_block):
                 except queue.Empty:
                     continue
                 
-                # If this is a forwarded raw packet, send it once without ARQ
-                if msg.get('forward_raw', False):
-                    try:
-                        raw_packet = msg['raw_packet']
-                        print(f"[Node {self.node_id}] TX: Forwarding raw packet (one-shot), length={len(raw_packet)}")
-                        # Optionally sync before forwarding
-                        self.send_sync_burst()
-                        self.transmit_packet(raw_packet)
-                        self.stats['packets_sent'] += 1
-                    except Exception as e:
-                        print(f"[Node {self.node_id}] forward send error: {e}")
-                    continue
-                
-                # ALOHA: Random backoff for locally-originated packets
+                # ALOHA: Random backoff
                 if random.random() > self.aloha_prob:
                     backoff_time = random.uniform(0.1, 0.5)
                     print(f"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s")
@@ -312,7 +290,7 @@ class blk(gr.sync_block):
                     self.tx_queue.put(msg)
                     continue
                 
-                # Prepare packet for locally-originated messages
+                # Prepare packet
                 with self.lock:
                     seq_num = self.seq_num_tx
                     self.seq_num_tx = (self.seq_num_tx + 1) % 256
@@ -324,7 +302,7 @@ class blk(gr.sync_block):
                     msg.get('data', b'')
                 )
                 
-                # Stop-and-Wait ARQ for locally-originated packets
+                # Stop-and-Wait ARQ
                 retries = 0
                 ack_received = False
 
@@ -405,21 +383,10 @@ class blk(gr.sync_block):
                     
                     # Check if packet is for this node or broadcast
                     if pkt['dst'] != self.node_id and pkt['dst'] != 0xFF:
-                        # Forward the packet transparently (preserve original src and seq)
-                        print(f"[Node {self.node_id}] RX: Forwarding packet from {pkt['src']} to {pkt['dst']}, seq={pkt['seq']}")
-                        forward_packet = self.create_packet(
-                            dst_id = pkt['dst'],
-                            seq_num = pkt['seq'],
-                            pkt_type = pkt['type'],
-                            payload = pkt['payload'],
-                            src_id = pkt['src']   # preserve original source ID
-                        )
-                        # enqueue as a one-shot forward (no ARQ)
-                        self.tx_queue.put({'forward_raw': True, 'raw_packet': forward_packet})
+                        print(f"[Node {self.node_id}] RX: Packet not for us (dst={pkt['dst']})")
                         continue
-                        
                     
-                    # Handle based on packet type (packet is for this node or broadcast)
+                    # Handle based on packet type
                     if pkt['type'] == self.PKT_DATA:
                         self.stats['packets_received'] += 1
                         print(f"[Node {self.node_id}] RX: Data packet from node {pkt['src']}, seq={pkt['seq']}")
@@ -433,7 +400,7 @@ class blk(gr.sync_block):
                         
                         self.seq_num_rx[pkt['src']] = pkt['seq']
                         
-                        # Send ACK only if this packet is addressed to this node
+                        # Send ACK
                         ack_packet = self.create_packet(
                             pkt['src'],
                             pkt['seq'],
@@ -449,22 +416,10 @@ class blk(gr.sync_block):
                             self.forward_to_app(pkt['src'], pkt['payload'])
                         
                     elif pkt['type'] == self.PKT_ACK:
-                        # If ACK is for this node, consume it for locally-originated ARQ
-                        if pkt['dst'] == self.node_id:
-                            print(f"[Node {self.node_id}] RX: ACK packet from node {pkt['src']}, seq={pkt['seq']} (for me)")
-                            ack_key = f"{pkt['src']}_{pkt['seq']}"
-                            self.ack_queue.put({'key': ack_key})
-                        else:
-                            # ACK is meant for someone else; forward unchanged toward its destination
-                            print(f"[Node {self.node_id}] RX: ACK for node {pkt['dst']} — forwarding")
-                            forward_packet = self.create_packet(
-                                dst_id = pkt['dst'],
-                                seq_num = pkt['seq'],
-                                pkt_type = pkt['type'],
-                                payload = b'',
-                                src_id = pkt['src']   # preserve ACK's src (the node that generated the ACK)
-                            )
-                            self.tx_queue.put({'forward_raw': True, 'raw_packet': forward_packet})
+                        print(f"[Node {self.node_id}] RX: ACK packet from node {pkt['src']}, seq={pkt['seq']}")
+                        # Process ACK
+                        ack_key = f"{pkt['src']}_{pkt['seq']}"
+                        self.ack_queue.put({'key': ack_key})
                         
             except Exception as e:
                 print(f"[Node {self.node_id}] RX handler error: {e}")
