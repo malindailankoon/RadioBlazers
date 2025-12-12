@@ -13,11 +13,10 @@ from PyQt5 import Qt
 from gnuradio import qtgui
 from PyQt5 import QtCore
 from gnuradio import blocks
-from gnuradio import channels
-from gnuradio.filter import firdes
 from gnuradio import digital
 from gnuradio import filter
 from gnuradio import gr
+from gnuradio.filter import firdes
 from gnuradio.fft import window
 import sys
 import signal
@@ -26,6 +25,7 @@ from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import gr, pdu
+from gnuradio import soapy
 import sip
 import threading
 import user_1_epy_block_0 as epy_block_0  # embedded python block
@@ -99,6 +99,32 @@ class user_1(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
             self.top_grid_layout.setColumnStretch(c, 1)
+        self.soapy_bladerf_source_0_0 = None
+        dev = 'driver=bladerf'
+        stream_args = ''
+        tune_args = ['']
+        settings = ['']
+
+        self.soapy_bladerf_source_0_0 = soapy.source(dev, "fc32", 1, '',
+                                  stream_args, tune_args, settings)
+        self.soapy_bladerf_source_0_0.set_sample_rate(0, samp_rate*2)
+        self.soapy_bladerf_source_0_0.set_bandwidth(0, 10000)
+        self.soapy_bladerf_source_0_0.set_frequency(0, user1_freq)
+        self.soapy_bladerf_source_0_0.set_frequency_correction(0, 0)
+        self.soapy_bladerf_source_0_0.set_gain(0, min(max(30.0, -1.0), 60.0))
+        self.soapy_bladerf_sink_0 = None
+        dev = 'driver=bladerf'
+        stream_args = ''
+        tune_args = ['']
+        settings = ['']
+
+        self.soapy_bladerf_sink_0 = soapy.sink(dev, "fc32", 1, '',
+                                  stream_args, tune_args, settings)
+        self.soapy_bladerf_sink_0.set_sample_rate(0, samp_rate_blade*2)
+        self.soapy_bladerf_sink_0.set_bandwidth(0, 10000)
+        self.soapy_bladerf_sink_0.set_frequency(0, user2_freq)
+        self.soapy_bladerf_sink_0.set_frequency_correction(0, 0)
+        self.soapy_bladerf_sink_0.set_gain(0, min(max(50, 17.0), 73.0))
         self.qtgui_const_sink_x_0_0 = qtgui.const_sink_c(
             1024, #size
             "User 1 RX Synced Constellation", #name
@@ -230,17 +256,10 @@ class user_1(gr.top_block, Qt.QWidget):
             log=False,
             truncate=False)
         self.digital_constellation_decoder_cb_0_0 = digital.constellation_decoder_cb(qpsk)
-        self.channels_channel_model_0 = channels.channel_model(
-            noise_voltage=0.1,
-            frequency_offset=0.0,
-            epsilon=1.0,
-            taps=[1.0],
-            noise_seed=0,
-            block_tags=False)
         self.blocks_unpack_k_bits_bb_0_0 = blocks.unpack_k_bits_bb(2)
-        self.blocks_throttle2_0 = blocks.throttle( gr.sizeof_gr_complex*1, 48000, True, 0 if "auto" == "auto" else max( int(float(0.1) * 48000) if "auto" == "time" else int(0.1), 1) )
         self.blocks_tagged_stream_mux_0 = blocks.tagged_stream_mux(gr.sizeof_char*1, "packet_len", 0)
         self.blocks_repack_bits_bb_1_0 = blocks.repack_bits_bb(1, 8, "packet_len", False, gr.GR_MSB_FIRST)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_cc(0.8)
 
 
         ##################################################
@@ -248,20 +267,18 @@ class user_1(gr.top_block, Qt.QWidget):
         ##################################################
         self.msg_connect((self.digital_protocol_formatter_async_0, 'header'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
-        self.msg_connect((self.epy_block_0, 'sync_cmd'), (self.epy_block_0_0, 'sync_cmd'))
         self.msg_connect((self.epy_block_0, 'out'), (self.epy_block_0_0, 'msg_in'))
+        self.msg_connect((self.epy_block_0, 'sync_cmd'), (self.epy_block_0_0, 'sync_cmd'))
         self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
-        self.msg_connect((self.epy_block_0_0, 'feedback'), (self.epy_block_0, 'feedback'))
         self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.epy_block_0, 'in_msg'))
+        self.msg_connect((self.epy_block_0_0, 'feedback'), (self.epy_block_0, 'feedback'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_0_0, 'pdu_in'))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.soapy_bladerf_sink_0, 0))
         self.connect((self.blocks_repack_bits_bb_1_0, 0), (self.pdu_tagged_stream_to_pdu_0_0, 0))
         self.connect((self.blocks_tagged_stream_mux_0, 0), (self.digital_constellation_modulator_0, 0))
-        self.connect((self.blocks_throttle2_0, 0), (self.channels_channel_model_0, 0))
         self.connect((self.blocks_unpack_k_bits_bb_0_0, 0), (self.digital_correlate_access_code_xx_ts_0_0, 0))
-        self.connect((self.channels_channel_model_0, 0), (self.digital_symbol_sync_xx_0_0, 0))
-        self.connect((self.channels_channel_model_0, 0), (self.qtgui_const_sink_x_0, 0))
         self.connect((self.digital_constellation_decoder_cb_0_0, 0), (self.digital_diff_decoder_bb_0_0, 0))
-        self.connect((self.digital_constellation_modulator_0, 0), (self.blocks_throttle2_0, 0))
+        self.connect((self.digital_constellation_modulator_0, 0), (self.blocks_multiply_const_vxx_0, 0))
         self.connect((self.digital_correlate_access_code_xx_ts_0_0, 0), (self.blocks_repack_bits_bb_1_0, 0))
         self.connect((self.digital_costas_loop_cc_0_0, 0), (self.digital_constellation_decoder_cb_0_0, 0))
         self.connect((self.digital_costas_loop_cc_0_0, 0), (self.qtgui_const_sink_x_0_0, 0))
@@ -271,6 +288,8 @@ class user_1(gr.top_block, Qt.QWidget):
         self.connect((self.digital_symbol_sync_xx_0_0, 0), (self.digital_linear_equalizer_0_0_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.blocks_tagged_stream_mux_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0_0, 0), (self.blocks_tagged_stream_mux_0, 1))
+        self.connect((self.soapy_bladerf_source_0_0, 0), (self.digital_symbol_sync_xx_0_0, 0))
+        self.connect((self.soapy_bladerf_source_0_0, 0), (self.qtgui_const_sink_x_0, 0))
 
 
     def closeEvent(self, event):
@@ -314,12 +333,14 @@ class user_1(gr.top_block, Qt.QWidget):
 
     def set_user2_freq(self, user2_freq):
         self.user2_freq = user2_freq
+        self.soapy_bladerf_sink_0.set_frequency(0, self.user2_freq)
 
     def get_user1_freq(self):
         return self.user1_freq
 
     def set_user1_freq(self, user1_freq):
         self.user1_freq = user1_freq
+        self.soapy_bladerf_source_0_0.set_frequency(0, self.user1_freq)
 
     def get_spr(self):
         return self.spr
@@ -332,12 +353,14 @@ class user_1(gr.top_block, Qt.QWidget):
 
     def set_samp_rate_blade(self, samp_rate_blade):
         self.samp_rate_blade = samp_rate_blade
+        self.soapy_bladerf_sink_0.set_sample_rate(0, self.samp_rate_blade*2)
 
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+        self.soapy_bladerf_source_0_0.set_sample_rate(0, self.samp_rate*2)
 
     def get_rrc_taps(self):
         return self.rrc_taps

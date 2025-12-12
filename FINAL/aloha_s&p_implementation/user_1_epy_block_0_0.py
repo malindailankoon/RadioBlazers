@@ -26,7 +26,7 @@ class blk(gr.sync_block):
         """
         gr.sync_block.__init__(
             self,
-            name='Mesh Packet Comm with sync',
+            name='User TX and RX Node',
             in_sig=None,
             out_sig=None
         )

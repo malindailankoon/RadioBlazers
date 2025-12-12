@@ -287,7 +287,7 @@ blocks:
     bus_structure: null
     coordinate: [1560, 280.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_repack_bits_bb_1_0
   id: blocks_repack_bits_bb
   parameters:
@@ -348,7 +348,7 @@ blocks:
     bus_structure: null
     coordinate: [1560, 416.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_unpack_k_bits_bb_0_0
   id: blocks_unpack_k_bits_bb
   parameters:
@@ -385,7 +385,7 @@ blocks:
     bus_structure: null
     coordinate: [1752, 384.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_constellation_decoder_cb_0_0
   id: digital_constellation_decoder_cb
   parameters:
@@ -983,12 +983,12 @@ blocks:
     minoutbuf: '0'
   states:
     _io_cache: '(''Hospital Paging System'', ''messenger_gui'', [(''bg_image'', "''''")],
-      [(''feedback'', ''message'', 1), (''in_msg'', ''message'', 1)], [(''sync_cmd'',
-      ''message'', 1), (''out'', ''message'', 1)], ''\nHospital Paging System GUI
-      (GNU Radio embedded block).\n- Outgoing messages: published on message port
-      "out" with numeric address prepended as "addr:body"\n- Feedback port "feedback":
-      updates delivery status\n- Incoming messages: received on port "in_msg" (same
-      numeric format "addr:body")\n'', [])'
+      [(''in_msg'', ''message'', 1), (''feedback'', ''message'', 1)], [(''sync_cmd'',
+      ''message'', 1), (''out'', ''message'', 1)], ''\n    Hospital Paging System
+      GUI (GNU Radio embedded block).\n    - Outgoing messages: published on message
+      port "out" with numeric address prepended as "addr:body"\n    - Feedback port
+      "feedback": updates delivery status\n    - Incoming messages: received on port
+      "in_msg" (same numeric format "addr:body")\n    '', [])'
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1009,9 +1009,9 @@ blocks:
       \ Unique identifier for this node (1-255)\n            aloha_prob: Transmission\
       \ probability for ALOHA (0.0-1.0)\n            timeout: ARQ timeout in seconds\n\
       \            max_retries: Maximum retransmission attempts\n        \"\"\"\n\
-      \        gr.sync_block.__init__(\n            self,\n            name='Mesh\
-      \ Packet Comm with sync',\n            in_sig=None,\n            out_sig=None\n\
-      \        )\n        \n        # Node configuration\n        self.node_id = node_id\n\
+      \        gr.sync_block.__init__(\n            self,\n            name='User\
+      \ TX and RX Node',\n            in_sig=None,\n            out_sig=None\n   \
+      \     )\n        \n        # Node configuration\n        self.node_id = node_id\n\
       \        self.aloha_prob = aloha_prob\n        self.timeout = timeout\n    \
       \    self.max_retries = max_retries\n        \n        # Packet parameters\n\
       \        self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])\n        self.SYNC_WORD\
@@ -1265,14 +1265,14 @@ blocks:
     node_id: '2'
     timeout: '0.2'
   states:
-    _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
-      '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('sync_cmd', 'message',
-      1), ('msg_in', 'message', 1), ('pdu_in', 'message', 1)], [('pdu_out', 'message',
-      1), ('msg_out', 'message', 1), ('feedback', 'message', 1)], '\nEmbedded Python
-      Block for User Node \nPerforms message transmission and reception via two threads
-      using PDUs\nUses Stop and Wait ARQ to ensure packet transmission reliably\nUses
-      ALOHA backoff to avoid collisions due to simultaneous transmissions\n\n', ['aloha_prob',
-      'max_retries', 'node_id', 'timeout'])
+    _io_cache: ('User TX and RX Node', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
+      ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1), ('msg_in',
+      'message', 1), ('sync_cmd', 'message', 1)], [('pdu_out', 'message', 1), ('msg_out',
+      'message', 1), ('feedback', 'message', 1)], '\n    Embedded Python Block for
+      User Node \n    Performs message transmission and reception via two threads
+      using PDUs\n    Uses Stop and Wait ARQ to ensure packet transmission reliably\n    Uses
+      ALOHA backoff to avoid collisions due to simultaneous transmissions\n\n    ',
+      ['aloha_prob', 'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1480,13 +1480,13 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''feedback'',
-      ''message'', 1), (''in_msg'', ''message'', 1)], [(''sync_cmd'', ''message'',
-      1), (''out'', ''message'', 1)], ''\nWhatsApp-style Messenger GUI (GNU Radio
-      embedded block).\n- Outgoing messages: published on message port "out" with
-      address prepended as "addr:body"\n- Feedback port "feedback": updates delivery
-      timestamp / failed status\n- Incoming messages: received on port "in_msg" (same
-      format "addr:body") and displayed\n  on the left in a different color.\n'',
+    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''in_msg'',
+      ''message'', 1), (''feedback'', ''message'', 1)], [(''sync_cmd'', ''message'',
+      1), (''out'', ''message'', 1)], ''\n    WhatsApp-style Messenger GUI (GNU Radio
+      embedded block).\n    - Outgoing messages: published on message port "out" with
+      address prepended as "addr:body"\n    - Feedback port "feedback": updates delivery
+      timestamp / failed status\n    - Incoming messages: received on port "in_msg"
+      (same format "addr:body") and displayed\n      on the left in a different color.\n    '',
       [])'
     bus_sink: false
     bus_source: false
@@ -1748,7 +1748,7 @@ blocks:
     bus_structure: null
     coordinate: [1752, 288.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: soapy_bladerf_source_0_0
   id: soapy_bladerf_source
   parameters:
@@ -1770,7 +1770,7 @@ blocks:
     bus_structure: null
     coordinate: [512, 960.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: virtual_sink_0
   id: virtual_sink
   parameters:
@@ -1783,7 +1783,7 @@ blocks:
     bus_structure: null
     coordinate: [1984, 424.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_sink_1
   id: virtual_sink
   parameters:
@@ -1809,7 +1809,7 @@ blocks:
     bus_structure: null
     coordinate: [832, 1128.0]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: virtual_source_2
   id: virtual_source
   parameters:
