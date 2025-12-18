@@ -28,7 +28,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [8, 16.0]
     rotation: 0
     state: enabled
 
@@ -267,7 +267,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [856, 120.0]
+    coordinate: [960, 168.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_vxx_0
