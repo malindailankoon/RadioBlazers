@@ -111,11 +111,13 @@ Provides 16-bit error detection and discards corrupted packets.
 
 ### **P-Persistent Style Medium Access**
 Packet transmissions follow probability-based collision avoidance.
+
 <img width="287" height="355" alt="image" src="https://github.com/user-attachments/assets/15ea731e-8777-4b6f-a941-176ff718da63" />
 
 
 ### **Stop-and-Wait ARQ**
 Ensures reliable delivery by requiring acknowledgments after each packet.
+
 <img width="348" height="356" alt="image" src="https://github.com/user-attachments/assets/d06ca2cd-055b-4988-8bd0-4ae62c350da0" />
 
 
