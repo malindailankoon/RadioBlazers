@@ -15,15 +15,15 @@ The goal of the project is to design and build a **hospital paging system** usin
 The final working system is located at:
 
 ```
-FINAL/aloha_s&p_implementation/
+FINAL/aloha_s&w_implementation/
 ```
 
 ### Key GNU Radio Flowgraphs
 | File | Description |
 |---|---|
-| `tx_modified_combined.grc` | Combined simulation file containing both User 1 and User 2 nodes |
-| `user_1.grc` | User Node 1 flowgraph |
-| `user_2.grc` | User Node 2 flowgraph |
+| `tx_modified_combined.grc` | Combined simulation file containing both User 1 and User 2 nodes (NOT upto date) |
+| `user_1.grc` | User Node 1 flowgraph (upto date) |
+| `user_2.grc` | User Node 2 flowgraph (upto date) |
 | `base_station.grc` | Base Station flowgraph *(not fully tested)* |
 
 ---
@@ -112,7 +112,8 @@ Provides 16-bit error detection and discards corrupted packets.
 ### **P-Persistent Style Medium Access**
 Packet transmissions follow probability-based collision avoidance.
 
-<img width="287" height="355" alt="image" src="https://github.com/user-attachments/assets/15ea731e-8777-4b6f-a941-176ff718da63" />
+<img width="286" height="382" alt="image" src="https://github.com/user-attachments/assets/2f33659a-d3ac-4a94-8398-aab5ea5b39ea" />
+
 
 
 ### **Stop-and-Wait ARQ**
