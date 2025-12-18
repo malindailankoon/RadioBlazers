@@ -29,7 +29,7 @@ class blk(gr.sync_block):
         """
         gr.sync_block.__init__(
             self,
-            name='Mesh Packet Comm',
+            name='Mesh Packet Comm with sync',
             in_sig=None,
             out_sig=None
         )
@@ -42,6 +42,8 @@ class blk(gr.sync_block):
         
         # Packet parameters
         self.PREAMBLE = bytes([0xAA, 0xAA, 0xAA, 0xAA])
+        # b = random.getrandbits(8)
+        # self.PREAMBLE = bytes([b] * 32)
         self.SYNC_WORD = bytes([0x2D, 0xD4])
         self.MAX_PAYLOAD = 255
         self.HEADER_SIZE = 8  # preamble(4) + sync(2) + src(1) + dst(1)
@@ -131,7 +133,7 @@ class blk(gr.sync_block):
                         dst_id = int(parts[0])
                         data = parts[1].encode()
                         self.tx_queue.put({'dst': dst_id, 'data': data, 'type': self.PKT_DATA})
-                        print(f"[Node {self.node_id}] Queued message to {dst_id}: {parts[1]}")
+                        print(f"[Node {self.node_id}] 1Queued message to {dst_id}: {parts[1]}")
                     except ValueError:
                         print(f"[Node {self.node_id}] Invalid destination ID")
             
@@ -142,7 +144,7 @@ class blk(gr.sync_block):
                     dst_id = meta['dst']
                     data = meta['data'].encode() if isinstance(meta['data'], str) else meta['data']
                     self.tx_queue.put({'dst': dst_id, 'data': data, 'type': self.PKT_DATA})
-                    print(f"[Node {self.node_id}] Queued message to {dst_id}")
+                    print(f"[Node {self.node_id}] 2Queued message to {dst_id}")
             
             # Handle pair messages (PDU format)
             elif pmt.is_pair(msg):
@@ -155,7 +157,7 @@ class blk(gr.sync_block):
                     elif isinstance(data, list):
                         data = bytes(data)
                     self.tx_queue.put({'dst': dst_id, 'data': data, 'type': self.PKT_DATA})
-                    print(f"[Node {self.node_id}] Queued message to {dst_id}")
+                    print(f"[Node {self.node_id}] 3Queued message to {dst_id}")
                     
         except Exception as e:
             print(f"[Node {self.node_id}] Error handling msg_in: {e}")
@@ -259,6 +261,10 @@ class blk(gr.sync_block):
             print(f"[Node {self.node_id}] Error parsing packet: {e}")
             return None
     
+    def send_sync_burst(self):
+        burst = bytes(random.getrandbits(8) for _ in range(1000))
+        self.transmit_packet(burst)
+
     def tx_handler(self):
         """Thread for handling packet transmission with ARQ"""
         while self.running:
@@ -270,13 +276,11 @@ class blk(gr.sync_block):
                     continue
                 
                 # ALOHA: Random backoff
-                if random.random() > self.aloha_prob:
+                while random.random() > self.aloha_prob:
                     backoff_time = random.uniform(0.1, 0.5)
                     print(f"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s")
                     time.sleep(backoff_time)
-                    # Re-queue the message
-                    self.tx_queue.put(msg)
-                    continue
+                    
                 
                 # Prepare packet
                 with self.lock:
@@ -293,6 +297,8 @@ class blk(gr.sync_block):
                 # Stop-and-Wait ARQ
                 retries = 0
                 ack_received = False
+
+                self.send_sync_burst()
                 
                 while retries < self.max_retries and not ack_received:
                     # Transmit packet

@@ -983,7 +983,7 @@ blocks:
     minoutbuf: '0'
   states:
     _io_cache: '(''Hospital Paging System'', ''messenger_gui'', [(''bg_image'', "''''")],
-      [(''in_msg'', ''message'', 1), (''feedback'', ''message'', 1)], [(''sync_cmd'',
+      [(''feedback'', ''message'', 1), (''in_msg'', ''message'', 1)], [(''sync_cmd'',
       ''message'', 1), (''out'', ''message'', 1)], ''\n    Hospital Paging System
       GUI (GNU Radio embedded block).\n    - Outgoing messages: published on message
       port "out" with numeric address prepended as "addr:body"\n    - Feedback port
@@ -992,7 +992,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [480, 600.0]
+    coordinate: [504, 592.0]
     rotation: 0
     state: enabled
 - name: epy_block_0_0
@@ -1136,24 +1136,23 @@ blocks:
       \            try:\n                # Get message from queue (with timeout for\
       \ thread safety)\n                try:\n                    msg = self.tx_queue.get(timeout=0.1)\n\
       \                except queue.Empty:\n                    continue\n       \
-      \         \n                # ALOHA: Random backoff\n                if random.random()\
+      \         \n                # ALOHA: Random backoff\n                while random.random()\
       \ > self.aloha_prob:\n                    backoff_time = random.uniform(0.1,\
       \ 0.5)\n                    print(f\"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\"\
-      )\n                    time.sleep(backoff_time)\n                    # Re-queue\
-      \ the message\n                    self.tx_queue.put(msg)\n                \
-      \    continue\n                \n                # Prepare packet\n        \
-      \        with self.lock:\n                    seq_num = self.seq_num_tx\n  \
-      \                  self.seq_num_tx = (self.seq_num_tx + 1) % 256\n         \
-      \       \n                packet = self.create_packet(\n                   \
-      \ msg['dst'],\n                    seq_num,\n                    msg['type'],\n\
-      \                    msg.get('data', b'')\n                )\n             \
-      \   \n                # Stop-and-Wait ARQ\n                retries = 0\n   \
-      \             ack_received = False\n\n                #self.send_sync_burst()\n\
-      \                \n                while retries < self.max_retries and not\
-      \ ack_received:\n                    # Transmit packet\n                   \
-      \ print(f\"[Node {self.node_id}] TX: Sending packet seq={seq_num} to node {msg['dst']}\
-      \ (attempt {retries + 1})\")\n                    # Attempt to sync before transmission\n\
-      \                    self.send_sync_burst()\n                    self.transmit_packet(packet)\n\
+      )\n                    time.sleep(backoff_time)\n                    \n    \
+      \            \n                # Prepare packet\n                with self.lock:\n\
+      \                    seq_num = self.seq_num_tx\n                    self.seq_num_tx\
+      \ = (self.seq_num_tx + 1) % 256\n                \n                packet =\
+      \ self.create_packet(\n                    msg['dst'],\n                   \
+      \ seq_num,\n                    msg['type'],\n                    msg.get('data',\
+      \ b'')\n                )\n                \n                # Stop-and-Wait\
+      \ ARQ\n                retries = 0\n                ack_received = False\n\n\
+      \                #self.send_sync_burst()\n                \n               \
+      \ while retries < self.max_retries and not ack_received:\n                 \
+      \   # Transmit packet\n                    print(f\"[Node {self.node_id}] TX:\
+      \ Sending packet seq={seq_num} to node {msg['dst']} (attempt {retries + 1})\"\
+      )\n                    # Attempt to sync before transmission\n             \
+      \       self.send_sync_burst()\n                    self.transmit_packet(packet)\n\
       \                    self.stats['packets_sent'] += 1\n                    \n\
       \                    if retries > 0:\n                        self.stats['retransmissions']\
       \ += 1\n                    \n                    # Wait for ACK\n         \
@@ -1258,11 +1257,11 @@ blocks:
     affinity: ''
     alias: ''
     aloha_prob: '0.6'
-    comment: User 2
+    comment: User 1
     max_retries: '100'
     maxoutbuf: '0'
     minoutbuf: '0'
-    node_id: '2'
+    node_id: '1'
     timeout: '0.2'
   states:
     _io_cache: ('User TX and RX Node', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
@@ -1314,7 +1313,7 @@ blocks:
       \ = QtWidgets.QApplication.instance()\n        if self.app is None:\n      \
       \      self.app = QtWidgets.QApplication(sys.argv)\n\n        # Main window\n\
       \        self.qt_widget = QtWidgets.QWidget()\n        self.qt_widget.setWindowTitle(\"\
-      Messenger GUI User 2\")\n        self.qt_widget.resize(640, 560)\n\n       \
+      Messenger GUI User 1\")\n        self.qt_widget.resize(640, 560)\n\n       \
       \ main_layout = QtWidgets.QVBoxLayout()\n        main_layout.setContentsMargins(8,\
       \ 8, 8, 8)\n        main_layout.setSpacing(6)\n        self.qt_widget.setLayout(main_layout)\n\
       \n        # Address selection bar\n        addr_layout = QtWidgets.QHBoxLayout()\n\
@@ -1480,8 +1479,8 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''in_msg'',
-      ''message'', 1), (''feedback'', ''message'', 1)], [(''sync_cmd'', ''message'',
+    _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''feedback'',
+      ''message'', 1), (''in_msg'', ''message'', 1)], [(''sync_cmd'', ''message'',
       1), (''out'', ''message'', 1)], ''\n    WhatsApp-style Messenger GUI (GNU Radio
       embedded block).\n    - Outgoing messages: published on message port "out" with
       address prepended as "addr:body"\n    - Feedback port "feedback": updates delivery
@@ -1491,7 +1490,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [144, 592.0]
+    coordinate: [88, 600.0]
     rotation: 180
     state: disabled
 - name: pdu_pdu_to_tagged_stream_0
@@ -1735,7 +1734,7 @@ blocks:
     affinity: ''
     alias: ''
     bandwidth: '10000'
-    center_freq: user2_freq
+    center_freq: user1_freq
     comment: ''
     dev_args: ''
     freq_correction: '0'
@@ -1755,7 +1754,7 @@ blocks:
     affinity: ''
     alias: ''
     bandwidth: '10000'
-    center_freq: user1_freq
+    center_freq: user2_freq
     comment: ''
     dev_args: ''
     freq_correction: '0'
@@ -1768,7 +1767,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [512, 960.0]
+    coordinate: [488, 972.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_0

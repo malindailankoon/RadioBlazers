@@ -267,11 +267,11 @@ class user_1(gr.top_block, Qt.QWidget):
         ##################################################
         self.msg_connect((self.digital_protocol_formatter_async_0, 'header'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.digital_protocol_formatter_async_0, 'payload'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
-        self.msg_connect((self.epy_block_0, 'out'), (self.epy_block_0_0, 'msg_in'))
         self.msg_connect((self.epy_block_0, 'sync_cmd'), (self.epy_block_0_0, 'sync_cmd'))
+        self.msg_connect((self.epy_block_0, 'out'), (self.epy_block_0_0, 'msg_in'))
         self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.digital_protocol_formatter_async_0, 'in'))
-        self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.epy_block_0, 'in_msg'))
         self.msg_connect((self.epy_block_0_0, 'feedback'), (self.epy_block_0, 'feedback'))
+        self.msg_connect((self.epy_block_0_0, 'msg_out'), (self.epy_block_0, 'in_msg'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0_0, 'pdus'), (self.epy_block_0_0, 'pdu_in'))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.soapy_bladerf_sink_0, 0))
         self.connect((self.blocks_repack_bits_bb_1_0, 0), (self.pdu_tagged_stream_to_pdu_0_0, 0))

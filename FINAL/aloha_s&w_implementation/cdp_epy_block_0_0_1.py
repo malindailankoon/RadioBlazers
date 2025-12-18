@@ -276,13 +276,11 @@ class blk(gr.sync_block):
                     continue
                 
                 # ALOHA: Random backoff
-                if random.random() > self.aloha_prob:
+                while random.random() > self.aloha_prob:
                     backoff_time = random.uniform(0.1, 0.5)
                     print(f"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s")
                     time.sleep(backoff_time)
-                    # Re-queue the message
-                    self.tx_queue.put(msg)
-                    continue
+                    
                 
                 # Prepare packet
                 with self.lock:

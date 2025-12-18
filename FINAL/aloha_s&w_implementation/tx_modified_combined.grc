@@ -1135,8 +1135,9 @@ blocks:
     _io_cache: ('Mesh Packet Comm', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
       ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1), ('msg_in',
       'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
-      'message', 1)], '\nMesh Network Packet Communication Block\nHandles packet transmission/reception
-      with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries', 'node_id', 'timeout'])
+      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1401,8 +1402,9 @@ blocks:
     _io_cache: ('Mesh Packet Comm', 'blk', [('node_id', '1'), ('aloha_prob', '0.3'),
       ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1), ('msg_in',
       'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message', 1), ('msg_out',
-      'message', 1)], '\nMesh Network Packet Communication Block\nHandles packet transmission/reception
-      with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries', 'node_id', 'timeout'])
+      'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1543,12 +1545,11 @@ blocks:
       \ queue (with timeout for thread safety)\n                try:\n           \
       \         msg = self.tx_queue.get(timeout=0.1)\n                except queue.Empty:\n\
       \                    continue\n                \n                # ALOHA: Random\
-      \ backoff\n                if random.random() > self.aloha_prob:\n         \
-      \           backoff_time = random.uniform(0.1, 0.5)\n                    print(f\"\
-      [Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\")\n               \
-      \     time.sleep(backoff_time)\n                    # Re-queue the message\n\
-      \                    self.tx_queue.put(msg)\n                    continue\n\
-      \                \n                # Prepare packet\n                with self.lock:\n\
+      \ backoff\n                while random.random() > self.aloha_prob:\n      \
+      \              backoff_time = random.uniform(0.1, 0.5)\n                   \
+      \ print(f\"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\")\n    \
+      \                time.sleep(backoff_time)\n                    \n          \
+      \      \n                # Prepare packet\n                with self.lock:\n\
       \                    seq_num = self.seq_num_tx\n                    self.seq_num_tx\
       \ = (self.seq_num_tx + 1) % 256\n                \n                packet =\
       \ self.create_packet(\n                    msg['dst'],\n                   \
@@ -1670,9 +1671,9 @@ blocks:
     _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
       '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1),
       ('msg_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
-      1), ('msg_out', 'message', 1)], '\nMesh Network Packet Communication Block\nHandles
-      packet transmission/reception with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries',
-      'node_id', 'timeout'])
+      1), ('msg_out', 'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -1814,12 +1815,11 @@ blocks:
       \ queue (with timeout for thread safety)\n                try:\n           \
       \         msg = self.tx_queue.get(timeout=0.1)\n                except queue.Empty:\n\
       \                    continue\n                \n                # ALOHA: Random\
-      \ backoff\n                if random.random() > self.aloha_prob:\n         \
-      \           backoff_time = random.uniform(0.1, 0.5)\n                    print(f\"\
-      [Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\")\n               \
-      \     time.sleep(backoff_time)\n                    # Re-queue the message\n\
-      \                    self.tx_queue.put(msg)\n                    continue\n\
-      \                \n                # Prepare packet\n                with self.lock:\n\
+      \ backoff\n                while random.random() > self.aloha_prob:\n      \
+      \              backoff_time = random.uniform(0.1, 0.5)\n                   \
+      \ print(f\"[Node {self.node_id}] ALOHA backoff {backoff_time:.2f}s\")\n    \
+      \                time.sleep(backoff_time)\n                    \n          \
+      \      \n                # Prepare packet\n                with self.lock:\n\
       \                    seq_num = self.seq_num_tx\n                    self.seq_num_tx\
       \ = (self.seq_num_tx + 1) % 256\n                \n                packet =\
       \ self.create_packet(\n                    msg['dst'],\n                   \
@@ -1941,9 +1941,9 @@ blocks:
     _io_cache: ('Mesh Packet Comm with sync', 'blk', [('node_id', '1'), ('aloha_prob',
       '0.3'), ('timeout', '1.0'), ('max_retries', '3')], [('pdu_in', 'message', 1),
       ('msg_in', 'message', 1)], [('feedback', 'message', 1), ('pdu_out', 'message',
-      1), ('msg_out', 'message', 1)], '\nMesh Network Packet Communication Block\nHandles
-      packet transmission/reception with Stop-and-Wait ARQ\n', ['aloha_prob', 'max_retries',
-      'node_id', 'timeout'])
+      1), ('msg_out', 'message', 1)], '\n    Mesh Network Packet Communication Block\n    Handles
+      packet transmission/reception with Stop-and-Wait ARQ\n    ', ['aloha_prob',
+      'max_retries', 'node_id', 'timeout'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -2140,11 +2140,11 @@ blocks:
   states:
     _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''feedback'',
       ''message'', 1), (''in_msg'', ''message'', 1)], [(''out'', ''message'', 1)],
-      ''\nWhatsApp-style Messenger GUI (GNU Radio embedded block).\n- Outgoing messages:
-      published on message port "out" with address prepended as "addr:body"\n- Feedback
-      port "feedback": updates delivery timestamp / failed status\n- Incoming messages:
-      received on port "in_msg" (same format "addr:body") and displayed\n  on the
-      left in a different color.\n'', [])'
+      ''\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing
+      messages: published on message port "out" with address prepended as "addr:body"\n    -
+      Feedback port "feedback": updates delivery timestamp / failed status\n    -
+      Incoming messages: received on port "in_msg" (same format "addr:body") and displayed\n      on
+      the left in a different color.\n    '', [])'
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -2341,11 +2341,11 @@ blocks:
   states:
     _io_cache: '(''Messenger GUI'', ''messenger_gui'', [(''bg_image'', "''''")], [(''feedback'',
       ''message'', 1), (''in_msg'', ''message'', 1)], [(''out'', ''message'', 1)],
-      ''\nWhatsApp-style Messenger GUI (GNU Radio embedded block).\n- Outgoing messages:
-      published on message port "out" with address prepended as "addr:body"\n- Feedback
-      port "feedback": updates delivery timestamp / failed status\n- Incoming messages:
-      received on port "in_msg" (same format "addr:body") and displayed\n  on the
-      left in a different color.\n'', [])'
+      ''\n    WhatsApp-style Messenger GUI (GNU Radio embedded block).\n    - Outgoing
+      messages: published on message port "out" with address prepended as "addr:body"\n    -
+      Feedback port "feedback": updates delivery timestamp / failed status\n    -
+      Incoming messages: received on port "in_msg" (same format "addr:body") and displayed\n      on
+      the left in a different color.\n    '', [])'
     bus_sink: false
     bus_source: false
     bus_structure: null
