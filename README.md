@@ -1,57 +1,145 @@
-# RadioBlazers
-Semester 3 "EN2130-Communication Design Project" project files (members: | Kariyawasam JHD (https://github.com/HirunaK) |  Imaduwage ONH (https://github.com/oshan-imaduwage) | Arachchi ADID (https://github.com/isithadinujaya) | Ilankoon IMMKB (https://github.com/malindailankoon))
+# **RadioBlazers — EN2130 Communication Design Project**
+
+This repository contains the full implementation and project files for the **Semester 3 EN2130 Communication Design Project**.  
+The goal of the project is to design and build a **hospital paging system** using **GNU Radio** and **BladeRF 2.0 SDRs**, supporting wireless exchange of short text messages with addressing, acknowledgments, and CRC-based error detection.
+
+### **Team Members**
+- Kariyawasam JHD — https://github.com/HirunaK  
+- Imaduwage ONH — https://github.com/oshan-imaduwage  
+- Arachchi ADID — https://github.com/isithadinujaya  
+- Ilankoon IMMKB — https://github.com/malindailankoon  
+
+---
+
+# **Final Implementation**
+The final working system is located at:
+
+```
+FINAL/aloha_s&p_implementation/
+```
+
+### Key GNU Radio Flowgraphs
+| File | Description |
+|---|---|
+| `tx_modified_combined.grc` | Combined simulation file containing both User 1 and User 2 nodes |
+| `user_1.grc` | User Node 1 flowgraph |
+| `user_2.grc` | User Node 2 flowgraph |
+| `base_station.grc` | Base Station flowgraph *(not fully tested)* |
+
+---
+
+# **Project Objective**
+Design and implement a **Hospital Paging System** using software-defined radios, enabling reliable exchange of short text messages in a multi-user environment.  
+The system must support proper addressing, acknowledgment, and error detection.
 
 
-# Final implementation 
-resides at FINAL/aloha_s&p_implementation/
+### Core Requirements
+1. **Digital message delivery** using modulation (BPSK/QPSK/etc.)
+2. **Unique user addressing** to ensure correct routing
+3. **Acknowledgment mechanism** (ACK) for reliability
+4. **CRC-based error detection**
+5. **Basic user interface** for message composition and viewing
 
-and the important files are:
+---
 
-tx_modified_combined.grc => a combination of user1 and user2 nodes for simulation purposes.
+# **Solution Overview**
+The system is implemented using:
+- **GNU Radio** for DSP, networking logic, and flowgraph design
+- **BladeRF 2.0 micro (XA4 / XA9)** as the SDR hardware platform
 
-user_1.grc => GNU flowgraph for user 1
+---
+# **Network Topology**
+The paging network follows a **Star Topology**:
 
-user_2.grc => GNU flowgraph for user 2
+- A **Base Station** acts as the central communication server
+- Multiple **User Nodes** function as wireless pagers
+- The Base Station can communicate directly with all users
+- User Nodes communicate upstream only to the Base Station  
+- The Base Station forwards messages to other users as needed
 
-base_station.grc => the GNU flowgraph for the base station (NOT TESTED)
+Two operating bands are used:
+- **900 MHz**: Base Station → User Nodes (downlink)
+- **3 GHz**: User Nodes → Base Station (uplink)
 
-
-
-# Project Objective
-Build a Hospital Paging System using SDRs. the system must support transmission of short text messages from one device to another, with proper addressing and acknowledgement mechanisms. 
-
-## core requirements
-1. Message delivery: Short message delivery using digital modulation (BPSK/QPSK/etc.).
-2.  Unique user addressing: Each receiver must only respond to messages intended for its address or ID.
-3. Acknowledgment mechanism (ACK): The receiver must send an acknowledgment upon successful message receipt.
-4.  Error Detection: Add CRC-based error detection and discard corrupted messages.
-5. Basic User Interface: A simple console- or GUI-based interface to compose and send messages.
-
-
-# Solution Overview
-GNU radio for software and BladeRF 2.0 micro xa4 and xa9 for the hardware
-
-## Topology
-The network is a Star Topology with a Base Station and multiple User Nodes. the base station represents a central communication server in the hospital and a user node represents a pager that a doctor would use. the base station can communicate directly with all user nodes but the user nodes can send packets only to the base station. there are two operating frequencies, 900MHz to transmit data from the base station to the users and 3GHz to tramsmit data from the users to the base station. the Base station is capable of not only receiving packets but also forwarding packets that does not address it, allowing all the users to communicate with each other. 
+---
 
 
-## Design Architecture
-our solution consists of 3 Layers of communicaiton:
-1. Application Layer (GUI)
-2. Data Link Layer (GNU Embedded Python Block and the Protocol Formatter)
-3. Physical Layer (Modulation and Demodulation pipelines in the GNU flowgraph)
+# **System Architecture**
+Communication is organized into three logical layers:
 
-Our messages are transmitted as packets and an entire message is encapsulated in a variable length packet.
+1. **Application Layer** — GUI messaging interface  
+2. **Data Link Layer** — framing, CRC, addressing, ARQ, and ALOHA access  
+3. **Physical Layer** — modulation, filtering, synchronization, equalization  
 
-
-### 1) Application Layer
-made using python and the pyqt library. the GUI is implemented as an emmbedded python block to increase speed and reliability but came at the cost of limited customization. this was necessary because we couldn't find any good Inter Process communication methods between an external GUI and GNU flowgraph.
+Messages are transmitted as **variable-length packets**, with a limit of **256 characters** per message for simplicity.
 
 
-\\ insert image of GUI here
+<img width="2000" height="885" alt="image" src="https://github.com/user-attachments/assets/1577c2fe-db27-4d32-85b0-e0772094706b" />
+
+---
 
 
+## **1) Application Layer**
+Implemented in **Python + PyQt**, embedded directly into the GNU Radio flowgraph to avoid external IPC overhead.  
+This approach improved reliability and timing at the cost of reduced GUI customization flexibility.
+
+<img width="708" height="518" alt="image" src="https://github.com/user-attachments/assets/b1719d75-c9b3-4951-92b2-541be7a37358" />
+
+---
 
 
+## **2) Data Link Layer**
+Responsible for:
+- Header generation
+- Addressing
+- CRC-CCITT-16 error detection
+- P-persistent ALOHA medium access
+- Stop-and-wait ARQ
+- Packet retransmission logic (Base Station forwarding)
+
+The Protocol Formatter adds a synchronization header to PDUs, allowing the receiver to reconstruct packets from a continuous bitstream.
+
+<img width="713" height="224" alt="image" src="https://github.com/user-attachments/assets/11843b95-ab4a-4cfb-ab5d-a4cc69985136" />
 
 
+### **Frame Structure**
+<img width="841" height="371" alt="image" src="https://github.com/user-attachments/assets/07366acc-75cc-41de-a72c-95aba94ff68a" />
+
+
+### **CRC-CCITT-16**
+Provides 16-bit error detection and discards corrupted packets.
+
+### **P-Persistent Style Medium Access**
+Packet transmissions follow probability-based collision avoidance.
+<img width="287" height="355" alt="image" src="https://github.com/user-attachments/assets/15ea731e-8777-4b6f-a941-176ff718da63" />
+
+
+### **Stop-and-Wait ARQ**
+Ensures reliable delivery by requiring acknowledgments after each packet.
+<img width="348" height="356" alt="image" src="https://github.com/user-attachments/assets/d06ca2cd-055b-4988-8bd0-4ae62c350da0" />
+
+
+---
+
+### 3) Physical Layer
+
+<!-- This table is made by Senuda Rathnayake and the credit goes to him -->
+
+| Component | Function | Implementation |
+| :--- | :--- | :--- |
+| **QPSK Mod/Demod** | Modulates 2 bits/symbol | Rectangular constellation |
+| **RRC Pulse Shaping** | Reduces ISI | Polyphase Filter Bank (PFB) |
+| **Symbol Sync** | Corrects timing errors | Symbol Sync block |
+| **Costas Loop** | Carrier recovery | Phase/freq correction |
+| **Adaptive Equalizer (CMA)** | Channel equalization | Linear CMA filter |
+
+---
+
+# **Status**
+✔ User nodes tested  
+✔ End-to-end messaging implemented  
+✔ CRC + ARQ functional  
+✔ Addressing functional  
+✖ Base station forwarding not fully validated  
+
+---
