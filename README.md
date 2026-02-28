@@ -68,7 +68,7 @@ Two operating bands are used:
 Communication is organized into three logical layers:
 
 1. **Application Layer** — GUI messaging interface  
-2. **Data Link Layer** — framing, CRC, addressing, ARQ, and ALOHA access  
+2. **Transport Layer** — framing, CRC, addressing, ARQ, and ALOHA access  
 3. **Physical Layer** — modulation, filtering, synchronization, equalization  
 
 Messages are transmitted as **variable-length packets**, with a limit of **256 characters** per message for simplicity.
